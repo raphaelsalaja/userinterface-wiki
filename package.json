@@ -1,0 +1,26 @@
+{
+  "name": "nextjs",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build --turbopack",
+    "start": "next start",
+    "lint": "biome check --fix --unsafe . --reporter=summary"
+  },
+  "dependencies": {
+    "@dimforge/rapier2d": "^0.19.0",
+    "earcut": "^3.0.2",
+    "next": "15.5.4",
+    "poly-decomp": "^0.3.0",
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.2.4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "typescript": "^5"
+  }
+}
