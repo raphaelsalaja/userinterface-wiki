@@ -1,0 +1,88 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  border: 0;
+  color: inherit;
+  font-family: inherit;
+  font-feature-settings: "calt", "ccmp", "locl", "kern";
+  font-size: inherit;
+  font-variation-settings: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  margin: 0;
+  padding: 0;
+  scroll-behavior: smooth;
+  scroll-padding-top: 128px;
+  text-decoration: none;
+  text-rendering: optimizeLegibility;
+  text-transform: none;
+  text-wrap: pretty;
+  vertical-align: baseline;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+ul,
+li,
+ol {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+button {
+  padding: 0;
+  font: inherit;
+  text-align: unset;
+  cursor: pointer;
+  user-select: none;
+  background: none;
+  border: none;
+}
+
+input {
+  padding: 0;
+  font: inherit;
+  background: none;
+  border: none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+#root,
+#__next {
+  isolation: isolate;
+}

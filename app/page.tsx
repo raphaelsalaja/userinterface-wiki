@@ -1,7 +1,7 @@
 export default function Page() {
   return (
-    <main style={{ padding: 24 }}>
-      <h1 style={{ marginBottom: 12 }}>p2-es Icons Physics</h1>
+    <main>
+      <h1>Veniam magna ut esse labore nostrud laboris deserunt mollit.</h1>
     </main>
   );
 }

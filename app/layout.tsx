@@ -1,18 +1,10 @@
+import { clsx } from "clsx";
+
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import { ReactLenis } from "lenis/react";
-import styles from "./layout.module.css";
+import { fonts } from "@/lib/site/fonts";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import "@/styles/index.css";
+import { Providers } from "@/components/providers";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -26,12 +18,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${styles.body}`}
-      >
-        <ReactLenis root />
-
-        {children}
+      <body className={clsx(fonts.inter.className)}>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

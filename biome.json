@@ -6,7 +6,8 @@
     "useIgnoreFile": true
   },
   "files": {
-    "ignoreUnknown": true
+    "ignoreUnknown": true,
+    "includes": ["**", "!dist", "!**/dist", "!.source"]
   },
   "formatter": {
     "enabled": true,

@@ -1,0 +1,71 @@
+.dark,
+.dark-theme {
+  --gray-1: #0f0f0f;
+  --gray-2: #191919;
+  --gray-3: #222;
+  --gray-4: #292929;
+  --gray-5: #313131;
+  --gray-6: #3a3a3a;
+  --gray-7: #484848;
+  --gray-8: #606060;
+  --gray-9: #6d6d6d;
+  --gray-10: #7a7a7a;
+  --gray-11: #b3b3b3;
+  --gray-12: #eee;
+
+  --gray-a1: #00000000;
+  --gray-a2: #ffffff0b;
+  --gray-a3: #ffffff14;
+  --gray-a4: #ffffff1c;
+  --gray-a5: #ffffff24;
+  --gray-a6: #ffffff2e;
+  --gray-a7: #ffffff3d;
+  --gray-a8: #ffffff56;
+  --gray-a9: #ffffff64;
+  --gray-a10: #ffffff72;
+  --gray-a11: #ffffffae;
+  --gray-a12: #ffffffed;
+
+  --gray-contrast: #ffffff;
+  --gray-surface: rgba(0, 0, 0, 0.05);
+  --gray-indicator: #6d6d6d;
+  --gray-track: #6d6d6d;
+}
+
+@supports (color: color(display-p3 1 1 1)) {
+  @media (color-gamut: p3) {
+    .dark,
+    .dark-theme {
+      --gray-1: oklch(16.8% 0 none);
+      --gray-2: oklch(21.1% 0 none);
+      --gray-3: oklch(25.2% 0 none);
+      --gray-4: oklch(28.2% 0 none);
+      --gray-5: oklch(31.2% 0 none);
+      --gray-6: oklch(34.9% 0 none);
+      --gray-7: oklch(40.1% 0 none);
+      --gray-8: oklch(49% 0 none);
+      --gray-9: oklch(53.5% 0 none);
+      --gray-10: oklch(58.1% 0 none);
+      --gray-11: oklch(76.7% 0 none);
+      --gray-12: oklch(94.8% 0 none);
+
+      --gray-a1: color(display-p3 0 0 0 / 0);
+      --gray-a2: color(display-p3 1 1 1 / 0.0417);
+      --gray-a3: color(display-p3 1 1 1 / 0.0792);
+      --gray-a4: color(display-p3 1 1 1 / 0.1083);
+      --gray-a5: color(display-p3 1 1 1 / 0.1417);
+      --gray-a6: color(display-p3 1 1 1 / 0.1792);
+      --gray-a7: color(display-p3 1 1 1 / 0.2375);
+      --gray-a8: color(display-p3 1 1 1 / 0.3375);
+      --gray-a9: color(display-p3 1 1 1 / 0.3917);
+      --gray-a10: color(display-p3 1 1 1 / 0.4458);
+      --gray-a11: color(display-p3 1 1 1 / 0.6833);
+      --gray-a12: color(display-p3 1 1 1 / 0.9292);
+
+      --gray-contrast: #ffffff;
+      --gray-surface: color(display-p3 0 0 0 / 5%);
+      --gray-indicator: oklch(53.5% 0 none);
+      --gray-track: oklch(53.5% 0 none);
+    }
+  }
+}
