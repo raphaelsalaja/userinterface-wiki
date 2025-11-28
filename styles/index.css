@@ -19,7 +19,7 @@
   --solid-secondary: var(--gray-10);
   --foreground-secondary: var(--gray-11);
   --foreground-primary: var(--gray-12);
-  --accent: oklch(0.6567 0.1871 237.18);
+  --accent: oklch(0.7665 0.22 146.55);
   --color-link: var(--accent);
   --font-weight-light: 300;
   --font-weight-normal: 450;

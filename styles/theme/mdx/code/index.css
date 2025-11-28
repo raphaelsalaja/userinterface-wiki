@@ -1,58 +1,71 @@
 pre.shiki {
-  padding: var(--prose-block-spacing);
+  --code-padding: var(--prose-block-spacing);
+  --code-font-size: 13px;
+  --code-line-height: 1.6;
+  --code-tab-size: 2;
+  --code-background: var(--gray-2);
+  --code-border-color: var(--gray-4);
+  --code-border-radius: var(--prose-block-radius);
+}
+
+pre.shiki {
+  padding: var(--code-padding);
   margin: var(--prose-block-spacing) 0;
   overflow-x: auto;
-  line-height: 1.6;
-  tab-size: 2;
-  background: var(--gray-2);
-  border-radius: var(--prose-block-radius);
+  line-height: var(--code-line-height);
+  tab-size: var(--code-tab-size);
+  background: var(--code-background);
+  border: 1px solid var(--code-border-color);
+  border-radius: var(--code-border-radius);
+}
 
-  code {
-    display: block;
-    font-family: var(--font-monospace);
-    font-size: 13px;
-    font-weight: 400;
-    line-height: inherit;
-    background: transparent;
-    border: none;
-  }
+pre.shiki code {
+  display: block;
+  font-family: var(--font-monospace);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: inherit;
+  background: transparent;
+  border: none;
+}
 
-  &[title]::before {
-    display: block;
-    padding: 8px var(--prose-block-spacing);
-    margin: calc(-1 * var(--prose-block-spacing))
-      calc(-1 * var(--prose-block-spacing)) var(--prose-block-spacing);
-    font-family: var(--font-regular);
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--gray-11);
-    content: attr(title);
-    background: var(--gray-3);
-    border-bottom: 1px solid var(--gray-6);
-  }
+pre.shiki[title]::before {
+  display: block;
+  padding: 8px var(--prose-block-spacing);
+  margin: calc(-1 * var(--prose-block-spacing))
+    calc(-1 * var(--prose-block-spacing)) var(--prose-block-spacing);
+  font-family: var(--font-monospace);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gray-11);
+  content: attr(title);
+  border-bottom: 1px solid var(--gray-a4);
+}
 
-  .line {
-    display: inline-block;
-    min-height: 1.6em;
-  }
+pre.shiki .line {
+  display: inline-block;
+  min-height: 1.6em;
+}
 
-  .highlighted {
-    padding-left: 6px;
-    margin-left: -8px;
-    background: rgba(255, 255, 0, 0.1);
-    border-left: 2px solid rgba(255, 255, 0, 0.5);
-  }
+pre.shiki .highlighted {
+  padding-left: 6px;
+  margin-left: -8px;
+  background: rgba(255, 255, 0, 0.1);
+  border-left: 2px solid rgba(255, 255, 0, 0.5);
 }
 
 code:not(pre.shiki code) {
-  padding: 2px 6px;
+  font-family: var(--font-monospace);
+  padding: 1px 4px;
+  border-radius: 4px;
+  line-height: 1.3;
+  box-decoration-break: clone;
+  box-shadow: var(--gray-6) 0px 0px 0px 0.5px inset;
   font-size: 13px;
   font-weight: 500;
-  line-height: 1.4;
   color: var(--gray-12);
   background: var(--gray-4);
   border: 1px solid var(--gray-6);
-  border-radius: 4px;
 }
 
 @media (prefers-color-scheme: dark) {
