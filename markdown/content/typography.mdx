@@ -9,88 +9,91 @@ date:
   modified: "2024-06-15"
 ---
 
-## Headings
+# Designing a Typographic System for the Web
 
-# Heading 1
+The goal of this page is simple: look like a real article while secretly testing every typography style and MDX component in the system.
 
-## Heading 2
+You can read it like a normal piece of writing, but behind the scenes it exercises headings, paragraphs, lists, quotes, tables, code blocks, inline elements, and more.
 
-### Heading 3
+## Why Typography Matters
 
-#### Heading 4
+Good typography does three things at once:
 
-## Paragraphs
+1. Makes content readable.
+2. Gives the product a distinct voice.
+3. Scales across use-cases without breaking.
 
-Duis et id ad. Voluptate aliqua ut sit. Aliqua officia duis consectetur ex ut eiusmod amet ut dolor nostrud do. Culpa enim fugiat ea occaecat quis.
+Most users will never notice the specifics of line height, letter spacing, or rhythm. They only notice when something feels _off_. That is why we test type in realistic contexts instead of sterile samples.
 
-Velit voluptate laboris labore anim. Fugiat anim cillum aute fugiat. Velit duis aliquip mollit elit in minim irure proident et irure culpa aute duis. Mollit sit adipisicing in adipisicing excepteur aute dolore ipsum magna veniam consequat 
+### Hierarchy in Practice
 
-## Blockquotes
+A typographic scale is useless if every heading looks the same. In a real article, hierarchy is:
 
-> This is a blockquote. It is used to highlight important information or quotes from other sources.
-> <br />
-> It can span multiple paragraphs and include other elements.
+- A clear **H1** that anchors the page.
+- Section-level **H2** headings that break the story into chapters.
+- Supporting **H3** headings that group related ideas.
+- Occasional **H4** headings used for fine-grained structure, labels, or side notes.
 
+#### Fine Print and Microcopy
 
-## Lists
+Smaller sizes matter just as much. Error messages, helper text, captions, and disclaimers all rely on consistent microcopy styles. If they are too small, too light, or misaligned, the interface feels unreliable.
 
-### Unordered List
+## Structuring Content
 
-* First item
-* Second item
-  * Nested item 2.1
-  * Nested item 2.2
-    * Nested item 2.2.1
-    * Nested item 2.2.2
-      * Nested item 2.2.2.1
-      * Nested item 2.2.2.2
-* Third item
+Real content is rarely a single block of text. It mixes narrative, lists, quotes, and technical fragments.
 
-### Ordered List
+### Lists in the Wild
 
-1. First step
-2. Second step
-   1. Sub-step A
-   2. Sub-step B
-      1. Sub-step C
-      2. Sub-step D
-         1. Sub-step D.1
-         2. Sub-step D.2
-3. Third step
+Unordered lists work well for loose collections:
 
-## Code Blocks
+- Key principles
+  - Consistency
+  - Contrast
+  - Rhythm
+- UI details
+  - Button labels
+  - Form errors
+  - Empty states
+- Implementation notes
 
-```tsx title="hello-world.tsx"
-import React from 'react';
+Ordered lists work better when sequence matters:
 
-function HelloWorld() {
+1. Define the type scale.
+2. Map tokens to components.
+3. Apply styles to the prose.
+   1. Check headings in long pages.
+   2. Check paragraphs at different widths.
+      1. Validate mobile breakpoints.
+      2. Validate desktop layouts.
+         1. Test extreme cases.
+         2. Log issues for follow-up.
+3. Iterate based on real content.
+
+## Quoting and Emphasis
+
+> A good typographic system disappears.  
+> What stays is the feeling that everything is in the right place.
+
+Blockquotes are useful for calls-out, testimonials, or important definitions. They should feel related to the body, not like a different website.
+
+Inside a paragraph, you still need inline emphasis: **bold** for weight, _italics_ for nuance, ~~strikethrough~~ for revisions, and `inline code` for technical fragments. [Links](#tables) should be visible but not screaming for attention.
+
+## Code in Content
+
+Design systems often document usage with short code samples. Those samples should be readable, scannable, and visually distinct from prose.
+
+```tsx title="TypographyExample.tsx"
+import React from "react";
+
+export function TypographyExample() {
   return (
-    <div className="p-4 bg-gray-100 rounded">
-      <h1>Hello, World!</h1>
-    </div>
+    <article className="prose">
+      <h1>Designing with Type</h1>
+      <p>
+        Start with a clear scale, then apply it consistently across headings,
+        body text, and UI copy.
+      </p>
+      <code>--font-size-body: 14px;</code>
+    </article>
   );
 }
-```
-
-## Tables
-
-| Feature | Status |
-| -- | -- |
-| Typography | Ready |
-| Components | Pending |
-
-## Horizontal Rule
-
----
-
-## Inline Elements
-
-**Bold**
-
-*Italic*
-
-~~Strikethrough~~
-
-`Code`
-
-[Link](#)

@@ -16,8 +16,8 @@
   --foreground-secondary: var(--gray-11);
   --foreground-tertiary: var(--gray-10);
 
-  --accent: oklch(0.7665 0.22 146.55);
-  --color-link: var(--accent);
+  --color-accent: oklch(0.7665 0.22 146.55);
+  --color-link: var(--color-accent);
   --prose-block-spacing: 16px;
   --prose-block-spacing-large: 22px;
   --prose-block-spacing-small: 6px;

@@ -14,7 +14,8 @@ export const dynamic = "force-dynamic";
 
 const CONTENT_DIR = path.join(process.cwd(), "markdown", "content");
 const CACHE_PREFIX = "tts";
-const VOICE_FALLBACK = "21m00Tcm4TlvDq8ikWAM";
+const STANDARD_VOICE_FALLBACK = "CwhRBWXzGAHq8TQ4Fs17";
+const DEFAULT_MODEL_ID = "eleven_multilingual_v2";
 
 class ArticleNotFoundError extends Error {}
 
@@ -34,31 +35,39 @@ interface WordTimestamp {
   normalized: string;
 }
 
-interface ElevenLabsWord {
-  word?: string;
-  start?: number;
-  end?: number;
-}
+type NumericSeries = Array<number | string | null | undefined>;
 
-interface ElevenLabsCharacter {
-  char?: string;
-  character?: string;
-  start?: number;
-  end?: number;
+interface ElevenLabsAlignment {
+  words?: string[];
+  word_start_times_seconds?: NumericSeries;
+  word_end_times_seconds?: NumericSeries;
+  word_start_times_ms?: NumericSeries;
+  word_end_times_ms?: NumericSeries;
+  word_start_times?: NumericSeries;
+  word_end_times?: NumericSeries;
+  characters?: string[];
+  character_start_times_seconds?: NumericSeries;
+  character_end_times_seconds?: NumericSeries;
+  character_start_times_ms?: NumericSeries;
+  character_end_times_ms?: NumericSeries;
+  char_start_times_seconds?: NumericSeries;
+  char_end_times_seconds?: NumericSeries;
+  char_start_times_ms?: NumericSeries;
+  char_end_times_ms?: NumericSeries;
 }
 
 interface ElevenLabsResponse {
   audio_base64?: string;
-  alignment?: {
-    words?: ElevenLabsWord[];
-    characters?: ElevenLabsCharacter[];
-  };
+  alignment?: ElevenLabsAlignment;
+  normalized_alignment?: ElevenLabsAlignment;
 }
 
 export async function POST(request: NextRequest) {
   try {
     const payload = await request.json().catch(() => ({}));
     const slugSegments = toSlugSegments(payload.slug);
+    const slugKey = slugSegments.join("/");
+    const logPrefix = `[tts:${slugKey || "unknown"}]`;
 
     if (!slugSegments.length) {
       return NextResponse.json(
@@ -73,20 +82,54 @@ export async function POST(request: NextRequest) {
       }
       throw error;
     });
-    const contentHash = hashContent(plainText);
+    const voiceId = resolveVoiceId(payload.voiceId);
+    const modelId = resolveModelId(payload.modelId);
+    const contentHash = hashContent(`${plainText}::${voiceId}::${modelId}`);
     const cacheBase = `${CACHE_PREFIX}/${slugSegments.join("__")}/${contentHash}`;
+
+    console.info(logPrefix, "request", {
+      voiceId,
+      modelId,
+      hash: contentHash,
+      textLength: plainText.length,
+    });
 
     const cached = await readFromCache(cacheBase);
     if (cached) {
+      console.info(logPrefix, "cache-hit", {
+        hash: contentHash,
+        audioUrl: cached.audioUrl,
+        timestamps: cached.timestamps.length,
+      });
       return NextResponse.json({ ...cached, hash: contentHash });
     }
 
-    const synthesized = await synthesizeSpeech(plainText);
+    console.info(logPrefix, "cache-miss", {
+      hash: contentHash,
+      voiceId,
+      modelId,
+    });
+
+    const synthesized = await synthesizeSpeech(plainText, voiceId, modelId);
+
+    console.info(logPrefix, "synthesized", {
+      voiceId,
+      modelId,
+      hash: contentHash,
+      timestampCount: synthesized.timestamps.length,
+      audioBytes: synthesized.audioBuffer.length,
+    });
 
     const [audioUrl] = await Promise.all([
       uploadBinary(`${cacheBase}.mp3`, synthesized.audioBuffer, "audio/mpeg"),
       uploadJson(`${cacheBase}.json`, synthesized.timestamps),
     ]);
+
+    console.info(logPrefix, "uploaded", {
+      hash: contentHash,
+      audioUrl,
+      timestampCount: synthesized.timestamps.length,
+    });
 
     return NextResponse.json({
       audioUrl,
@@ -125,33 +168,37 @@ async function readFromCache(cacheBase: string) {
   };
 }
 
-async function synthesizeSpeech(text: string) {
+async function synthesizeSpeech(
+  text: string,
+  voiceId: string,
+  modelId: string,
+) {
   const apiKey = process.env.ELEVENLABS_API_KEY;
   if (!apiKey) {
     throw new Error("ELEVENLABS_API_KEY is not set");
   }
 
-  const voiceId = process.env.ELEVENLABS_VOICE_ID || VOICE_FALLBACK;
-
-  const response = await fetch(
+  const endpoint = new URL(
     `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}/with-timestamps`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "xi-api-key": apiKey,
-      },
-      body: JSON.stringify({
-        text,
-        model_id: "eleven_multilingual_v2",
-        enable_logging: true,
-        voice_settings: {
-          stability: 0.4,
-          similarity_boost: 0.8,
-        },
-      }),
-    },
   );
+  endpoint.searchParams.set("enable_logging", "true");
+  endpoint.searchParams.set("output_format", "mp3_44100_128");
+
+  const response = await fetch(endpoint, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "xi-api-key": apiKey,
+    },
+    body: JSON.stringify({
+      text,
+      model_id: modelId,
+      voice_settings: {
+        stability: 0.4,
+        similarity_boost: 0.8,
+      },
+    }),
+  });
 
   if (!response.ok) {
     const message = await response.text();
@@ -167,86 +214,148 @@ async function synthesizeSpeech(text: string) {
   }
 
   const audioBuffer = Buffer.from(data.audio_base64, "base64");
-  const timestamps = buildWordTimestamps(data.alignment);
+  let timestamps = buildWordTimestamps(data.alignment);
+
+  if (!timestamps.length) {
+    timestamps = buildWordTimestamps(data.normalized_alignment);
+  }
 
   return { audioBuffer, timestamps };
 }
 
-function buildWordTimestamps(
-  alignment?: ElevenLabsResponse["alignment"],
-): WordTimestamp[] {
-  if (alignment?.words?.length) {
-    return alignment.words
-      .map((entry) => {
-        const normalized = normalizeWord(entry.word ?? "");
-        if (
-          !entry.word ||
-          typeof entry.start !== "number" ||
-          typeof entry.end !== "number"
-        ) {
-          return null;
-        }
-        return {
-          word: entry.word,
-          start: entry.start,
-          end: entry.end,
-          normalized,
-        } satisfies WordTimestamp;
-      })
-      .filter(Boolean) as WordTimestamp[];
+function buildWordTimestamps(alignment?: ElevenLabsAlignment): WordTimestamp[] {
+  if (!alignment) return [];
+
+  const fromWords = buildFromWordSeries(alignment);
+  if (fromWords.length) {
+    return fromWords;
   }
 
-  if (alignment?.characters?.length) {
-    const results: WordTimestamp[] = [];
-    let buffer = "";
-    let startTime: number | null = null;
-    for (const charEntry of alignment.characters) {
-      const character = charEntry.char ?? charEntry.character ?? "";
-      const currentStart: number | null =
-        typeof charEntry.start === "number" ? charEntry.start : startTime;
-      const currentEnd: number | null =
-        typeof charEntry.end === "number" ? charEntry.end : currentStart;
-
-      if (character.trim()) {
-        buffer += character;
-        if (startTime === null && typeof currentStart === "number") {
-          startTime = currentStart;
-        }
-      }
-
-      if (!character.trim()) {
-        if (buffer.trim() && startTime !== null) {
-          const normalized = normalizeWord(buffer);
-          if (normalized) {
-            results.push({
-              word: buffer,
-              start: startTime,
-              end: currentEnd ?? startTime,
-              normalized,
-            });
-          }
-        }
-        buffer = "";
-        startTime = null;
-      }
-    }
-
-    if (buffer.trim() && startTime !== null) {
-      const normalized = normalizeWord(buffer);
-      if (normalized) {
-        results.push({
-          word: buffer,
-          start: startTime,
-          end: startTime,
-          normalized,
-        });
-      }
-    }
-
-    return results;
+  const fromCharacters = buildFromCharacterSeries(alignment);
+  if (fromCharacters.length) {
+    return fromCharacters;
   }
 
   return [];
+}
+
+function buildFromWordSeries(alignment: ElevenLabsAlignment): WordTimestamp[] {
+  if (!alignment.words?.length) return [];
+
+  const startSeries =
+    alignment.word_start_times_seconds ??
+    alignment.word_start_times_ms ??
+    alignment.word_start_times ??
+    [];
+  const endSeries =
+    alignment.word_end_times_seconds ??
+    alignment.word_end_times_ms ??
+    alignment.word_end_times ??
+    [];
+
+  return alignment.words
+    .map((word, index) => {
+      const start = normalizeTimestampValue(startSeries[index]);
+      const end = normalizeTimestampValue(
+        endSeries[index] ?? startSeries[index],
+      );
+      const normalized = normalizeWord(word ?? "");
+      if (!word || !normalized || start === null || end === null) {
+        return null;
+      }
+      return {
+        word,
+        start,
+        end,
+        normalized,
+      } satisfies WordTimestamp;
+    })
+    .filter(Boolean) as WordTimestamp[];
+}
+
+interface CharacterEntry {
+  character: string;
+  start: number | null;
+  end: number | null;
+}
+
+function buildFromCharacterSeries(
+  alignment: ElevenLabsAlignment,
+): WordTimestamp[] {
+  if (!alignment.characters?.length) return [];
+
+  const startSeries =
+    alignment.character_start_times_seconds ??
+    alignment.char_start_times_seconds ??
+    alignment.character_start_times_ms ??
+    alignment.char_start_times_ms ??
+    [];
+  const endSeries =
+    alignment.character_end_times_seconds ??
+    alignment.char_end_times_seconds ??
+    alignment.character_end_times_ms ??
+    alignment.char_end_times_ms ??
+    [];
+
+  const entries: CharacterEntry[] = alignment.characters.map(
+    (character, index) => ({
+      character,
+      start: normalizeTimestampValue(startSeries[index]),
+      end: normalizeTimestampValue(endSeries[index] ?? startSeries[index]),
+    }),
+  );
+
+  const results: WordTimestamp[] = [];
+  let buffer = "";
+  let startTime: number | null = null;
+  let lastCharacterEnd: number | null = null;
+
+  entries.forEach((entry) => {
+    const { character, start, end } = entry;
+    const isWhitespace = !character || !character.trim();
+
+    if (!isWhitespace) {
+      buffer += character;
+      if (startTime === null && typeof start === "number") {
+        startTime = start;
+      }
+      if (typeof end === "number") {
+        lastCharacterEnd = end;
+      }
+    }
+
+    if (isWhitespace) {
+      if (buffer.trim() && startTime !== null) {
+        const normalized = normalizeWord(buffer);
+        if (normalized) {
+          results.push({
+            word: buffer,
+            start: startTime,
+            end: lastCharacterEnd ?? startTime,
+            normalized,
+          });
+        }
+      }
+      buffer = "";
+      startTime = null;
+      lastCharacterEnd = null;
+      return;
+    }
+  });
+
+  if (buffer.trim() && startTime !== null) {
+    const normalized = normalizeWord(buffer);
+    if (normalized) {
+      results.push({
+        word: buffer,
+        start: startTime,
+        end: lastCharacterEnd ?? startTime,
+        normalized,
+      });
+    }
+  }
+
+  return results;
 }
 
 async function loadArticle(slugSegments: string[]) {
@@ -256,7 +365,8 @@ async function loadArticle(slugSegments: string[]) {
     throw error;
   });
   const body = stripFrontmatter(raw);
-  return removeMarkdown(body, { useImgAltText: false }).trim();
+  const spokenSource = stripCodeSections(body);
+  return removeMarkdown(spokenSource, { useImgAltText: false }).trim();
 }
 
 function isEnoent(error: unknown) {
@@ -329,6 +439,55 @@ function isNotFound(error: unknown) {
   if (code === "item_not_found") return true;
   const message = (error as { message?: string }).message ?? "";
   return message.toLowerCase().includes("does not exist");
+}
+
+function normalizeTimestampValue(value?: number | string | null) {
+  if (typeof value === "string") {
+    const parsed = Number.parseFloat(value);
+    value = Number.isNaN(parsed) ? null : parsed;
+  }
+
+  if (typeof value !== "number" || Number.isNaN(value)) {
+    return null;
+  }
+
+  if (value > 1000) {
+    return value / 1000;
+  }
+
+  return value;
+}
+
+function resolveVoiceId(requested?: unknown) {
+  if (typeof requested === "string" && requested.trim()) {
+    return requested.trim();
+  }
+
+  if (process.env.ELEVENLABS_STANDARD_VOICE_ID?.trim()) {
+    return process.env.ELEVENLABS_STANDARD_VOICE_ID.trim();
+  }
+
+  return STANDARD_VOICE_FALLBACK;
+}
+
+function stripCodeSections(value: string) {
+  return value
+    .replace(/```[\s\S]*?```/g, "")
+    .replace(/~~~[\s\S]*?~~~/g, "")
+    .replace(/`[^`]*`/g, "")
+    .replace(/<pre[\s\S]*?<\/pre>/gi, "");
+}
+
+function resolveModelId(requested?: unknown) {
+  if (typeof requested === "string" && requested.trim()) {
+    return requested.trim();
+  }
+
+  if (process.env.ELEVENLABS_MODEL_ID?.trim()) {
+    return process.env.ELEVENLABS_MODEL_ID.trim();
+  }
+
+  return DEFAULT_MODEL_ID;
 }
 
 async function uploadBinary(

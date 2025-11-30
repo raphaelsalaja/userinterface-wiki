@@ -13,6 +13,8 @@ interface WordTimestamp {
   normalized: string;
 }
 
+const HIGHLIGHT_TOLERANCE = 0.05;
+
 interface ReaderResponse {
   audioUrl: string;
   timestamps: WordTimestamp[];
@@ -35,6 +37,7 @@ export const AudioReader = ({ slugSegments }: AudioReaderProps) => {
   const spansRef = useRef<SpanMeta[]>([]);
   const mappingRef = useRef<number[]>([]);
   const activeSpanRef = useRef<HTMLElement | null>(null);
+  const activeBlockRef = useRef<HTMLElement | null>(null);
   const lastWordIndexRef = useRef(-1);
   const isUserScrollingRef = useRef(false);
   const scrollTimerRef = useRef<number | null>(null);
@@ -51,10 +54,16 @@ export const AudioReader = ({ slugSegments }: AudioReaderProps) => {
 
   const prefersReducedMotion = usePrefersReducedMotion();
 
-  const clearActiveSpan = useCallback(() => {
-    if (!activeSpanRef.current) return;
-    delete activeSpanRef.current.dataset.wordState;
-    activeSpanRef.current = null;
+  const clearActiveHighlight = useCallback(() => {
+    if (activeSpanRef.current) {
+      delete activeSpanRef.current.dataset.wordState;
+      activeSpanRef.current = null;
+    }
+
+    if (activeBlockRef.current) {
+      delete activeBlockRef.current.dataset.wordBlockState;
+      activeBlockRef.current = null;
+    }
   }, []);
 
   useEffect(() => {
@@ -114,6 +123,7 @@ export const AudioReader = ({ slugSegments }: AudioReaderProps) => {
     spansRef.current = collectSpans();
     mappingRef.current = [];
     activeSpanRef.current = null;
+    activeBlockRef.current = null;
     lastWordIndexRef.current = -1;
   }, [slugKey]);
 
@@ -166,7 +176,7 @@ export const AudioReader = ({ slugSegments }: AudioReaderProps) => {
       setCurrentTime(0);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       lastWordIndexRef.current = -1;
-      clearActiveSpan();
+      clearActiveHighlight();
     };
     const handlePause = () => {
       setIsPlaying(false);
@@ -188,7 +198,7 @@ export const AudioReader = ({ slugSegments }: AudioReaderProps) => {
       audioRef.current = null;
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, [clearActiveSpan]);
+  }, [clearActiveHighlight]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -238,9 +248,17 @@ export const AudioReader = ({ slugSegments }: AudioReaderProps) => {
       const meta = spansRef.current[spanIndex];
       if (!meta || activeSpanRef.current === meta.element) return;
 
-      clearActiveSpan();
+      clearActiveHighlight();
       activeSpanRef.current = meta.element;
       activeSpanRef.current.dataset.wordState = "active";
+
+      const block = meta.element.closest<HTMLElement>(
+        "p, li, blockquote, h1, h2, h3, h4, h5, h6",
+      );
+      if (block) {
+        activeBlockRef.current = block;
+        block.dataset.wordBlockState = "active";
+      }
 
       if (prefersReducedMotion || isUserScrollingRef.current) return;
 
@@ -253,7 +271,7 @@ export const AudioReader = ({ slugSegments }: AudioReaderProps) => {
         meta.element.scrollIntoView({ behavior: "smooth", block: "center" });
       }
     },
-    [clearActiveSpan, prefersReducedMotion],
+    [clearActiveHighlight, prefersReducedMotion],
   );
 
   useEffect(() => {
@@ -270,12 +288,12 @@ export const AudioReader = ({ slugSegments }: AudioReaderProps) => {
     lastWordIndexRef.current = nextIndex;
 
     if (nextIndex === -1) {
-      clearActiveSpan();
+      clearActiveHighlight();
       return;
     }
 
     applyHighlight(nextIndex);
-  }, [applyHighlight, clearActiveSpan, currentTime, timestamps]);
+  }, [applyHighlight, clearActiveHighlight, currentTime, timestamps]);
 
   if (status === "error") {
     return (
@@ -346,9 +364,9 @@ function alignTimeline(timestamps: WordTimestamp[], spans: SpanMeta[]) {
     for (let i = spanIndex; i < spans.length; i++) {
       const candidate = spans[i];
       if (!candidate.normalized) continue;
-      spanIndex = i + 1;
       if (candidate.normalized === normalized) {
         mapping[entryIndex] = i;
+        spanIndex = i + 1;
         return;
       }
     }
@@ -364,35 +382,65 @@ function locateWordIndex(
 ) {
   if (!timestamps.length) return -1;
 
-  const safeIndex = Math.max(-1, Math.min(lastIndex, timestamps.length - 1));
+  const startOf = (entry: WordTimestamp) => entry.start ?? entry.end ?? 0;
+  const endOf = (entry: WordTimestamp) => entry.end ?? entry.start ?? 0;
 
-  if (safeIndex >= 0) {
-    const current = timestamps[safeIndex];
-    if (currentTime >= current.start && currentTime <= current.end) {
-      return safeIndex;
+  let index = Math.max(-1, Math.min(lastIndex, timestamps.length - 1));
+
+  if (index === -1) {
+    if (currentTime < startOf(timestamps[0]) - HIGHLIGHT_TOLERANCE) {
+      return -1;
     }
+    index = 0;
   }
 
-  if (safeIndex >= 0 && currentTime > timestamps[safeIndex].end) {
-    for (let i = safeIndex + 1; i < timestamps.length; i++) {
-      if (currentTime <= timestamps[i].end) {
-        return i;
-      }
+  while (
+    index + 1 < timestamps.length &&
+    currentTime >= startOf(timestamps[index + 1]) - HIGHLIGHT_TOLERANCE
+  ) {
+    index += 1;
+  }
+
+  while (
+    index > 0 &&
+    currentTime < startOf(timestamps[index]) - HIGHLIGHT_TOLERANCE
+  ) {
+    index -= 1;
+  }
+
+  const current = timestamps[index];
+  const currentStart = startOf(current);
+  const currentEnd = endOf(current);
+
+  const withinCurrent =
+    currentTime >= currentStart - HIGHLIGHT_TOLERANCE &&
+    currentTime <= currentEnd + HIGHLIGHT_TOLERANCE;
+
+  if (withinCurrent) {
+    return index;
+  }
+
+  if (currentTime > currentEnd + HIGHLIGHT_TOLERANCE) {
+    if (index + 1 >= timestamps.length) {
+      return timestamps.length - 1;
     }
-    return -1;
-  }
 
-  for (let i = safeIndex - 1; i >= 0; i--) {
-    if (currentTime >= timestamps[i].start) {
-      return i;
+    const nextStart = startOf(timestamps[index + 1]);
+    if (currentTime < nextStart - HIGHLIGHT_TOLERANCE) {
+      return index;
     }
+
+    return index + 1;
   }
 
-  for (let i = 0; i < timestamps.length; i++) {
-    if (currentTime <= timestamps[i].end) return i;
+  if (currentTime < currentStart - HIGHLIGHT_TOLERANCE) {
+    if (index === 0) {
+      return -1;
+    }
+    return index - 1;
   }
 
-  return -1;
+  return index;
 }
 
 function formatTime(value: number) {
