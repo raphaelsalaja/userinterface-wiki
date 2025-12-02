@@ -1,0 +1,37 @@
+article {
+  [data-prose-type="heading"] {
+    font-weight: 600;
+    font-feature-settings: "calt";
+    line-height: 150%;
+    color: var(--gray-12);
+    scroll-margin-top: var(--prose-block-spacing);
+  }
+
+  h1[data-prose-type="heading"] {
+    margin-top: calc(var(--prose-block-spacing) * 3);
+    margin-bottom: var(--prose-block-spacing);
+    font-size: 22px;
+    letter-spacing: var(--font-inter-letter-spacing-22px);
+  }
+
+  h2[data-prose-type="heading"] {
+    margin-top: calc(var(--prose-block-spacing) * 2);
+    margin-bottom: var(--prose-block-spacing);
+    font-size: 22px;
+    letter-spacing: var(--font-inter-letter-spacing-22px);
+  }
+
+  h3[data-prose-type="heading"] {
+    margin-top: calc(var(--prose-block-spacing) * 1.5);
+    margin-bottom: var(--prose-block-spacing-small);
+    font-size: 17px;
+    letter-spacing: var(--font-inter-letter-spacing-17px);
+  }
+
+  h4[data-prose-type="heading"] {
+    margin-top: var(--prose-block-spacing-large);
+    margin-bottom: var(--prose-block-spacing-small);
+    font-size: 15px;
+    letter-spacing: var(--font-inter-letter-spacing-15px);
+  }
+}

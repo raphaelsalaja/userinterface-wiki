@@ -1,0 +1,52 @@
+article {
+  [data-word-id],
+  [data-word-state],
+  [data-word-block-state],
+  [data-word-state]::after,
+  [data-word-block-state]::after {
+    background: transparent;
+    transition: all 0.2s ease-out;
+  }
+
+  [data-word-id] {
+    cursor: pointer;
+
+    &:hover {
+      background: color-mix(in srgb, #0090ff 20%, transparent);
+    }
+  }
+
+  [data-word-state]::after,
+  [data-word-block-state]::after {
+    position: absolute;
+    inset: 0 -2px;
+    z-index: -1;
+    content: "";
+    background: transparent;
+    border-radius: 2px;
+    box-shadow: none;
+  }
+
+  [data-word-block-state="active"]::after {
+    inset: 0 -4px;
+    background: color-mix(in srgb, #0090ff 10%, transparent);
+  }
+
+  [data-word-state="active"]::after {
+    background: color-mix(in srgb, #0090ff 60%, transparent);
+  }
+
+  [data-word-state="inactive"] {
+    &::after {
+      background: transparent;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  article {
+    [data-word-id] {
+      transition: none;
+    }
+  }
+}

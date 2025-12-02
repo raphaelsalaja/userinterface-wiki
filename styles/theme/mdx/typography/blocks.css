@@ -1,0 +1,40 @@
+article {
+  blockquote {
+    position: relative;
+    padding-left: var(--prose-block-spacing);
+    font-family: var(--font-regular);
+    font-size: 15px;
+    font-weight: var(--font-weight-normal);
+    line-height: 150%;
+    color: var(--gray-12);
+    user-select: text;
+
+    &::before {
+      position: absolute;
+      top: 0px;
+      bottom: 0px;
+      left: 0px;
+      width: 2.5px;
+      content: "";
+      background: var(--gray-4);
+      border-radius: 2px;
+    }
+  }
+
+  blockquote::after {
+    position: absolute;
+    inset: -0.15rem;
+    z-index: -1;
+    pointer-events: none;
+    content: "";
+    background: transparent;
+    border-radius: 999px;
+    transition:
+      background-color 200ms ease-out,
+      box-shadow 200ms ease-out;
+  }
+
+  blockquote::after {
+    border-radius: 1rem;
+  }
+}

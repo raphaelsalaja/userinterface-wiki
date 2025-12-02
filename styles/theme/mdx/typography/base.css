@@ -1,0 +1,38 @@
+article {
+  * {
+    position: relative;
+  }
+
+  a {
+    color: var(--color-link);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-decoration-color: color-mix(in srgb, currentcolor 40%, transparent);
+    text-underline-offset: 3px;
+
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  hr {
+    width: 100%;
+    height: 1px;
+    margin: var(--prose-block-spacing-large) 0;
+    background: var(--gray-6);
+    border: none;
+  }
+
+  [data-prose-type="text"] + [data-prose-type="list"],
+  [data-prose-type="list"] + [data-prose-type="text"] {
+    margin-top: var(--prose-block-spacing-small);
+  }
+
+  [data-prose-type="block"] + [data-prose-type="text"],
+  [data-prose-type="text"] + [data-prose-type="block"],
+  [data-prose-type="block"] + [data-prose-type="list"] {
+    margin-top: var(--prose-block-spacing-large);
+  }
+}

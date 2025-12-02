@@ -1,0 +1,23 @@
+article {
+  [data-prose-type="text"] {
+    position: relative;
+    z-index: 0;
+    margin: 0px;
+    font-size: 15px;
+    font-weight: var(--font-weight-normal);
+    line-height: 150%;
+    color: var(--gray-11);
+    letter-spacing: var(--font-inter-letter-spacing-14px);
+    overflow-wrap: break-word;
+    scroll-margin-top: var(--prose-block-spacing);
+    isolation: isolate;
+  }
+
+  p[data-prose-type="text"] {
+    transition: color 200ms ease-out;
+  }
+
+  p[data-prose-type="text"] + p[data-prose-type="text"] {
+    margin-top: var(--prose-block-spacing);
+  }
+}
