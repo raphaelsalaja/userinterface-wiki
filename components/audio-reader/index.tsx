@@ -109,10 +109,19 @@ export const AudioReader = ({ slugSegments }: AudioReaderProps) => {
         <AnimatePresence mode="sync">
           {!isReaderVisible && status !== "loading" && (
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4, ease: [0.19, 1, 0.22, 1] }}
+              initial={{
+                opacity: 0,
+              }}
+              animate={{
+                opacity: 1,
+              }}
+              exit={{
+                opacity: 0,
+              }}
+              transition={{
+                duration: 0.4,
+                ease: [0.19, 1, 0.22, 1],
+              }}
               className={styles.background}
             >
               <div className={styles.blur} />
@@ -122,11 +131,29 @@ export const AudioReader = ({ slugSegments }: AudioReaderProps) => {
         <AnimatePresence mode="sync">
           {!isReaderVisible && status !== "loading" && (
             <motion.div
-              initial={{ opacity: 0, y: 48, filter: "blur(2px)" }}
-              animate={{ opacity: 1, y: -48, filter: "blur(0px)" }}
-              exit={{ opacity: 0, y: 48, filter: "blur(2px)" }}
-              transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+              initial={{
+                opacity: 0,
+                scale: 0.95,
+                filter: "blur(2px)",
+              }}
+              animate={{
+                opacity: 1,
+                scale: 1,
+                filter: "blur(0px)",
+              }}
+              exit={{
+                opacity: 0,
+                scale: 0.95,
+                filter: "blur(2px)",
+              }}
+              transition={{
+                duration: 0.4,
+                ease: [0.25, 0.1, 0.25, 1],
+              }}
               className={styles.controls}
+              style={{
+                bottom: 48,
+              }}
             >
               <MediaPlayerButton onClick={handleToggle}>
                 <AnimatePresence mode="wait">

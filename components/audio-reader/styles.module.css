@@ -135,32 +135,11 @@
     width: 768px;
     height: 48px;
     padding: 12px;
-    background: var(--gray-a2);
+    background: var(--gray-a6);
     border-radius: 16px;
-    box-shadow: 0 8px 8px -4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 16px 0px rgba(0, 0, 0, 0.1);
     background-blend-mode: luminosity;
-    backdrop-filter: blur(32px);
-
-    &::before {
-      position: absolute;
-      inset: -1px;
-      width: 100%;
-      height: 100%;
-      padding: 1px;
-      content: "";
-      background: linear-gradient(
-        155deg,
-        color(display-p3 1 1 1 / 0.2) 2.6%,
-        color(display-p3 1 1 1 / 0) 38.81%,
-        color(display-p3 1 1 1 / 0) 53.87%,
-        color(display-p3 1 1 1 / 0.1) 91.86%
-      );
-      border-radius: 16px;
-      mask:
-        linear-gradient(#fff 0 0) content-box,
-        linear-gradient(#fff 0 0);
-      mask-composite: exclude;
-    }
+    backdrop-filter: blur(24px);
   }
 
   .background {
