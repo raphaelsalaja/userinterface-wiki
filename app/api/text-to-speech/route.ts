@@ -14,8 +14,8 @@ export const dynamic = "force-dynamic";
 
 const CONTENT_DIR = path.join(process.cwd(), "markdown", "content");
 const CACHE_PREFIX = "tts";
-const STANDARD_VOICE_FALLBACK = "CwhRBWXzGAHq8TQ4Fs17";
-const DEFAULT_MODEL_ID = "eleven_multilingual_v2";
+const STANDARD_VOICE_FALLBACK = "onwK4e9ZLuTAKqWW03F9";
+const DEFAULT_MODEL_ID = "eleven_flash_v2";
 
 class ArticleNotFoundError extends Error {}
 
