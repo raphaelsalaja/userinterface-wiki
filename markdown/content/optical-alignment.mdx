@@ -1,0 +1,45 @@
+---
+title: Optical Alignment
+description: Diagnose how geometry, icons, and typography lie to the eye and learn the corrections that make interfaces feel perfectly balanced.
+tags: ["visual", "craft", "iconography", "layout"]
+author: "raphael-salaja"
+views: 96
+date:
+  published: "2025-12-07"
+  modified: "2025-12-07"
+---
+
+Pixel-perfect grids rarely look perfect. Human vision prioritizes shape, contrast, and negative space, so mathematical alignment often reads as slightly off. Optical alignment is the practice of compensating for those perceptual biases so the finished interface feels calm.
+
+## Why Math Lies
+
+- **Diagonal strokes** look shorter than vertical ones. Icons such as checkmarks need a little extra width to appear centered.
+- **Rounded shapes** carry more visual weight than sharp corners. Circles centered on a grid line feel low; raise them 1–2 px.
+- **Mixed baselines** (icons + text) misalign because cap height rarely equals icon bounds. Align by optical baseline, not bounding box.
+
+## Core Corrections
+
+1. **Baseline shifts**: Align icons to the lowercase baseline instead of the center of the text block. For 16 px icons next to 14 px text, shift the icon up 1 px.
+2. **Shape compensation**: Resize triangular or circular icons to 110% of square icons so they read as equal mass.
+3. **Edge padding**: Increase padding on sides with curved letters (O, C, S) to avoid apparent tightness.
+4. **Stroke centering**: When centering stroked shapes, account for stroke width. A 2 px stroke extends 1 px outward; adjust its position accordingly.
+
+## Tooling
+
+- Overlay a thin magenta line for every baseline, cap height, and keyline. Keep them in a shared component library.
+- Create template frames per size class (12, 16, 20, 24 px icons) with built-in overshoot guides.
+- Export preview images with a neutral gray background; white-on-white hides subtle misalignments.
+
+## Process Checklist
+
+- Compare mirrored pairs (left vs right drawer) to ensure spacing mirrors optically, not numerically.
+- Print or view at 200% zoom; optical errors appear sooner when removed from the authoring environment.
+- Run the “squint test”: zoom out until the UI blurs slightly. Anything that still feels unbalanced needs another pass.
+
+## When to Ignore Math Entirely
+
+- **Logotypes and wordmarks** often break the grid so letters feel evenly spaced. Follow typographic rhythm, not code constraints.
+- **Tap targets** should stay mathematically true; apply optical tweaks inside the visual layer, not the hit area.
+- **Charts and data viz** require precise scales, but annotative elements (labels, markers) can shift for clarity.
+
+Optical alignment takes minutes but saves hours of “something feels weird” feedback later. Document your corrections, reuse the keylines, and treat this work as part of the component contract—not a last-minute polish step.

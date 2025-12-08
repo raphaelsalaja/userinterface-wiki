@@ -1,0 +1,49 @@
+---
+title: Motion as Narrative
+description: Use animation to carry meaning, preserve context, and clarify cause-and-effect across complex interfaces.
+tags: ["motion", "storytelling", "interaction", "ux"]
+author: "raphael-salaja"
+views: 109
+date:
+  published: "2025-12-07"
+  modified: "2025-12-07"
+---
+
+Motion is language. It can show where something came from, where it is going, and how inputs transformed into outputs. Decorative animation might delight once, but narrative animation teaches every time.
+
+## Continuity Over Flash
+
+- Animate along the actual spatial path the element is taking. If a card expands into a detail view, scale from its origin, not the screen center.
+- Maintain element identity by morphing shape, color, and label instead of cross-fading between unrelated components.
+- Preserve layering order so depth cues remain consistent.
+
+## Cause and Effect
+
+- Pair interactions with motion that mirrors the energy applied. A fast swipe should fling the content; a gentle tap should reveal a calm transition.
+- Use delayed cascades to show dependency: filters update, then results animate, then summary indicators refresh.
+- Reinforce state changes by animating supporting affordances (icons, helper text) in sync with the primary component.
+
+## Explaining Complexity
+
+- For multi-step flows, create storyboards that mark entry, transformation, and exit states. Animation should answer “Where did that info go?”
+- Use motion to expose hidden architecture. Sliding panels reveal that content lives behind the main view; fading overlays imply parallel layers.
+- In data-heavy UI, animate aggregation: counts roll up, charts morph, sparklines trace new values.
+
+## Timing Guidelines
+
+- Keep explanatory transitions under 400 ms; beyond that, attention drifts.
+- Chain shorter motions (120–180 ms) instead of one long clip to allow interruptions.
+- Align easing/spring choices with the narrative. (See [Easing vs Springs](./easing-vs-springs) for the decision chart.)
+
+## Accessibility & Control
+
+- Honor `prefers-reduced-motion`. Replace spatial transitions with fades or instant state swaps while still conveying meaning through copy.
+- Allow users to interrupt animations by acting again. Narrative motion supports control; it never blocks it.
+
+## Documentation Ritual
+
+- Capture before/after frames with vectors describing velocity and direction.
+- Note which variables are synced to user input (drag distance, scroll, pointer velocity).
+- Store Lottie or Motion JSON next to the component spec so engineers can mirror the narrative precisely.
+
+Motion that explains the system becomes part of the mental model. Users learn faster, errors drop, and every other article about animation can reference the same storytelling grammar.

@@ -6,7 +6,6 @@
   align-items: center;
   align-self: stretch;
   justify-content: flex-end;
-  height: 384px;
   aspect-ratio: 5 / 3;
   padding: 16px;
   margin-top: var(--prose-block-spacing-large);

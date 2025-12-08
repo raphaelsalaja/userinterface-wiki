@@ -1,0 +1,44 @@
+---
+title: Designing Hierarchy
+description: Use spacing, contrast, scale, and rhythm to direct attention deliberately instead of decorating layouts.
+tags: ["layout", "typography", "strategy", "ux"]
+author: "raphael-salaja"
+views: 88
+date:
+  published: "2025-12-07"
+  modified: "2025-12-07"
+---
+
+Hierarchy is the choreography of attention. The order in which elements are noticed and understood dictates whether the interface feels obvious or confusing. Good hierarchy is measurable: readers land on the right message in under a second, primary actions feel safe, and supporting details stay in the periphery until needed.
+
+## Four Levers
+
+1. **Spacing** – Vertical rhythm establishes grouping. Use consistent multiples (4, 8, 12) and exaggerate gaps between intent changes. Close spacing implies relatedness; wide spacing signals a new idea.
+2. **Contrast** – Tone, color, and texture determine what pops. Pair high-contrast primaries with low-contrast body text so users are not forced to read everything at once.
+3. **Scale** – Size is instant signaling. Cap each view at three scale tiers (hero, body, meta) to avoid muddy gradients.
+4. **Weight** – Bold text, filled buttons, or solid icons carry psychological weight. Reserve the heaviest weight for the decision you actually want.
+
+## Designing Flows, Not Screens
+
+- Start with a **narrative outline**: what must the user notice first, second, third?
+- Assign each point a severity score. Higher severity gets more contrast or scale, never both.
+- Prototype with grayscale first. If the narrative fails in gray, color will not fix it.
+
+## Attention Diagnostics
+
+- **Heat-map sketching**: In critique, have peers mark their eye path over a screenshot. Misalignments become obvious.
+- **Time-to-action**: Measure how long it takes testers to locate the primary action without reading copy. Aim for &lt;600 ms.
+- **Hierarchy debt**: Track components that introduce new spacing or weight patterns. Too many unique patterns signal debt.
+
+## Responsive Hierarchy
+
+- On narrow viewports, rely more on weight and contrast since scale differences collapse.
+- Use scroll-triggered anchors to reintroduce context when sections stack vertically.
+- Persist essential actions (save, send) via sticky regions so spatial reflow does not hide them.
+
+## When to Break the Rules
+
+- Storytelling pages may intentionally delay the primary action to set mood. Just ensure escape hatches and clear secondary cues.
+- Dashboards with power users can compress contrast to reduce fatigue, but add progressive disclosure for novices.
+
+Hierarchy is never finished. Treat it as an instrumentation problem: gather signal, adjust one lever at a time, and document the pattern so future components inherit the same attention grammar.

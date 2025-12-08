@@ -1,0 +1,55 @@
+---
+title: Dynamic Typography
+description: Build responsive typographic systems with metric tables, optical tracking, and rhythm so type stays sharp across devices.
+tags: ["typography", "systems", "responsive", "craft"]
+author: "raphael-salaja"
+views: 94
+date:
+  published: "2025-12-07"
+  modified: "2025-12-07"
+---
+
+Typography drives tone before any copy is read. A dynamic system adapts tracking, line length, and rhythm as the viewport or content density changes. Codify these rules once and you can layer any type family on top without re-tuning every screen.
+
+## Metric Tables as Source of Truth
+
+- Document each size token (label, body, title, display) with font size, line height, letter-spacing, and optical correction notes.
+- Include both px and rem values along with `clamp()` ranges for fluid scaling.
+- Store vertical rhythm multiples (baseline grid) beside the tables so spacing engineers can align components with type.
+
+Example entry:
+
+```
+T3 Title
+size: clamp(20px, 2vw, 24px)
+line-height: 1.25
+tracking: -0.012em desktop / 0em mobile
+baseline: 4 px grid
+```
+
+## Responsive Letter-Spacing
+
+- Tight fonts like Inter need extra breathing room below 16 px to prevent blur on low-density displays. Add +0.01–0.02 em tracking for small body text.
+- High-contrast serif faces benefit from slight negative tracking at large sizes to avoid airy headings.
+- Automate tracking adjustments by viewport width: define breakpoints where tracking shifts, or use a formula inside CSS custom properties.
+
+## Line Length and Rhythm
+
+- Aim for 60–72 characters per line on desktop, 40–50 on mobile.
+- Use `ch` units or `max-width` constraints on prose containers so text never stretches to the viewport edge.
+- Keep line height proportional to size: 1.4 for body, 1.2 for headings, 1.0–1.1 for dense UI labels.
+
+## Advanced Corrections
+
+- **Optical alignment**: align numerals using tabular figures when digits must line up (timestamps, metrics).
+- **Baseline locking**: set `leading-trim` or manual offsets to remove built-in font padding and keep successive blocks evenly spaced.
+- **Viewport-aware ligatures**: disable discretionary ligatures on small screens to avoid ambiguous shapes.
+
+## Testing Ritual
+
+1. Render the typography specimen page in light and dark themes; adjust contrast if one theme flattens hierarchy.
+2. Screenshot on macOS, Windows, and Android; hinting differences often reveal tracking issues.
+3. Print the specimen. Paper exposes line-height problems faster than screens.
+4. Run automated QA: compare generated CSS tokens against the table to catch drift.
+
+A well-documented type system becomes a living contract. Designers can introduce new expressive styles, engineers can ship them reliably, and every article referencing typography can link back to the same metrics instead of inventing another scale.
