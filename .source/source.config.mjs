@@ -105,7 +105,6 @@ var docs = defineDocs({
         modified: z.iso.date().optional()
       }),
       description: z.string(),
-      views: z.number(),
       author: z.string(),
       coauthors: z.array(z.string()).optional(),
       tags: z.array(z.string())

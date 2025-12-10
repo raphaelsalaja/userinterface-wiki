@@ -1,9 +1,13 @@
 import { kv } from "@vercel/kv";
 
+const isKVConfigured =
+  process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN;
+
 /**
  * Get view count for an article
  */
 export async function getViews(slug: string): Promise<number> {
+  if (!isKVConfigured) return 0;
   return (await kv.get<number>(`views:${slug}`)) ?? 0;
 }
 
@@ -13,7 +17,12 @@ export async function getViews(slug: string): Promise<number> {
 export async function getMultipleViews(
   slugs: string[],
 ): Promise<Record<string, number>> {
-  if (slugs.length === 0) return {};
+  if (!isKVConfigured || slugs.length === 0) {
+    return slugs.reduce<Record<string, number>>((acc, slug) => {
+      acc[slug] = 0;
+      return acc;
+    }, {});
+  }
 
   const keys = slugs.map((slug) => `views:${slug}`);
   const values = await kv.mget<number[]>(...keys);
@@ -28,6 +37,7 @@ export async function getMultipleViews(
  * Increment view count for an article
  */
 export async function incrementViews(slug: string): Promise<number> {
+  if (!isKVConfigured) return 0;
   return await kv.incr(`views:${slug}`);
 }
 

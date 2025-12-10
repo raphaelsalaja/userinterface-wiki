@@ -37,8 +37,8 @@
     env(safe-area-inset-right),
     var(--page-padding-inline)
   );
-  --page-max-width: 768px;
-  --prose-max-width: 768px;
+  --page-max-width: 640px;
+  --prose-max-width: 640px;
 }
 
 html {
