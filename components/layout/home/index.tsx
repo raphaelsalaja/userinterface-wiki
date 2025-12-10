@@ -3,7 +3,9 @@ import { clsx } from "clsx";
 import Link from "next/link";
 import React from "react";
 import { Button } from "@/components/button";
+import { Code } from "@/components/icons";
 import { SearchIcon } from "@/components/icons/search";
+import { getPage } from "@/markdown/functions/get-page";
 import { source } from "@/markdown/lib/source";
 import styles from "./styles.module.css";
 
@@ -43,22 +45,24 @@ export const HomeLayout = () => {
           </Field.Root>
         </div>
         <div className={styles.grid}>
-          {source.getPages().map((page) => {
-            const { url, data } = page;
-            const {
-              title,
-              author,
-              date: { published },
-            } = data;
-
-            console.log(page);
+          {source.getPages().map(({ url, data }) => {
+            const { title, author, views, published } = getPage(data);
 
             return (
-              <Link key={url} href={url} className={styles.card}>
-                <h2 className={styles.cardTitle}>{title}</h2>
-                <p className={styles.cardMeta}>
-                  {author} - {published}
-                </p>
+              <Link key={url} href={{ pathname: url }} className={styles.page}>
+                <div className={styles.preview}>
+                  <Code />
+                </div>
+                <div>
+                  <h2 className={styles.title}>{title}</h2>
+                  <span className={styles.details}>
+                    <span>{author.name}</span>
+                    <span className={styles.separator} />
+                    <span>{published}</span>
+                    <span className={styles.separator} />
+                    <span>{views} views</span>
+                  </span>
+                </div>
               </Link>
             );
           })}

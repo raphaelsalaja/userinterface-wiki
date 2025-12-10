@@ -8,6 +8,8 @@ export * from "./link";
 export * from "./pause";
 export * from "./picture-in-picture";
 export * from "./play";
+export * from "./previews";
 export * from "./rewind-15s";
+export * from "./search";
 export * from "./twitter";
 export * from "./views";

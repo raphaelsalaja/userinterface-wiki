@@ -125,7 +125,7 @@ export function useAudioReader(slugSegments: string[]): AudioReaderHookState {
       lastWordIndexRef.current = -1;
 
       try {
-        const response = await fetch("/api/text-to-speech", {
+        const response = await fetch("/api/tts", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
