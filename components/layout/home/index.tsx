@@ -1,37 +1,49 @@
-import { Field } from "@base-ui-components/react/field";
-import { SearchIcon } from "@/components/icons/search";
+import { Suspense } from "react";
 import { PageTransition } from "@/components/page-transition";
-import { PageCard } from "@/components/post";
-
+import { getFormattedPageFromPageSource } from "@/markdown/functions/get-page";
 import { source } from "@/markdown/lib/source";
 import styles from "./styles.module.css";
+import { type SerializedPage, TagFilter } from "./tag-filter";
 
 export const HomeLayout = () => {
   const pages = source.getPages();
 
+  const serializedPages: SerializedPage[] = pages.map((page) => {
+    const formatted = getFormattedPageFromPageSource(page);
+    return {
+      url: page.url,
+      title: formatted.title,
+      description: formatted.description,
+      tags: formatted.tags,
+      author: {
+        name: formatted.author.name,
+      },
+      date: {
+        published: formatted.date.published,
+      },
+    };
+  });
+
+  const allTags = (() => {
+    const set = new Set<string>();
+    for (const page of serializedPages) {
+      for (const t of page.tags) {
+        set.add(t);
+      }
+    }
+    return Array.from(set).sort();
+  })();
+
   return (
     <PageTransition>
       <div className={styles.header}>
-        <h1 className={styles.title}>
-          The Open Source Wiki for User Interfaces
-        </h1>
+        <h1 className={styles.title}>A Living Manual for Better Interfaces</h1>
       </div>
+
       <div className={styles.container}>
-        <Field.Root className={styles.search}>
-          <SearchIcon className={styles.icon} size={18} />
-          <Field.Control
-            required
-            placeholder="Search..."
-            className={styles.input}
-          />
-        </Field.Root>
-        <div className={styles.posts}>
-          {pages.map((page) => {
-            return (
-              <PageCard key={page.url} page={page} className={styles.post} />
-            );
-          })}
-        </div>
+        <Suspense fallback={null}>
+          <TagFilter pages={serializedPages} allTags={allTags} />
+        </Suspense>
       </div>
     </PageTransition>
   );

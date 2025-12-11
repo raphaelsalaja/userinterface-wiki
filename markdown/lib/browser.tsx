@@ -22,6 +22,8 @@ export async function serverLoader(slugs: string[]) {
 
 export async function loader(slugs: string[]) {
   const path = await serverLoader(slugs);
-  await clientLoader.preload(path);
+  if (path) {
+    await clientLoader.preload(path);
+  }
   return { path };
 }
