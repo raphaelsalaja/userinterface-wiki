@@ -2,22 +2,15 @@
 
 import type { LexicalEditor } from "lexical";
 import * as React from "react";
-import type { ChipPayload, SerializedPage, SortOrder } from "./types";
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Search Context
-// ─────────────────────────────────────────────────────────────────────────────
+import type { ChipPayload, SerializedPage, SortOrder } from "../types";
 
 export interface SearchState {
-  // Editor state
   textContent: string;
   chips: ChipPayload[];
 
-  // Popup state
   open: boolean;
   highlightedIndex: number;
 
-  // Derived state
   filteredPages: SerializedPage[];
   sortOrder: SortOrder;
 }
@@ -38,20 +31,16 @@ export interface SearchActions {
 }
 
 export interface SearchContextValue {
-  // State
   state: SearchState;
   actions: SearchActions;
 
-  // Props from Root
   pages: SerializedPage[];
   allTags: string[];
 
-  // Refs
   editorRef: React.RefObject<LexicalEditor | null>;
   popupRef: React.RefObject<HTMLDivElement | null>;
   inputRef: React.RefObject<HTMLDivElement | null>;
 
-  // Data attributes for styling
   getDataAttributes: () => Record<string, string>;
 }
 
@@ -66,10 +55,6 @@ export function useSearchContext(): SearchContextValue {
   }
   return context;
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Search Provider
-// ─────────────────────────────────────────────────────────────────────────────
 
 export interface SearchProviderProps {
   children: React.ReactNode;
@@ -90,13 +75,11 @@ export function SearchProvider({
   onOpenChange,
   onQueryChange,
 }: SearchProviderProps) {
-  // Internal state
   const [textContent, setTextContentInternal] = React.useState("");
   const [chips, setChipsInternal] = React.useState<ChipPayload[]>([]);
   const [internalOpen, setInternalOpen] = React.useState(defaultOpen);
   const [highlightedIndex, setHighlightedIndex] = React.useState(0);
 
-  // Controlled vs uncontrolled open state
   const isOpenControlled = controlledOpen !== undefined;
   const open = isOpenControlled ? controlledOpen : internalOpen;
 
@@ -110,12 +93,10 @@ export function SearchProvider({
     [isOpenControlled, onOpenChange],
   );
 
-  // Refs
   const editorRef = React.useRef<LexicalEditor | null>(null);
   const popupRef = React.useRef<HTMLDivElement | null>(null);
   const inputRef = React.useRef<HTMLDivElement | null>(null);
 
-  // Notify parent of query changes
   const setTextContent = React.useCallback(
     (text: string) => {
       setTextContentInternal(text);
@@ -132,14 +113,12 @@ export function SearchProvider({
     [textContent, onQueryChange],
   );
 
-  // Compute filtered pages
   const { filteredPages, sortOrder } = useFilteredPages({
     pages,
     textContent,
     chips,
   });
 
-  // Actions
   const addChip = React.useCallback(
     (chip: ChipPayload) => {
       setChips([...chips, chip]);
@@ -159,7 +138,6 @@ export function SearchProvider({
     setChipsInternal([]);
     onQueryChange?.({ text: "", chips: [] });
 
-    // Also clear the editor if available
     if (editorRef.current) {
       editorRef.current.update(() => {
         const { $getRoot, $isParagraphNode } = require("lexical");
@@ -227,7 +205,6 @@ export function SearchProvider({
     [],
   );
 
-  // Data attributes for styling
   const getDataAttributes = React.useCallback(() => {
     const hasContent = textContent.trim().length > 0 || chips.length > 0;
     return {
@@ -237,7 +214,6 @@ export function SearchProvider({
     } as Record<string, string>;
   }, [open, textContent, chips]);
 
-  // State object
   const state: SearchState = React.useMemo(
     () => ({
       textContent,
@@ -250,7 +226,6 @@ export function SearchProvider({
     [textContent, chips, open, highlightedIndex, filteredPages, sortOrder],
   );
 
-  // Actions object
   const actions: SearchActions = React.useMemo(
     () => ({
       setTextContent,
@@ -294,10 +269,6 @@ export function SearchProvider({
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Filtered Pages Hook
-// ─────────────────────────────────────────────────────────────────────────────
-
 function useFilteredPages({
   pages,
   textContent,
@@ -308,13 +279,8 @@ function useFilteredPages({
   chips: ChipPayload[];
 }) {
   return React.useMemo(() => {
-    const {
-      matchesQuery,
-      parseSearchQuery,
-      sortPages,
-    } = require("@/components/search/parser");
+    const { matchesQuery, parseSearchQuery, sortPages } = require("./parser");
 
-    // Build query from chips + text
     const inputQuery = parseSearchQuery(textContent);
     const textTerms = [...(inputQuery.text || [])];
 
@@ -354,7 +320,6 @@ function useFilteredPages({
       }
     }
 
-    // Merge with input query
     if (inputQuery.tags) positiveTags.push(...inputQuery.tags);
     if (inputQuery.not?.tags) negativeTags.push(...inputQuery.not.tags);
     if (inputQuery.author) author = inputQuery.author;

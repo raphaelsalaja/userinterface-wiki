@@ -1,13 +1,12 @@
 "use client";
 
 import * as React from "react";
-
+import type { SerializedPage } from "../types";
 import {
   FILTER_OPTIONS,
   type FilterOption,
   SORT_OPTIONS,
 } from "./filter-options";
-import type { SerializedPage } from "./types";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types

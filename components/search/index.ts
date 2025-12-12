@@ -1,46 +1,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Search Component Library
-// ─────────────────────────────────────────────────────────────────────────────
-// A headless search component system inspired by Base UI's Combobox pattern.
-// Provides composable primitives for building accessible search interfaces
-// with filter chips, suggestions, and keyboard navigation.
-//
-// @example
-// ```tsx
-// import { Search } from "@/components/search";
-//
-// function MySearch() {
-//   return (
-//     <Search.Root pages={pages} allTags={tags}>
-//       <Search.Input placeholder="Search..." />
-//       <Search.Clear />
-//       <Search.Popup>
-//         <Search.Positioner sideOffset={8}>
-//           <Search.List>
-//             <Search.Empty>No results found</Search.Empty>
-//             <Search.Item index={0} />
-//           </Search.List>
-//         </Search.Positioner>
-//       </Search.Popup>
-//     </Search.Root>
-//   );
-// }
-// ```
+// Types
 // ─────────────────────────────────────────────────────────────────────────────
 
-export type { SerializedChipNode } from "./chip-node";
-// Re-export Lexical utilities
-export { $createChipNode, $isChipNode, ChipNode } from "./chip-node";
-export type { SearchActions, SearchState } from "./context";
-// Re-export context hooks
-export { useSearchContext } from "./context";
-// Re-export filter options
-export type { FilterOption } from "./filter-options";
-export { FILTER_OPTIONS, SORT_OPTIONS } from "./filter-options";
-// Re-export HomeSearch for convenience
-export { HomeSearch } from "./home-search";
-
-// Re-export types
 export type {
   ChipPayload,
   SerializedPage,
@@ -49,120 +10,117 @@ export type {
 } from "./types";
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Component Imports
+// Primitives
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { Chip, ChipRemove, Chips, Clear, Value } from "./clear";
-import { Input } from "./input";
-import { Empty, Group, GroupLabel, Item, List, Separator } from "./list";
-import { Backdrop, Popup, Positioner } from "./popup";
-import { Root } from "./root";
-
-export type {
-  ChipProps,
-  ChipRemoveProps,
-  ChipState,
-  ChipsProps,
-  ClearProps,
-  ClearState,
-  ValueProps,
-} from "./clear";
-export type { InputProps } from "./input";
-export type {
-  EmptyProps,
-  GroupLabelProps,
-  GroupProps,
-  ItemProps,
-  ListProps,
-  SeparatorProps,
-} from "./list";
-export type { BackdropProps, PopupProps, PositionerProps } from "./popup";
-// Re-export types for components
-export type { RootProps } from "./root";
+export {
+  Chip,
+  type ChipProps,
+  ChipRemove,
+  type ChipRemoveProps,
+  type ChipState,
+  Chips,
+  type ChipsProps,
+  Clear,
+  type ClearProps,
+  type ClearState,
+  Value,
+  type ValueProps,
+} from "./primitives/chips";
+export { Input, type InputProps, type InputState } from "./primitives/input";
+export {
+  Empty,
+  type EmptyProps,
+  Group,
+  GroupLabel,
+  type GroupLabelProps,
+  type GroupProps,
+  Item,
+  type ItemProps,
+  type ItemState,
+  List,
+  type ListProps,
+  Separator,
+  type SeparatorProps,
+} from "./primitives/list";
+export {
+  Backdrop,
+  type BackdropProps,
+  Popup,
+  type PopupProps,
+  type PopupState,
+  Positioner,
+  type PositionerProps,
+  type PositionerState,
+} from "./primitives/popup";
+export { Root, type RootProps } from "./primitives/root";
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Search Namespace
+// Internals (for advanced use cases)
 // ─────────────────────────────────────────────────────────────────────────────
+
+export {
+  $createChipNode,
+  $isChipNode,
+  ChipNode,
+} from "./internals/chip-node";
+export {
+  SearchProvider,
+  type SearchProviderProps,
+  useSearchContext,
+} from "./internals/context";
+export {
+  FILTER_OPTIONS,
+  type FilterOption,
+  SORT_OPTIONS,
+} from "./internals/filter-options";
+export {
+  matchesQuery,
+  parseSearchQuery,
+  serializeSearchQuery,
+  sortPages,
+} from "./internals/parser";
+export { SingleLinePlugin } from "./internals/plugins";
+export { useSuggestions } from "./internals/use-suggestions";
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Homepage Implementation
+// ─────────────────────────────────────────────────────────────────────────────
+
+export { HomeSearch } from "./home-search";
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Compound Component Namespace
+// ─────────────────────────────────────────────────────────────────────────────
+
+import { Chip, ChipRemove, Chips, Clear, Value } from "./primitives/chips";
+import { Input } from "./primitives/input";
+import {
+  Empty,
+  Group,
+  GroupLabel,
+  Item,
+  List,
+  Separator,
+} from "./primitives/list";
+import { Backdrop, Popup, Positioner } from "./primitives/popup";
+import { Root } from "./primitives/root";
 
 export const Search = {
-  /**
-   * The root provider component. Wraps all Search.* components.
-   */
   Root,
-
-  /**
-   * The search input field powered by Lexical.
-   * Supports filter chips inline with text.
-   */
   Input,
-
-  /**
-   * A button that clears all filters and text.
-   */
-  Clear,
-
-  /**
-   * Displays the current search text value.
-   */
-  Value,
-
-  /**
-   * Container for external chip display.
-   */
-  Chips,
-
-  /**
-   * An individual chip representing a filter.
-   */
-  Chip,
-
-  /**
-   * A button to remove a chip.
-   */
-  ChipRemove,
-
-  /**
-   * The popup container for suggestions.
-   */
   Popup,
-
-  /**
-   * Positions the popup relative to the input.
-   */
   Positioner,
-
-  /**
-   * An overlay backdrop shown when popup is open.
-   */
   Backdrop,
-
-  /**
-   * The list of suggestions.
-   */
   List,
-
-  /**
-   * A suggestion item in the list.
-   */
   Item,
-
-  /**
-   * A group of related items.
-   */
   Group,
-
-  /**
-   * A label for a group.
-   */
   GroupLabel,
-
-  /**
-   * A visual separator between items.
-   */
   Separator,
-
-  /**
-   * Content shown when there are no results.
-   */
   Empty,
+  Clear,
+  Value,
+  Chips,
+  Chip,
+  ChipRemove,
 } as const;

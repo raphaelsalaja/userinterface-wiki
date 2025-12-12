@@ -2,7 +2,7 @@
 
 import type * as React from "react";
 
-import { useSearchContext } from "./context";
+import { useSearchContext } from "../../internals/context";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types

@@ -12,11 +12,7 @@ import {
 } from "lexical";
 import type * as React from "react";
 
-import type { ChipPayload } from "./types";
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Serialized Node Type
-// ─────────────────────────────────────────────────────────────────────────────
+import type { ChipPayload } from "../types";
 
 export type SerializedChipNode = Spread<
   {
@@ -26,10 +22,6 @@ export type SerializedChipNode = Spread<
   },
   SerializedLexicalNode
 >;
-
-// ─────────────────────────────────────────────────────────────────────────────
-// ChipNode Class
-// ─────────────────────────────────────────────────────────────────────────────
 
 export class ChipNode extends DecoratorNode<React.ReactNode> {
   __chipType: ChipPayload["type"];
@@ -136,7 +128,6 @@ export class ChipNode extends DecoratorNode<React.ReactNode> {
   }
 
   decorate(): React.ReactNode {
-    // Minimal decoration - styling handled by CSS
     return (
       <>
         {this.__negated && <span data-chip-negated-icon="">-</span>}
@@ -146,10 +137,6 @@ export class ChipNode extends DecoratorNode<React.ReactNode> {
     );
   }
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Helper Functions
-// ─────────────────────────────────────────────────────────────────────────────
 
 export function $createChipNode(payload: ChipPayload): ChipNode {
   return $applyNodeReplacement(

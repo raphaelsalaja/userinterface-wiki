@@ -1,30 +1,27 @@
 "use client";
 
+import { clsx } from "clsx";
 import {
   $createTextNode,
   $getSelection,
   $isRangeSelection,
   $isTextNode,
 } from "lexical";
+import Link from "next/link";
 import * as React from "react";
+import { DayPicker } from "react-day-picker";
 
+import { Code } from "@/components/icons";
 import { SearchIcon } from "@/components/icons/search";
 
-import { $createChipNode } from "./chip-node";
-import { useSearchContext } from "./context";
-import type { FilterOption } from "./filter-options";
-import styles from "./home.module.css";
-import {
-  DatePickerSection,
-  FilterOptionsList,
-  PopupFooter,
-  PopupHeader,
-  ValueSuggestionsList,
-} from "./home-popup";
-import { SearchResultsList } from "./home-results";
-import { Search } from "./index";
+import { $createChipNode } from "./internals/chip-node";
+import { useSearchContext } from "./internals/context";
+import type { FilterOption } from "./internals/filter-options";
+import { useSuggestions } from "./internals/use-suggestions";
+import { Input } from "./primitives/input";
+import { Root } from "./primitives/root";
+import styles from "./styles.module.css";
 import type { ChipPayload, SerializedPage } from "./types";
-import { useSuggestions } from "./use-suggestions";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
@@ -41,9 +38,9 @@ interface HomeSearchProps {
 
 export function HomeSearch({ pages, allTags }: HomeSearchProps) {
   return (
-    <Search.Root pages={pages} allTags={allTags}>
+    <Root pages={pages} allTags={allTags}>
       <SearchInner pages={pages} allTags={allTags} />
-    </Search.Root>
+    </Root>
   );
 }
 
@@ -294,7 +291,7 @@ function SearchInner({ pages, allTags }: HomeSearchProps) {
       >
         <SearchIcon className={styles.icon} size={18} />
 
-        <Search.Input
+        <Input
           className={styles.wrapper}
           onFocus={() => actions.setOpen(true)}
         />
@@ -329,7 +326,9 @@ function SearchInner({ pages, allTags }: HomeSearchProps) {
                 type={suggestions.type}
                 items={suggestions.items}
                 highlightedIndex={highlightedIndex}
-                onSelect={(item) => handleSelectSuggestion(item, getChipType())}
+                onSelect={(item: string) =>
+                  handleSelectSuggestion(item, getChipType())
+                }
               />
             )}
 
@@ -348,5 +347,231 @@ function SearchInner({ pages, allTags }: HomeSearchProps) {
 
       <SearchResultsList />
     </React.Fragment>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Popup Header
+// ─────────────────────────────────────────────────────────────────────────────
+
+function PopupHeader() {
+  return (
+    <div className={styles.popupheader}>
+      <span className={styles.label}>Search Filters</span>
+      <span className={styles.hint}>
+        <kbd>↑</kbd> <kbd>↓</kbd> to navigate · <kbd>Tab</kbd> to select ·{" "}
+        <kbd>Esc</kbd> to close
+      </span>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Popup Footer
+// ─────────────────────────────────────────────────────────────────────────────
+
+function PopupFooter() {
+  return (
+    <div className={styles.popupfooter}>
+      <span className={styles.tip}>
+        Use <code>-</code> to exclude: <code>-tag:draft</code> · Quotes for
+        spaces: <code>author:"John Doe"</code>
+      </span>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Filter Options List
+// ─────────────────────────────────────────────────────────────────────────────
+
+interface FilterOptionsListProps {
+  options: FilterOption[];
+  highlightedIndex: number;
+  onSelect: (option: FilterOption) => void;
+}
+
+function FilterOptionsList({
+  options,
+  highlightedIndex,
+  onSelect,
+}: FilterOptionsListProps) {
+  return (
+    <div className={styles.list}>
+      {options.map((option, index) => (
+        <button
+          type="button"
+          key={option.key}
+          className={clsx(
+            styles.option,
+            index === highlightedIndex && styles.highlighted,
+          )}
+          onClick={() => onSelect(option)}
+        >
+          <span className={styles.optionkey}>{option.label}</span>
+          <span className={styles.optiondesc}>{option.description}</span>
+          {option.example && (
+            <span className={styles.optionexample}>{option.example}</span>
+          )}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Value Suggestions List
+// ─────────────────────────────────────────────────────────────────────────────
+
+interface ValueSuggestionsListProps {
+  type: "tags" | "authors" | "sort";
+  items: string[];
+  highlightedIndex: number;
+  onSelect: (item: string) => void;
+}
+
+function ValueSuggestionsList({
+  type,
+  items,
+  highlightedIndex,
+  onSelect,
+}: ValueSuggestionsListProps) {
+  const categoryLabel =
+    type === "tags" ? "Tags" : type === "authors" ? "Authors" : "Sort Options";
+
+  return (
+    <>
+      <div className={styles.category}>{categoryLabel}</div>
+      <div className={styles.list}>
+        {items.length === 0 ? (
+          <div className={styles.empty}>No matches found</div>
+        ) : (
+          items.map((item, index) => (
+            <button
+              type="button"
+              key={item}
+              className={clsx(
+                styles.option,
+                index === highlightedIndex && styles.highlighted,
+              )}
+              onClick={() => onSelect(item)}
+            >
+              <span className={styles.optionkey}>{item}</span>
+            </button>
+          ))
+        )}
+      </div>
+    </>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Date Picker Section
+// ─────────────────────────────────────────────────────────────────────────────
+
+interface DatePickerSectionProps {
+  dateType: "before" | "after" | "during";
+  isNegated: boolean;
+  onSelect: (
+    date: Date,
+    dateType: "before" | "after" | "during",
+    isNegated: boolean,
+  ) => void;
+}
+
+function DatePickerSection({
+  dateType,
+  isNegated,
+  onSelect,
+}: DatePickerSectionProps) {
+  return (
+    <div className={styles.datepicker}>
+      <DayPicker
+        mode="single"
+        onSelect={(date) => {
+          if (date) {
+            onSelect(date, dateType, isNegated);
+          }
+        }}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Search Results List
+// ─────────────────────────────────────────────────────────────────────────────
+
+function SearchResultsList() {
+  const { state, actions } = useSearchContext();
+  const { filteredPages } = state;
+
+  return (
+    <>
+      <div className={styles.resultcount}>
+        {filteredPages.length}{" "}
+        {filteredPages.length === 1 ? "article" : "articles"}
+      </div>
+
+      <div className={styles.posts}>
+        {filteredPages.length === 0 ? (
+          <NoResults onClear={() => actions.clearAll()} />
+        ) : (
+          filteredPages.map((page) => (
+            <ArticleCard key={page.url} page={page} />
+          ))
+        )}
+      </div>
+    </>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// No Results
+// ─────────────────────────────────────────────────────────────────────────────
+
+interface NoResultsProps {
+  onClear: () => void;
+}
+
+function NoResults({ onClear }: NoResultsProps) {
+  return (
+    <div className={styles.noresults}>
+      <p>No articles match your search.</p>
+      <button type="button" onClick={onClear} className={styles.clearbutton}>
+        Clear filters
+      </button>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Article Card
+// ─────────────────────────────────────────────────────────────────────────────
+
+interface ArticleCardProps {
+  page: SerializedPage;
+}
+
+function ArticleCard({ page }: ArticleCardProps) {
+  return (
+    <Link href={{ pathname: page.url }} className={clsx(styles.post)}>
+      <div className={styles.details}>
+        <div className={styles.preview}>
+          <Code />
+        </div>
+        <div>
+          <h2 className={styles.cardtitle}>{page.title}</h2>
+          <span className={styles.meta}>
+            <span>{page.author.name}</span>
+            <span className={styles.separator} />
+            <span>{page.date.published}</span>
+          </span>
+        </div>
+      </div>
+      <div>
+        <p className={styles.description}>{page.description}</p>
+      </div>
+    </Link>
   );
 }

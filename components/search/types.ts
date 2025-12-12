@@ -2,7 +2,7 @@
 // Shared Types for Search Components
 // ─────────────────────────────────────────────────────────────────────────────
 
-import type { FilterOption } from "./filter-options";
+import type { FilterOption } from "./internals/filter-options";
 
 export interface ChipPayload {
   type: "tag" | "author" | "before" | "after" | "during" | "sort";

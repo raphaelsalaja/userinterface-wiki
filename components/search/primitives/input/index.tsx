@@ -19,10 +19,10 @@ import {
 } from "lexical";
 import * as React from "react";
 
-import { $isChipNode, ChipNode } from "./chip-node";
-import { useSearchContext } from "./context";
-import { SingleLinePlugin } from "./plugins";
-import type { ChipPayload } from "./types";
+import { $isChipNode, ChipNode } from "../../internals/chip-node";
+import { useSearchContext } from "../../internals/context";
+import { SingleLinePlugin } from "../../internals/plugins";
+import type { ChipPayload } from "../../types";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types

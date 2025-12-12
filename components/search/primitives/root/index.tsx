@@ -1,7 +1,11 @@
 "use client";
 
 import type * as React from "react";
-import { SearchProvider, type SearchProviderProps } from "./context";
+
+import {
+  SearchProvider,
+  type SearchProviderProps,
+} from "../../internals/context";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Search.Root
