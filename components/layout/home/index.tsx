@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 
 import { PageTransition } from "@/components/page-transition";
-import { HomeSearch, type SerializedPage } from "@/components/search";
+import { HomeSearch, type SerializedPage } from "@/components/search-editor";
 import { getFormattedPageFromPageSource } from "@/markdown/functions/get-page";
 import { source } from "@/markdown/lib/source";
 
