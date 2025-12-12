@@ -1,51 +1,25 @@
 "use client";
 
-import type * as React from "react";
-
 import { useSearchContext } from "../../internals/context";
+import type {
+  EmptyProps,
+  GroupLabelProps,
+  GroupProps,
+  ItemProps,
+  ItemState,
+  ListProps,
+  SeparatorProps,
+} from "./types";
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Types
-// ─────────────────────────────────────────────────────────────────────────────
-
-export interface ListProps {
-  children: React.ReactNode;
-  className?: string;
-  style?: React.CSSProperties;
-}
-
-export interface ItemProps<T = unknown> {
-  value: T;
-  children?: React.ReactNode;
-  className?: string | ((state: ItemState) => string);
-  style?: React.CSSProperties | ((state: ItemState) => React.CSSProperties);
-  disabled?: boolean;
-  onClick?: (value: T) => void;
-  index?: number;
-}
-
-export interface ItemState {
-  highlighted: boolean;
-  disabled: boolean;
-}
-
-export interface GroupProps {
-  children: React.ReactNode;
-  className?: string;
-  style?: React.CSSProperties;
-}
-
-export interface GroupLabelProps {
-  children: React.ReactNode;
-  className?: string;
-  style?: React.CSSProperties;
-}
-
-export interface SeparatorProps {
-  className?: string;
-  style?: React.CSSProperties;
-  orientation?: "horizontal" | "vertical";
-}
+export type {
+  EmptyProps,
+  GroupLabelProps,
+  GroupProps,
+  ItemProps,
+  ItemState,
+  ListProps,
+  SeparatorProps,
+};
 
 // ─────────────────────────────────────────────────────────────────────────────
 // List Component
@@ -204,12 +178,6 @@ export function Separator({
 // ─────────────────────────────────────────────────────────────────────────────
 // Empty Component
 // ─────────────────────────────────────────────────────────────────────────────
-
-export interface EmptyProps {
-  children: React.ReactNode;
-  className?: string;
-  style?: React.CSSProperties;
-}
 
 /**
  * Renders its children only when the list is empty.

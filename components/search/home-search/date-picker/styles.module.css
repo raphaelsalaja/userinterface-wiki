@@ -1,0 +1,117 @@
+.datepicker {
+  display: flex;
+  justify-content: center;
+  padding: 12px;
+}
+
+.datepicker :global(.rdp) {
+  --rdp-accent-color: var(--blue-9);
+  --rdp-accent-background-color: var(--blue-3);
+  --rdp-background-color: var(--gray-3);
+  --rdp-day-height: 36px;
+  --rdp-day-width: 36px;
+  --rdp-nav-height: 40px;
+  --rdp-weekday-padding: 8px 0;
+
+  font-family: var(--font-family-display);
+  font-size: 13px;
+  color: var(--gray-12);
+}
+
+.datepicker :global(.rdp-month_caption) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--rdp-nav-height);
+  font-weight: var(--font-weight-semibold);
+}
+
+.datepicker :global(.rdp-nav) {
+  position: absolute;
+  top: 0;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  height: var(--rdp-nav-height);
+}
+
+.datepicker :global(.rdp-button_previous) {
+  left: 0;
+}
+
+.datepicker :global(.rdp-button_next) {
+  right: 0;
+}
+
+.datepicker :global(.rdp-nav button) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  color: var(--gray-11);
+  cursor: pointer;
+  background: var(--gray-3);
+  border: 1px solid var(--gray-5);
+  border-radius: 4px;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.datepicker :global(.rdp-nav button:hover) {
+  color: var(--gray-12);
+  background: var(--gray-4);
+  border-color: var(--gray-6);
+}
+
+.datepicker :global(.rdp-weekday) {
+  padding: var(--rdp-weekday-padding);
+  font-size: 11px;
+  font-weight: var(--font-weight-medium);
+  color: var(--gray-9);
+  text-transform: uppercase;
+}
+
+.datepicker :global(.rdp-day) {
+  width: var(--rdp-day-width);
+  height: var(--rdp-day-height);
+}
+
+.datepicker :global(.rdp-day_button) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-size: 13px;
+  color: var(--gray-12);
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  transition: background 0.15s ease;
+}
+
+.datepicker :global(.rdp-day_button:hover) {
+  background: var(--gray-3);
+}
+
+.datepicker :global(.rdp-today .rdp-day_button) {
+  font-weight: var(--font-weight-semibold);
+  color: var(--blue-10);
+  border-bottom: 2px solid var(--blue-9);
+}
+
+.datepicker :global(.rdp-selected .rdp-day_button) {
+  color: var(--gray-1);
+  background: var(--rdp-accent-color);
+}
+
+.datepicker :global(.rdp-selected .rdp-day_button:hover) {
+  background: var(--blue-10);
+}
+
+.datepicker :global(.rdp-outside .rdp-day_button) {
+  color: var(--gray-7);
+}

@@ -1,0 +1,85 @@
+.post {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-start;
+  align-self: stretch;
+  transition: filter 0.2s ease-in-out;
+}
+
+/* Apply to parent .posts container for hover effect */
+:global(.posts):has(.post:hover) .post {
+  filter: opacity(0.4);
+}
+
+:global(.posts):has(.post:hover) .post:hover {
+  filter: opacity(1);
+}
+
+.details {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  align-self: stretch;
+}
+
+.preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: var(--gray-3);
+  border-radius: 8px;
+}
+
+.title {
+  font-family: var(--font-family-display);
+  font-size: 16px;
+  font-weight: var(--font-weight-medium);
+  line-height: 24px;
+  color: var(--gray-12);
+  letter-spacing: var(--font-inter-letter-spacing-16px);
+  transition: all 0.2s ease;
+}
+
+.meta {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.meta > span {
+  font-family: var(--font-family-display);
+  font-size: 14px;
+  font-weight: var(--font-weight-normal);
+  line-height: 24px;
+  color: var(--gray-10);
+  letter-spacing: var(--font-inter-letter-spacing-14px);
+  transition: all 0.2s ease;
+}
+
+.description {
+  font-family: var(--font-family-display);
+  font-size: 14px;
+  font-weight: var(--font-weight-normal);
+  line-height: 24px;
+  color: var(--gray-10);
+  letter-spacing: var(--font-inter-letter-spacing-14px);
+  transition: all 0.2s ease;
+}
+
+.separator {
+  width: 3px;
+  height: 3px;
+  aspect-ratio: 1 / 1;
+  background: var(--gray-10);
+  border-radius: 100px;
+}
+
+.post:hover .title,
+.post:hover .meta > span,
+.post:hover .description {
+  color: var(--gray-12);
+}

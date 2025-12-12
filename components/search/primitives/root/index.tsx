@@ -1,23 +1,13 @@
 "use client";
 
-import type * as React from "react";
+import { SearchProvider } from "../../internals/context";
+import type { RootProps } from "./types";
 
-import {
-  SearchProvider,
-  type SearchProviderProps,
-} from "../../internals/context";
+export type { RootProps };
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Search.Root
 // ─────────────────────────────────────────────────────────────────────────────
-
-export interface RootProps extends SearchProviderProps {
-  className?: string | ((state: { open: boolean }) => string);
-  style?:
-    | React.CSSProperties
-    | ((state: { open: boolean }) => React.CSSProperties);
-  render?: React.ReactElement;
-}
 
 /**
  * Groups all parts of the search component.

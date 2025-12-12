@@ -1,0 +1,31 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  padding: 48px 24px;
+  font-family: var(--font-family-display);
+  font-size: 14px;
+  color: var(--gray-10);
+  text-align: center;
+}
+
+.button {
+  padding: 8px 16px;
+  font-family: var(--font-family-display);
+  font-size: 13px;
+  font-weight: var(--font-weight-medium);
+  color: var(--gray-12);
+  cursor: pointer;
+  background: var(--gray-3);
+  border: 1px solid var(--gray-5);
+  border-radius: 6px;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.button:hover {
+  background: var(--gray-4);
+  border-color: var(--gray-6);
+}

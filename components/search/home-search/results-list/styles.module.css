@@ -1,0 +1,13 @@
+.count {
+  font-family: var(--font-family-display);
+  font-size: 13px;
+  color: var(--gray-10);
+}
+
+.posts {
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+  align-items: flex-start;
+  align-self: stretch;
+}

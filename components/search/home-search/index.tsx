@@ -1,36 +1,30 @@
 "use client";
 
-import { clsx } from "clsx";
 import {
   $createTextNode,
   $getSelection,
   $isRangeSelection,
   $isTextNode,
 } from "lexical";
-import Link from "next/link";
 import * as React from "react";
-import { DayPicker } from "react-day-picker";
 
-import { Code } from "@/components/icons";
 import { SearchIcon } from "@/components/icons/search";
 
-import { $createChipNode } from "./internals/chip-node";
-import { useSearchContext } from "./internals/context";
-import type { FilterOption } from "./internals/filter-options";
-import { useSuggestions } from "./internals/use-suggestions";
-import { Input } from "./primitives/input";
-import { Root } from "./primitives/root";
+import { $createChipNode } from "../internals/chip-node";
+import { useSearchContext } from "../internals/context";
+import type { FilterOption } from "../internals/filter-options";
+import { useSuggestions } from "../internals/use-suggestions";
+import { Input } from "../primitives/input";
+import { Root } from "../primitives/root";
+import type { ChipPayload } from "../types";
+import { DatePickerSection } from "./date-picker";
+import { FilterOptionsList } from "./filter-options";
+import { PopupFooter } from "./popup-footer";
+import { PopupHeader } from "./popup-header";
+import { SearchResultsList } from "./results-list";
 import styles from "./styles.module.css";
-import type { ChipPayload, SerializedPage } from "./types";
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Types
-// ─────────────────────────────────────────────────────────────────────────────
-
-interface HomeSearchProps {
-  pages: SerializedPage[];
-  allTags: string[];
-}
+import type { HomeSearchProps } from "./types";
+import { ValueSuggestionsList } from "./value-suggestions";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Main Component
@@ -350,228 +344,13 @@ function SearchInner({ pages, allTags }: HomeSearchProps) {
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Popup Header
-// ─────────────────────────────────────────────────────────────────────────────
-
-function PopupHeader() {
-  return (
-    <div className={styles.popupheader}>
-      <span className={styles.label}>Search Filters</span>
-      <span className={styles.hint}>
-        <kbd>↑</kbd> <kbd>↓</kbd> to navigate · <kbd>Tab</kbd> to select ·{" "}
-        <kbd>Esc</kbd> to close
-      </span>
-    </div>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Popup Footer
-// ─────────────────────────────────────────────────────────────────────────────
-
-function PopupFooter() {
-  return (
-    <div className={styles.popupfooter}>
-      <span className={styles.tip}>
-        Use <code>-</code> to exclude: <code>-tag:draft</code> · Quotes for
-        spaces: <code>author:"John Doe"</code>
-      </span>
-    </div>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Filter Options List
-// ─────────────────────────────────────────────────────────────────────────────
-
-interface FilterOptionsListProps {
-  options: FilterOption[];
-  highlightedIndex: number;
-  onSelect: (option: FilterOption) => void;
-}
-
-function FilterOptionsList({
-  options,
-  highlightedIndex,
-  onSelect,
-}: FilterOptionsListProps) {
-  return (
-    <div className={styles.list}>
-      {options.map((option, index) => (
-        <button
-          type="button"
-          key={option.key}
-          className={clsx(
-            styles.option,
-            index === highlightedIndex && styles.highlighted,
-          )}
-          onClick={() => onSelect(option)}
-        >
-          <span className={styles.optionkey}>{option.label}</span>
-          <span className={styles.optiondesc}>{option.description}</span>
-          {option.example && (
-            <span className={styles.optionexample}>{option.example}</span>
-          )}
-        </button>
-      ))}
-    </div>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Value Suggestions List
-// ─────────────────────────────────────────────────────────────────────────────
-
-interface ValueSuggestionsListProps {
-  type: "tags" | "authors" | "sort";
-  items: string[];
-  highlightedIndex: number;
-  onSelect: (item: string) => void;
-}
-
-function ValueSuggestionsList({
-  type,
-  items,
-  highlightedIndex,
-  onSelect,
-}: ValueSuggestionsListProps) {
-  const categoryLabel =
-    type === "tags" ? "Tags" : type === "authors" ? "Authors" : "Sort Options";
-
-  return (
-    <>
-      <div className={styles.category}>{categoryLabel}</div>
-      <div className={styles.list}>
-        {items.length === 0 ? (
-          <div className={styles.empty}>No matches found</div>
-        ) : (
-          items.map((item, index) => (
-            <button
-              type="button"
-              key={item}
-              className={clsx(
-                styles.option,
-                index === highlightedIndex && styles.highlighted,
-              )}
-              onClick={() => onSelect(item)}
-            >
-              <span className={styles.optionkey}>{item}</span>
-            </button>
-          ))
-        )}
-      </div>
-    </>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Date Picker Section
-// ─────────────────────────────────────────────────────────────────────────────
-
-interface DatePickerSectionProps {
-  dateType: "before" | "after" | "during";
-  isNegated: boolean;
-  onSelect: (
-    date: Date,
-    dateType: "before" | "after" | "during",
-    isNegated: boolean,
-  ) => void;
-}
-
-function DatePickerSection({
-  dateType,
-  isNegated,
-  onSelect,
-}: DatePickerSectionProps) {
-  return (
-    <div className={styles.datepicker}>
-      <DayPicker
-        mode="single"
-        onSelect={(date) => {
-          if (date) {
-            onSelect(date, dateType, isNegated);
-          }
-        }}
-      />
-    </div>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Search Results List
-// ─────────────────────────────────────────────────────────────────────────────
-
-function SearchResultsList() {
-  const { state, actions } = useSearchContext();
-  const { filteredPages } = state;
-
-  return (
-    <>
-      <div className={styles.resultcount}>
-        {filteredPages.length}{" "}
-        {filteredPages.length === 1 ? "article" : "articles"}
-      </div>
-
-      <div className={styles.posts}>
-        {filteredPages.length === 0 ? (
-          <NoResults onClear={() => actions.clearAll()} />
-        ) : (
-          filteredPages.map((page) => (
-            <ArticleCard key={page.url} page={page} />
-          ))
-        )}
-      </div>
-    </>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// No Results
-// ─────────────────────────────────────────────────────────────────────────────
-
-interface NoResultsProps {
-  onClear: () => void;
-}
-
-function NoResults({ onClear }: NoResultsProps) {
-  return (
-    <div className={styles.noresults}>
-      <p>No articles match your search.</p>
-      <button type="button" onClick={onClear} className={styles.clearbutton}>
-        Clear filters
-      </button>
-    </div>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Article Card
-// ─────────────────────────────────────────────────────────────────────────────
-
-interface ArticleCardProps {
-  page: SerializedPage;
-}
-
-function ArticleCard({ page }: ArticleCardProps) {
-  return (
-    <Link href={{ pathname: page.url }} className={clsx(styles.post)}>
-      <div className={styles.details}>
-        <div className={styles.preview}>
-          <Code />
-        </div>
-        <div>
-          <h2 className={styles.cardtitle}>{page.title}</h2>
-          <span className={styles.meta}>
-            <span>{page.author.name}</span>
-            <span className={styles.separator} />
-            <span>{page.date.published}</span>
-          </span>
-        </div>
-      </div>
-      <div>
-        <p className={styles.description}>{page.description}</p>
-      </div>
-    </Link>
-  );
-}
+// Re-export sub-components for flexibility
+export { ArticleCard } from "./article-card";
+export { DatePickerSection } from "./date-picker";
+export { FilterOptionsList } from "./filter-options";
+export { NoResults } from "./no-results";
+export { PopupFooter } from "./popup-footer";
+export { PopupHeader } from "./popup-header";
+export { SearchResultsList } from "./results-list";
+export type { HomeSearchProps } from "./types";
+export { ValueSuggestionsList } from "./value-suggestions";

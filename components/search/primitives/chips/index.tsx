@@ -1,25 +1,25 @@
 "use client";
 
-import type * as React from "react";
-
 import { useSearchContext } from "../../internals/context";
+import type {
+  ChipProps,
+  ChipRemoveProps,
+  ChipState,
+  ChipsProps,
+  ClearProps,
+  ClearState,
+  ValueProps,
+} from "./types";
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Types
-// ─────────────────────────────────────────────────────────────────────────────
-
-export interface ClearProps {
-  children?: React.ReactNode;
-  className?: string | ((state: ClearState) => string);
-  style?: React.CSSProperties | ((state: ClearState) => React.CSSProperties);
-  disabled?: boolean;
-  keepMounted?: boolean;
-}
-
-export interface ClearState {
-  hasContent: boolean;
-  disabled: boolean;
-}
+export type {
+  ChipProps,
+  ChipRemoveProps,
+  ChipsProps,
+  ChipState,
+  ClearProps,
+  ClearState,
+  ValueProps,
+};
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Clear Component
@@ -93,12 +93,6 @@ export function Clear({
 // Value Component
 // ─────────────────────────────────────────────────────────────────────────────
 
-export interface ValueProps {
-  children?: React.ReactNode | ((value: string) => React.ReactNode);
-  className?: string;
-  style?: React.CSSProperties;
-}
-
 /**
  * Displays the current search value as text.
  */
@@ -121,12 +115,6 @@ export function Value({ children, className, style }: ValueProps) {
 // Chips Container Component
 // ─────────────────────────────────────────────────────────────────────────────
 
-export interface ChipsProps {
-  children: React.ReactNode;
-  className?: string;
-  style?: React.CSSProperties;
-}
-
 /**
  * A container for chips.
  */
@@ -141,19 +129,6 @@ export function Chips({ children, className, style }: ChipsProps) {
 // ─────────────────────────────────────────────────────────────────────────────
 // Chip Component
 // ─────────────────────────────────────────────────────────────────────────────
-
-export interface ChipProps {
-  children?: React.ReactNode;
-  className?: string | ((state: ChipState) => string);
-  style?: React.CSSProperties | ((state: ChipState) => React.CSSProperties);
-  index: number;
-}
-
-export interface ChipState {
-  type: string;
-  value: string;
-  negated: boolean;
-}
 
 /**
  * An individual chip representing a filter.
@@ -204,13 +179,6 @@ export function Chip({ children, className, style, index }: ChipProps) {
 // ─────────────────────────────────────────────────────────────────────────────
 // ChipRemove Component
 // ─────────────────────────────────────────────────────────────────────────────
-
-export interface ChipRemoveProps {
-  children?: React.ReactNode;
-  className?: string;
-  style?: React.CSSProperties;
-  index: number;
-}
 
 /**
  * A button to remove a chip.

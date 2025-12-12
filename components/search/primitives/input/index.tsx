@@ -23,27 +23,9 @@ import { $isChipNode, ChipNode } from "../../internals/chip-node";
 import { useSearchContext } from "../../internals/context";
 import { SingleLinePlugin } from "../../internals/plugins";
 import type { ChipPayload } from "../../types";
+import type { InputProps, InputState } from "./types";
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Types
-// ─────────────────────────────────────────────────────────────────────────────
-
-export interface InputProps {
-  placeholder?: string;
-  className?: string | ((state: InputState) => string);
-  style?: React.CSSProperties | ((state: InputState) => React.CSSProperties);
-  render?: React.ReactElement;
-  disabled?: boolean;
-  onFocus?: () => void;
-  onBlur?: () => void;
-  onKeyDown?: (event: React.KeyboardEvent) => void;
-}
-
-export interface InputState {
-  open: boolean;
-  disabled: boolean;
-  hasContent: boolean;
-}
+export type { InputProps, InputState };
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Input Component
@@ -67,25 +49,6 @@ export function Input({
   onBlur,
   onKeyDown,
 }: InputProps) {
-  const { state, actions } = useSearchContext();
-
-  const inputState: InputState = {
-    open: state.open,
-    disabled,
-    hasContent: state.textContent.trim().length > 0 || state.chips.length > 0,
-  };
-
-  const resolvedClassName =
-    typeof className === "function" ? className(inputState) : className;
-
-  const resolvedStyle = typeof style === "function" ? style(inputState) : style;
-
-  const getDataAttributes = () => ({
-    "data-popup-open": state.open ? "" : undefined,
-    "data-disabled": disabled ? "" : undefined,
-    "data-has-content": inputState.hasContent ? "" : undefined,
-  });
-
   return (
     <LexicalComposer
       initialConfig={{
@@ -94,16 +57,12 @@ export function Input({
         nodes: [ChipNode],
       }}
     >
-      <InputEditor
+      <InputInner
         placeholder={placeholder}
-        className={resolvedClassName}
-        style={resolvedStyle}
+        className={className}
+        style={style}
         disabled={disabled}
-        dataAttributes={getDataAttributes()}
-        onFocus={() => {
-          actions.setOpen(true);
-          onFocus?.();
-        }}
+        onFocus={onFocus}
         onBlur={onBlur}
         onKeyDown={onKeyDown}
       />
@@ -111,33 +70,27 @@ export function Input({
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Inner Editor Component
-// ─────────────────────────────────────────────────────────────────────────────
-
-interface InputEditorProps {
-  placeholder: string;
-  className?: string;
-  style?: React.CSSProperties;
-  disabled: boolean;
-  dataAttributes: Record<string, string | undefined>;
-  onFocus?: () => void;
-  onBlur?: () => void;
-  onKeyDown?: (event: React.KeyboardEvent) => void;
-}
-
-function InputEditor({
+function InputInner({
   placeholder,
   className,
   style,
   disabled,
-  dataAttributes,
   onFocus,
   onBlur,
   onKeyDown,
-}: InputEditorProps) {
+}: InputProps) {
   const [editor] = useLexicalComposerContext();
-  const { actions, editorRef, inputRef } = useSearchContext();
+  const { state, actions, editorRef, inputRef } = useSearchContext();
+
+  const inputState: InputState = {
+    open: state.open,
+    disabled: disabled ?? false,
+    hasContent: state.textContent.trim().length > 0 || state.chips.length > 0,
+  };
+
+  const resolvedClassName =
+    typeof className === "function" ? className(inputState) : className;
+  const resolvedStyle = typeof style === "function" ? style(inputState) : style;
 
   // Store editor ref in context
   React.useEffect(() => {
@@ -215,22 +168,26 @@ function InputEditor({
     );
   }, [editor]);
 
-  // Filter out undefined data attributes
-  const filteredDataAttributes = Object.fromEntries(
-    Object.entries(dataAttributes).filter(([, v]) => v !== undefined),
-  );
+  const dataAttributes = {
+    ...(state.open && { "data-popup-open": "" }),
+    ...(disabled && { "data-disabled": "" }),
+    ...(inputState.hasContent && { "data-has-content": "" }),
+  };
 
   return (
     <div
       ref={inputRef as React.RefObject<HTMLDivElement>}
-      className={className}
-      style={style}
-      {...filteredDataAttributes}
+      className={resolvedClassName}
+      style={resolvedStyle}
+      {...dataAttributes}
     >
       <PlainTextPlugin
         contentEditable={
           <ContentEditable
-            onFocus={onFocus}
+            onFocus={() => {
+              actions.setOpen(true);
+              onFocus?.();
+            }}
             onBlur={onBlur}
             onKeyDown={onKeyDown}
             disabled={disabled}
