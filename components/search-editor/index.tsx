@@ -91,9 +91,16 @@ function SuggestionMenu({ state, handlers }: SuggestionMenuProps) {
   }
 
   // Use frozen state during exit, otherwise use live state
-  const displayItems = isExiting && frozenStateRef.current ? frozenStateRef.current.items : items;
-  const displaySelectedIndex = isExiting && frozenStateRef.current ? frozenStateRef.current.selectedIndex : selectedIndex;
-  const displayActiveOperator = isExiting && frozenStateRef.current ? frozenStateRef.current.activeOperator : activeOperator;
+  const displayItems =
+    isExiting && frozenStateRef.current ? frozenStateRef.current.items : items;
+  const displaySelectedIndex =
+    isExiting && frozenStateRef.current
+      ? frozenStateRef.current.selectedIndex
+      : selectedIndex;
+  const displayActiveOperator =
+    isExiting && frozenStateRef.current
+      ? frozenStateRef.current.activeOperator
+      : activeOperator;
 
   return (
     <div
@@ -103,7 +110,9 @@ function SuggestionMenu({ state, handlers }: SuggestionMenuProps) {
     >
       <div className={styles.header}>
         <span className={styles.title}>
-          {displayActiveOperator ? `Select ${displayActiveOperator}` : "SEARCH FILTERS"}
+          {displayActiveOperator
+            ? `Select ${displayActiveOperator}`
+            : "SEARCH FILTERS"}
         </span>
         {!displayActiveOperator && (
           <span className={styles.shortcuts}>
