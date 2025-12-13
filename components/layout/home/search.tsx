@@ -1,13 +1,10 @@
 "use client";
 
+import { Field } from "@base-ui-components/react/field";
+import Fuse from "fuse.js";
 import Link from "next/link";
 import * as React from "react";
 import { Code } from "@/components/icons";
-import { SearchEditor } from "@/components/search-editor";
-import {
-  type FilterableDocument,
-  filterAndSortDocs,
-} from "../../search-editor/utils";
 import styles from "./search.module.css";
 
 export interface SerializedPage {
@@ -25,54 +22,39 @@ export interface SerializedPage {
 
 export interface SearchProps {
   pages: SerializedPage[];
-  tags: string[];
 }
 
-function toFilterable(page: SerializedPage): FilterableDocument {
-  return {
-    title: page.title,
-    author: page.author.name,
-    tag: page.tags,
-    date: page.date.published,
-    url: page.url,
-    description: page.description,
-  };
-}
-
-export function Search({ pages, tags }: SearchProps) {
+export function Search({ pages }: SearchProps) {
   const [query, setQuery] = React.useState("");
 
-  const authors = React.useMemo(() => {
-    const authorSet = new Set<string>();
-    for (const page of pages) {
-      if (page.author.name) {
-        authorSet.add(page.author.name);
-      }
-    }
-    return Array.from(authorSet).sort();
-  }, [pages]);
+  const fuse = React.useMemo(
+    () =>
+      new Fuse(pages, {
+        keys: ["title", "description", "author.name", "tags"],
+        threshold: 0.3,
+        includeScore: true,
+      }),
+    [pages],
+  );
 
   const filteredPages = React.useMemo(() => {
-    if (!query.trim()) {
-      return pages;
-    }
-    const filterableDocs = pages.map(toFilterable);
-    const results = filterAndSortDocs(filterableDocs, query);
+    const q = query.trim();
+    if (!q) return pages;
 
-    return results
-      .map((doc) => pages.find((p) => p.url === doc.url))
-      .filter((p): p is SerializedPage => p !== undefined);
-  }, [pages, query]);
+    return fuse.search(q).map((result) => result.item);
+  }, [fuse, pages, query]);
 
   return (
     <div className={styles.container}>
-      <SearchEditor
-        authors={authors}
-        tags={tags}
-        className={styles.editor}
-        onQueryChange={setQuery}
-        placeholder="Search…"
-      />
+      <Field.Root>
+        <Field.Control
+          type="search"
+          className={styles.input}
+          placeholder="Search…"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+      </Field.Root>
 
       {filteredPages.length !== 0 && (
         <ul className={styles.list}>

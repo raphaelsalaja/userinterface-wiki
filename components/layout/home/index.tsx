@@ -5,10 +5,8 @@ import { getFormattedPageFromPageSource } from "@/markdown/functions/get-page";
 import { source } from "@/markdown/lib/source";
 import styles from "./index.module.css";
 
-function serializePages(): SerializedPage[] {
-  const pages = source.getPages();
-
-  return pages.map((page) => {
+export function HomeLayout() {
+  const pages: SerializedPage[] = source.getPages().map((page) => {
     const formatted = getFormattedPageFromPageSource(page);
     return {
       url: page.url,
@@ -23,21 +21,6 @@ function serializePages(): SerializedPage[] {
       },
     };
   });
-}
-
-function extractUniqueTags(pages: SerializedPage[]): string[] {
-  const tagSet = new Set<string>();
-  for (const page of pages) {
-    for (const tag of page.tags) {
-      tagSet.add(tag);
-    }
-  }
-  return Array.from(tagSet).sort();
-}
-
-export function HomeLayout() {
-  const pages = serializePages();
-  const tags = extractUniqueTags(pages);
 
   return (
     <PageTransition>
@@ -47,7 +30,7 @@ export function HomeLayout() {
 
       <div className={styles.container}>
         <Suspense fallback={null}>
-          <Search pages={pages} tags={tags} />
+          <Search pages={pages} />
         </Suspense>
       </div>
     </PageTransition>
