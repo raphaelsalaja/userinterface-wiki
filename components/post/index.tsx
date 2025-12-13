@@ -1,16 +1,16 @@
 import { clsx } from "clsx";
 import Link from "next/link";
-import { formatPage, type Page } from "@/lib/modules/content";
+import type { FormattedPage } from "@/lib/modules/content";
 import { Code } from "../icons";
 import styles from "./styles.module.css";
 
 interface PageCardProps {
   className?: string;
-  page: Page;
+  page: FormattedPage;
 }
 
 export function PageCard({ page, className, ...props }: PageCardProps) {
-  const { title, description, author, date } = formatPage(page);
+  const { title, description, author, date } = page;
 
   return (
     <Link

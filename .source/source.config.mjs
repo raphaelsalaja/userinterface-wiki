@@ -48,6 +48,9 @@ function normalizeWord(value) {
   return value.normalize("NFKC").trim().toLowerCase().replace(NON_WORD_CHARACTERS, "");
 }
 
+// lib/core/strings/title-case.ts
+import title from "title";
+
 // lib/modules/content/plugins/rehype-word-spans.ts
 var SKIP_TAGS = /* @__PURE__ */ new Set([
   "code",

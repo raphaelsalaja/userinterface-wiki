@@ -3,8 +3,9 @@
 import { Field } from "@base-ui-components/react/field";
 import Fuse from "fuse.js";
 import { useMemo, useState } from "react";
-import { Code } from "@/components/icons";
+import { SearchIcon } from "@/components/icons";
 import { PageTransition } from "@/components/page-transition";
+import { PageCard } from "@/components/post";
 import type { FormattedPage } from "@/lib/modules/content";
 import styles from "./styles.module.css";
 
@@ -35,7 +36,8 @@ export function HomeLayout({ pages }: { pages: FormattedPage[] }) {
       </div>
 
       <div className={styles.container}>
-        <Field.Root>
+        <Field.Root className={styles.search}>
+          <SearchIcon className={styles.icon} size={18} />
           <Field.Control
             type="search"
             className={styles.input}
@@ -46,36 +48,11 @@ export function HomeLayout({ pages }: { pages: FormattedPage[] }) {
         </Field.Root>
 
         {filteredPages.length !== 0 && (
-          <ul className={styles.list}>
+          <div className={styles.list}>
             {filteredPages.map((page) => (
-              <li key={page.url} className={styles.item}>
-                <a href={page.url as "/"} className={styles.page}>
-                  <div className={styles.details}>
-                    <Code className={styles.icon} />
-                    <div className={styles.meta}>
-                      <span className={styles.title}>{page.title}</span>
-                      <div className={styles.subtitle}>
-                        <span>{page.author.name}</span>
-                        <div className={styles.dot} />
-                        <span>{page.date.published}</span>
-                      </div>
-                    </div>
-                  </div>
-                  <span className={styles.description}>{page.description}</span>
-
-                  {page.tags.length > 0 && (
-                    <div className={styles.tags}>
-                      {page.tags.map((tag) => (
-                        <span key={tag} className={styles.tag}>
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </a>
-              </li>
+              <PageCard key={page.url} page={page} className={styles.card} />
             ))}
-          </ul>
+          </div>
         )}
       </div>
     </PageTransition>
