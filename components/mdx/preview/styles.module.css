@@ -1,0 +1,12 @@
+.preview {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 48px;
+  overflow: hidden;
+  background: var(--gray-1);
+  border: 1px solid var(--gray-4);
+  border-radius: 8px;
+}

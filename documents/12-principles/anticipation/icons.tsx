@@ -9,6 +9,7 @@ export const HighPriority = (props: IconProps) => {
       viewBox="0 0 16 16"
       {...props}
     >
+      <title>High Priority</title>
       <rect width="3" height="6" x="1.5" y="8" rx="1" />
       <rect width="3" height="9" x="6.5" y="5" rx="1" />
       <rect width="3" height="12" x="11.5" y="2" rx="1" />
@@ -19,6 +20,7 @@ export const HighPriority = (props: IconProps) => {
 export const InProgress = (props: IconProps) => {
   return (
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" {...props}>
+      <title>In Progress</title>
       <circle
         cx="7"
         cy="7"
@@ -47,6 +49,7 @@ export const InProgress = (props: IconProps) => {
 export const Done = (props: IconProps) => {
   return (
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" {...props}>
+      <title>Done</title>
       <circle cx="7" cy="7" r="6" fill="lch(70% 40 120)" />
       <path
         d="M4.5 7L6.5 9L10 5.5"
@@ -63,6 +66,7 @@ export const Done = (props: IconProps) => {
 export const Todo = (props: IconProps) => {
   return (
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" {...props}>
+      <title>To Do</title>
       <circle
         cx="7"
         cy="7"
@@ -85,6 +89,7 @@ export function Check(props: IconProps) {
       viewBox="0 0 24 24"
       {...props}
     >
+      <title>Check</title>
       <path
         fillRule="evenodd"
         clipRule="evenodd"
@@ -104,6 +109,7 @@ export function Bolt(props: IconProps) {
       height="24"
       viewBox="0 0 24 24"
     >
+      <title>Bolt</title>
       <path
         d="M14.0019 2.40144C14.0019 0.917322 12.077 0.334547 11.2538 1.5694L3.18804 13.668C2.52349 14.6648 3.23807 16.0001 4.43612 16.0001H10.0019V21.5987C10.0019 23.0828 11.9267 23.6656 12.7499 22.4307L20.8157 10.3321C21.4802 9.33528 20.7656 8.00006 19.5676 8.00006H14.0019V2.40144Z"
         fill="inherit"
@@ -121,6 +127,7 @@ export function Avatar(props: IconProps) {
       height="24"
       viewBox="0 0 24 24"
     >
+      <title>Avatar</title>
       <path
         fillRule="evenodd"
         clipRule="evenodd"

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { AudioReader } from "@/components/audio-reader";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import { Article } from "@/components/layout";
@@ -43,7 +42,8 @@ export default async function Page(props: {
       <ViewTracker slug={slugString} />
       <Header page={page} />
       <Article>
-        <AudioReader slugSegments={params.slug} />
+        {/* <AudioReader slugSegments={params.slug} />
+         */}
         <MDX />
       </Article>
       <Footer page={page} />

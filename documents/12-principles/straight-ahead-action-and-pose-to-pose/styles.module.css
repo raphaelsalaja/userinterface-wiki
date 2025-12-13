@@ -37,7 +37,7 @@
 }
 
 .popup[data-animation="pose-to-pose"] {
-  transition: none !important;
+  transition: none;
 }
 
 .popup[data-animation="blend"] {

@@ -26,9 +26,9 @@ Everything has it's own mass, and the way it moves and deforms is crucial to con
 
 You can use this concept to create objects that seem malleable and responsive to their environment.
 
-<center>
+<Preview>
   <SquashStretch />
-</center>
+</Preview>
 <sub>Family's Wallet Icon Picker[^2]</sub>
 
 In this example, the wallet icon appears to squash and stretch on change. It's almost like it's morphing into a different shape. A simple but effective use of this principle.
@@ -41,9 +41,9 @@ Anticipation is the act of preparing users for what comes next. In practice, thi
 
 Use anticipation to set up important transitions or calls-to-action – like a notification icon that wiggles gently to imply updates awaiting. Select the issue below and hold to delete it to see how you can anticipate a deletion.
 
-<center>
+<Preview>
   <Anticipation />
-</center>
+</Preview>
 
 Avoid overusing it on every tiny interaction, too much anticipation can feel gimmicky or slow the experience. Save it for moments where an extra hint helps the user, and keep it quick. The goal is to inform the user about what’s coming, without making them wait unnecessarily.
 
@@ -53,9 +53,9 @@ If anticipation is about the before, staging is about the during. This principle
 
 In UI terms, staging might mean introducing interface elements one by one in a sequence. Imagine opening a complex settings panel: the backdrop might fade in first, then the panel slides into view, and finally the primary control within that panel gets a subtle highlight.
 
-<center>
+<Preview>
   <Staging />
-</center>
+</Preview>
 
 Choreograph the sequence, in this example, we use the backdrop to blur out the background to provide focus.
 
@@ -67,9 +67,9 @@ There’s more than one way to animate a sequence. Straight ahead action means a
 
 We usually rely on straight ahead action on the web. We define the keyframes and let software interpolate the in-betweens. When trying to create animations, try to keep this in mind. You don't have to plan every single frame in detail. Instead, take the key points, and allow eases and transitions to fill in the gaps.
 
-<center>
+<Preview>
   <StraightAheadActionAndPoseToPose />
-</center>
+</Preview>
 
 When it comes to deciding on what should be interpolated, consider how often this action will be used. For example, Apple only animates out their context menus as they are used so frequently, animating them in all the time can start to feel sluggish for the user.
 
@@ -79,9 +79,9 @@ When you stop moving, parts of you might continue moving, and when you start mov
 
 Imagine scrolling through a list where each card enters the viewport with a tiny delay relative to the previous card. Instead of a block of content popping in together, you get a graceful cascade. This staggered timing is overlapping action at work, turning a static list into a dynamic flow.
 
-<center>
+<Preview>
   <FollowThroughAndOverlappingAction />
-</center>
+</Preview>
 <sub>Dia's Split Tabs.[^3]</sub>
 
 The above example makes use of springs to make the transitions feel more alive. Springs itself is a whole topic that would need it's own essay to be discussed. It's not covered in this one, but if you want to do some digging on it yourself, check out the [Animate with Springs](https://developer.apple.com/videos/play/wwdc2023/10158) talk from WWDC23.[^4]
@@ -94,9 +94,9 @@ Most things in nature don’t start or stop instantly and neither should good UI
 
 This principle is the cornerstone of smooth, comfortable transitions. In practice, it’s all about easing curves, an element might ease-out as it leaves the screen or ease-in when it appears. The result mimics how a car accelerates and brakes, or how a human moves – avoiding the jolt of an abrupt linear motion.
 
-<center>
+<Preview>
   <SlowInSlowOut />
-</center>
+</Preview>
 
 Above shows a few of the widely used easing functions. Check out [easing.dev](https://easing.dev) for a more comprehensive list, as well as the ability to create your own.[^5]
 
@@ -122,9 +122,9 @@ These are little flourishes that support the main action, adding depth and feedb
 
 Secondary actions might be something like a checkmark icon that pops and then does a brief sparkle after a form is successfully submitted. The sparkle isn’t the main message, but it reinforces the feeling of success in a fun way.
 
-<center>
+<Preview>
   <SecondaryAction />
-</center>
+</Preview>
 
 Add secondary actions to inject delight and clarity into moments of user feedback. Sound can also be a secondary action, like a subtle click or whoosh that reinforces the feeling of interaction.
 
@@ -136,9 +136,9 @@ In animation, timing refers to the speed of an action, pretty self explanatory. 
 
 For example, a tooltip appearing might feel just right at 150 milliseconds, but utterly annoying at 400 milliseconds. A good rule of thumb I like to use is to keep durations under 300ms for most interactions.
 
-<center>
+<Preview>
   <Timing />
-</center>
+</Preview>
 
 Consistent timing across similar actions keeps the experience coherent and responsive. Keep this in mind. Define some timing guidelines for your animations and reuse them throughout your product.
 
@@ -150,9 +150,9 @@ Exaggeration can also help usability. Imagine an error wiggle on a form field. T
 
 It’s an exaggerated motion that instantly draws attention to the problem field, much harder to miss than a tiny change.
 
-<center>
+<Preview>
   <Exaggeration />
-</center>
+</Preview>
 
 Use exaggeration sparingly for moments when you want the user to **feel** something strongly or notice something important.
 
@@ -164,9 +164,9 @@ Solid drawing in traditional animation is about making sure objects feel three-d
 
 It can be as simple as using shadows, layering, and perspective subtly to communicate hierarchy and interactivity.
 
-<center>
+<Preview>
   <SolidDrawing />
-</center>
+</Preview>
 <sub>Linear Orbit[^7]</sub>
 
 When it comes to coding 3D transforms, take note of using `perspective` to create depth, which we use in this example. This CSS property allows you to define how far the object is from the viewer, giving a sense of realism to the 3D effect.
@@ -177,9 +177,9 @@ Another aspect is consistency in how things are drawn and move. If an icon rotat
 
 Lastly, appeal ties everything together. This is about crafting an experience that is visually and emotionally compelling to the user. It’s the difference between an interface that is technically usable and one that people want to use.
 
-<center>
+<Preview>
   <Appeal />
-</center>
+</Preview>
 <sub>A small scrollable sample of delightful creations on the web.[^8]</sub>
 
 Think of the products you find delightful to use, or always go back to. What makes them special? Is it the attention to detail, the playful interactions, or the way they anticipate your needs? Those elements contribute to their appeal.

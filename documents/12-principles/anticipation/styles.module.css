@@ -22,7 +22,7 @@
   white-space: nowrap;
 }
 
-.title {
+.header-title {
   font-size: 13px;
   font-variation-settings: var(--font-weight-500);
   color: var(--text-primary);

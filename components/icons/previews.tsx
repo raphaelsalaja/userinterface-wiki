@@ -1,8 +1,14 @@
 import type { IconProps } from "./types";
 
-export const Code = ({ color = "currentColor", ...props }: IconProps) => {
+export const Code = ({ ...props }: IconProps) => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="50" fill="none">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="40"
+      height="50"
+      fill="none"
+      {...props}
+    >
       <title>Code Preview</title>
       <rect
         width="39"

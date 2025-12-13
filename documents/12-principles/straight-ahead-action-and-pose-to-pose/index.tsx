@@ -1,7 +1,7 @@
 "use client";
 
 import { CheckIcon, ChevronDownIcon } from "@radix-ui/react-icons";
-import * as DesignSelect from "@rs/design/select";
+import { DesignSelect } from "../select";
 import styles from "./styles.module.css";
 
 const items = [

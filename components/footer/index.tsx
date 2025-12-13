@@ -7,7 +7,6 @@ import {
   LinkIcon,
   TwitterIcon,
 } from "@/components/icons";
-import type { Page } from "@/lib/features/content";
 import styles from "./styles.module.css";
 
 interface SectionProps {
@@ -24,7 +23,7 @@ function Section({ title, children }: SectionProps) {
   );
 }
 
-export function Footer({ page }: { page: Page }) {
+export function Footer(): React.JSX.Element {
   return (
     <footer className={styles.header}>
       <hr className={styles.divider} />

@@ -16,14 +16,11 @@
 }
 
 .pane {
-  background-color: var(--magnet-bg);
-}
-
-.pane {
   position: absolute;
   height: 128px;
   aspect-ratio: 2 / 3;
   overflow: hidden;
+  background-color: var(--magnet-bg);
   border-radius: 8px;
   box-shadow:
     0 0 0 0.5px rgba(0, 0, 0, 0.25),
@@ -49,7 +46,6 @@
   align-items: center;
   justify-content: center;
   width: 128px;
-  cursor: grab;
   cursor: grabbing;
   background: rgba(235, 235, 235, 0.82);
   border-radius: 4px;

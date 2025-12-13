@@ -25,7 +25,13 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "recommended": true,
+      "nursery": {
+        "noImportantInKeyframe": "off"
+      },
+      "suspicious": {
+        "noImportantInKeyframe": "off"
+      }
     },
     "domains": {
       "next": "recommended",

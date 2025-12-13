@@ -10,6 +10,7 @@ export const DiaBrowser = (props: SVGMotionProps<SVGElement>) => {
       className={styles.dia}
       {...props}
     >
+      <title>Browser Window</title>
       <g clipPath="url(#a)">
         <path
           fill="color(display-p3 .9216 .9216 .9216)"

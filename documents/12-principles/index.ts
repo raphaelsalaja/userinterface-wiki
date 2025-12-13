@@ -1,5 +1,5 @@
+import { Appeal } from "./12-appeal";
 import { Anticipation } from "./anticipation";
-import { Appeal } from "./appeal";
 import { Arcs } from "./arcs";
 import { Exaggeration } from "./exaggeration";
 import { FollowThroughAndOverlappingAction } from "./follow-through-and-overlapping-action";

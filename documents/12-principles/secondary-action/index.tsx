@@ -162,6 +162,7 @@ const Check = () => (
       xmlns="http://www.w3.org/2000/svg"
       className={styles.svg}
     >
+      <title>Check</title>
       <path
         fillRule="evenodd"
         clipRule="evenodd"
@@ -201,6 +202,7 @@ const Spinner = () => (
       xmlns="http://www.w3.org/2000/svg"
       className={styles.svg}
     >
+      <title>Loading Spinner</title>
       <circle
         cx="9"
         cy="9"
