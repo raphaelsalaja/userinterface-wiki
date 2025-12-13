@@ -7,11 +7,6 @@ import type { source } from "./source";
 export type Page = NonNullable<ReturnType<typeof source.getPage>>;
 
 /**
- * The frontmatter/metadata portion of a page.
- */
-export type PageData = NonNullable<ReturnType<typeof source.getPage>>["data"];
-
-/**
  * A formatted page with resolved author data and formatted dates.
  * This is the canonical shape for displaying page metadata in components.
  */

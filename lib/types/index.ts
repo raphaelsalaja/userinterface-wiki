@@ -13,9 +13,5 @@ export interface Author {
   };
 }
 
-// Re-export content types for backwards compatibility
-export type {
-  FormattedPage,
-  Page,
-  PageData,
-} from "@/lib/features/content/types";
+// Re-export content types for convenience
+export type { FormattedPage, Page } from "@/lib/features/content/types";
