@@ -6,23 +6,19 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Avatar, Bolt, Check, HighPriority, InProgress } from "./icons";
 import styles from "./styles.module.css";
 
+const EASE_OUT_EXPO = [0.19, 1, 0.22, 1] as const;
+const HOLD_DURATION = 1000;
+const RESTORE_DELAY = 2000;
+
 interface Issue {
   id: string;
   title: string;
-  priority: "high" | "medium" | "low";
-  status: "in-progress" | "done" | "todo";
-  assignee: string;
-  date: string;
   visible: boolean;
 }
 
 const initialIssue: Issue = {
   id: "TPA-42",
   title: "Anticipate Future Deletions",
-  priority: "high",
-  status: "in-progress",
-  assignee: "Avatar",
-  date: "Dec 28",
   visible: true,
 };
 
@@ -55,8 +51,8 @@ export function Anticipation() {
 
       restoreTimerRef.current = setTimeout(() => {
         setIssue((prev) => ({ ...prev, visible: true }));
-      }, 2000);
-    }, 1000);
+      }, RESTORE_DELAY);
+    }, HOLD_DURATION);
   }, [isSelected]);
 
   const handleDeleteEnd = useCallback(() => {
@@ -77,11 +73,7 @@ export function Anticipation() {
     setIsSelected((prev) => !prev);
   }, [issue.visible]);
 
-  useEffect(() => {
-    return () => {
-      clearTimers();
-    };
-  }, [clearTimers]);
+  useEffect(() => clearTimers, [clearTimers]);
 
   return (
     <div className={styles.container}>
@@ -96,10 +88,7 @@ export function Anticipation() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{
-                ease: [0.19, 1, 0.22, 1],
-                duration: 0.4,
-              }}
+              transition={{ ease: EASE_OUT_EXPO, duration: 0.4 }}
               className={styles.issue}
               onClick={handleIssueClick}
               data-state={isSelected ? "checked" : "unchecked"}
@@ -117,7 +106,7 @@ export function Anticipation() {
               <span className={styles.title}>{issue.title}</span>
               <div className={styles.spacer} />
               <Avatar className={styles.avatar} />
-              <div className={styles.date}>{issue.date}</div>
+              <div className={styles.date}>Dec 28</div>
             </motion.div>
           )}
         </AnimatePresence>
@@ -126,28 +115,11 @@ export function Anticipation() {
       <AnimatePresence>
         {isSelected && (
           <motion.div
-            initial={{
-              opacity: 0,
-              y: 64,
-              scale: 0.98,
-            }}
-            animate={{
-              opacity: 1,
-              y: 0,
-              scale: 1,
-            }}
-            exit={{
-              opacity: 0,
-              y: 64,
-              scale: 1,
-            }}
-            transformTemplate={(_latest, generated) =>
-              `translate(-50%, -0%) ${generated}`
-            }
-            transition={{
-              ease: [0.19, 1, 0.22, 1],
-              duration: 0.6,
-            }}
+            initial={{ opacity: 0, y: 64, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 64, scale: 1 }}
+            style={{ x: "-50%" }}
+            transition={{ ease: EASE_OUT_EXPO, duration: 0.6 }}
             className={styles.popup}
           >
             <Bolt className={styles.bolt} />
