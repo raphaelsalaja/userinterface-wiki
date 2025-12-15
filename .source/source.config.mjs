@@ -28,7 +28,7 @@ var SKIP_TAGS = /* @__PURE__ */ new Set([
 ]);
 function rehypeWordSpans() {
   return (tree) => {
-    const counter = 0;
+    let counter = 0;
     visit(tree, "text", (node, index, parent) => {
       if (typeof index !== "number" || !parent) return;
       const textNode = node;
@@ -50,10 +50,10 @@ function rehypeWordSpans() {
         return {
           type: "element",
           tagName: "span",
-          // properties: {
-          //   "data-word-id": `word-${counter++}`,
-          //   "data-word-normalized": normalized,
-          // },
+          properties: {
+            "data-word-id": `word-${counter++}`,
+            "data-word-normalized": normalized
+          },
           children: [{ type: "text", value: segment }]
         };
       });

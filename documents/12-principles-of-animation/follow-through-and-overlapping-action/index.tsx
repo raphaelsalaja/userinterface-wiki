@@ -1,268 +1,139 @@
 "use client";
 
-import { motion, useMotionValue, useSpring, useTransform } from "motion/react";
+import {
+  type MotionValue,
+  motion,
+  useMotionValue,
+  useSpring,
+  useTransform,
+} from "motion/react";
 import { useLayoutEffect, useRef, useState } from "react";
 import { Browser } from "./browser";
 import styles from "./styles.module.css";
 
-const CONFIG = {
-  INITIAL_DISTANCE: 200,
-  ACTIVE_DISTANCE: 150,
-  INITIAL_PULL: 0.1,
-  ACTIVE_PULL: 1.2,
-  INITIAL_SCALE: 1.05,
-  ACTIVE_SCALE: 1.2,
-};
+const MAGNET_RADIUS = 150;
+const PULL_STRENGTH = 0.15;
 
-const PANES = {
-  left: { side: "left", hiddenX: -100 },
-  right: { side: "right", hiddenX: 100 },
-} as const;
+const PANES = [
+  { id: "left", side: "left", hiddenX: -100 },
+  { id: "right", side: "right", hiddenX: 100 },
+] as const;
+
+function useMagnet(
+  dragX: MotionValue<number>,
+  dragY: MotionValue<number>,
+  targetRef: React.RefObject<{ x: number; y: number } | null>,
+) {
+  const attraction = useTransform([dragX, dragY], ([x, y]) => {
+    if (!targetRef.current) return 0;
+    const distance = Math.hypot(
+      (x as number) - targetRef.current.x,
+      (y as number) - targetRef.current.y,
+    );
+    return Math.max(0, 1 - distance / MAGNET_RADIUS);
+  });
+
+  const isActive = useTransform(attraction, (a) => a > 0.3);
+
+  const offsetX = useTransform([dragX, attraction], ([x, a]) => {
+    if (!targetRef.current) return 0;
+    return (
+      ((x as number) - targetRef.current.x) * (a as number) * PULL_STRENGTH
+    );
+  });
+
+  const offsetY = useTransform([dragY, attraction], ([y, a]) => {
+    if (!targetRef.current) return 0;
+    return (
+      ((y as number) - targetRef.current.y) * (a as number) * PULL_STRENGTH
+    );
+  });
+
+  const scale = useTransform(attraction, (a) => 1 + a * 0.15);
+
+  const background = useTransform(isActive, (active) =>
+    active ? "var(--sky-a9)" : "transparent",
+  );
+
+  return {
+    x: useSpring(offsetX, { damping: 30, stiffness: 400 }),
+    y: useSpring(offsetY, { damping: 30, stiffness: 400 }),
+    scale: useSpring(scale, { damping: 20, stiffness: 300 }),
+    background,
+  };
+}
 
 export function FollowThroughAndOverlappingAction() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const paneRefs = useRef<Record<string, HTMLDivElement | null>>({
-    left: null,
-    right: null,
-  });
-
   const [isDragging, setIsDragging] = useState(false);
-  const [centers, setCenters] = useState<
-    Record<string, { x: number; y: number }>
-  >({});
 
   const dragX = useMotionValue(0);
   const dragY = useMotionValue(0);
-  const springX = useSpring(dragX, { damping: 40, stiffness: 800 });
-  const springY = useSpring(dragY, { damping: 40, stiffness: 800 });
 
-  const leftDistance = useTransform([springX, springY], (values) => {
-    const [x, y] = values as [number, number];
-    if (!centers.left) return CONFIG.INITIAL_DISTANCE + 1;
-    const containerEl = containerRef.current;
-    if (!containerEl) return CONFIG.INITIAL_DISTANCE + 1;
-    const container = containerEl.getBoundingClientRect();
-    const cx = x + container.width / 2;
-    const cy = y + container.height / 2;
-    return Math.hypot(cx - centers.left.x, cy - centers.left.y);
-  });
+  const leftCenter = useRef<{ x: number; y: number } | null>(null);
+  const rightCenter = useRef<{ x: number; y: number } | null>(null);
 
-  const leftAttraction = useTransform(leftDistance, (d) => {
-    if (d < CONFIG.ACTIVE_DISTANCE)
-      return Math.min(1, (CONFIG.ACTIVE_DISTANCE - d) / CONFIG.ACTIVE_DISTANCE);
-    if (d < CONFIG.INITIAL_DISTANCE)
-      return Math.min(
-        1,
-        (CONFIG.INITIAL_DISTANCE - d) / CONFIG.INITIAL_DISTANCE,
-      );
-    return 0;
-  });
+  const left = useMagnet(dragX, dragY, leftCenter);
+  const right = useMagnet(dragX, dragY, rightCenter);
 
-  const leftIsActive = useTransform(
-    leftDistance,
-    (d) => d < CONFIG.ACTIVE_DISTANCE,
-  );
-
-  const leftPullFactor = useTransform(leftAttraction, (a) =>
-    a > 0 && leftDistance.get() < CONFIG.ACTIVE_DISTANCE
-      ? CONFIG.ACTIVE_PULL
-      : CONFIG.INITIAL_PULL,
-  );
-
-  const leftScaleValue = useTransform(
-    leftAttraction,
-    (a) =>
-      1 +
-      a *
-        (CONFIG.INITIAL_SCALE +
-          (CONFIG.ACTIVE_SCALE - CONFIG.INITIAL_SCALE) * (a > 0 ? 1 : 0) -
-          1),
-  );
-
-  const leftOffset = useTransform(
-    [springX, springY, leftAttraction],
-    (values) => {
-      const [x, y, a] = values as [number, number, number];
-      if (!centers.left) return { x: 0, y: 0 };
-      const containerEl = containerRef.current;
-      if (!containerEl) return { x: 0, y: 0 };
-      const container = containerEl.getBoundingClientRect();
-      const cx = x + container.width / 2;
-      const cy = y + container.height / 2;
-      const fx = (cx - centers.left.x) * a * leftPullFactor.get();
-      const fy = (cy - centers.left.y) * a * leftPullFactor.get();
-      return { x: fx, y: fy };
-    },
-  );
-
-  const leftScale = useSpring(leftScaleValue, { damping: 20, stiffness: 300 });
-  const leftX = useSpring(
-    useTransform(leftOffset, (o) => (o as { x: number; y: number }).x),
-    { damping: 40, stiffness: 800 },
-  );
-  const leftY = useSpring(
-    useTransform(leftOffset, (o) => (o as { x: number; y: number }).y),
-    { damping: 40, stiffness: 800 },
-  );
-  const leftBg = useTransform(leftIsActive, (on) =>
-    on ? "var(--sky-a9)" : "transparent",
-  );
-
-  // Create transforms for right pane
-  const rightDistance = useTransform([springX, springY], (values) => {
-    const [x, y] = values as [number, number];
-    if (!centers.right) return CONFIG.INITIAL_DISTANCE + 1;
-    const containerEl = containerRef.current;
-    if (!containerEl) return CONFIG.INITIAL_DISTANCE + 1;
-    const container = containerEl.getBoundingClientRect();
-    const cx = x + container.width / 2;
-    const cy = y + container.height / 2;
-    return Math.hypot(cx - centers.right.x, cy - centers.right.y);
-  });
-
-  const rightAttraction = useTransform(rightDistance, (d) => {
-    if (d < CONFIG.ACTIVE_DISTANCE)
-      return Math.min(1, (CONFIG.ACTIVE_DISTANCE - d) / CONFIG.ACTIVE_DISTANCE);
-    if (d < CONFIG.INITIAL_DISTANCE)
-      return Math.min(
-        1,
-        (CONFIG.INITIAL_DISTANCE - d) / CONFIG.INITIAL_DISTANCE,
-      );
-    return 0;
-  });
-
-  const rightIsActive = useTransform(
-    rightDistance,
-    (d) => d < CONFIG.ACTIVE_DISTANCE,
-  );
-
-  const rightPullFactor = useTransform(rightAttraction, (a) =>
-    a > 0 && rightDistance.get() < CONFIG.ACTIVE_DISTANCE
-      ? CONFIG.ACTIVE_PULL
-      : CONFIG.INITIAL_PULL,
-  );
-
-  const rightScaleValue = useTransform(
-    rightAttraction,
-    (a) =>
-      1 +
-      a *
-        (CONFIG.INITIAL_SCALE +
-          (CONFIG.ACTIVE_SCALE - CONFIG.INITIAL_SCALE) * (a > 0 ? 1 : 0) -
-          1),
-  );
-
-  const rightOffset = useTransform(
-    [springX, springY, rightAttraction],
-    (values) => {
-      const [x, y, a] = values as [number, number, number];
-      if (!centers.right) return { x: 0, y: 0 };
-      const containerEl = containerRef.current;
-      if (!containerEl) return { x: 0, y: 0 };
-      const container = containerEl.getBoundingClientRect();
-      const cx = x + container.width / 2;
-      const cy = y + container.height / 2;
-      const fx = (cx - centers.right.x) * a * rightPullFactor.get();
-      const fy = (cy - centers.right.y) * a * rightPullFactor.get();
-      return { x: fx, y: fy };
-    },
-  );
-
-  const rightScale = useSpring(rightScaleValue, {
-    damping: 20,
-    stiffness: 300,
-  });
-  const rightX = useSpring(
-    useTransform(rightOffset, (o) => (o as { x: number; y: number }).x),
-    { damping: 40, stiffness: 800 },
-  );
-  const rightY = useSpring(
-    useTransform(rightOffset, (o) => (o as { x: number; y: number }).y),
-    { damping: 40, stiffness: 800 },
-  );
-  const rightBg = useTransform(rightIsActive, (on) =>
-    on ? "var(--sky-a9)" : "transparent",
-  );
-
-  const transforms = {
-    left: {
-      scale: leftScale,
-      x: leftX,
-      y: leftY,
-      bg: leftBg,
-    },
-    right: {
-      scale: rightScale,
-      x: rightX,
-      y: rightY,
-      bg: rightBg,
-    },
-  };
+  const magnets = { left, right } as const;
+  const centerRefs = { left: leftCenter, right: rightCenter };
 
   useLayoutEffect(() => {
-    if (!containerRef.current) return;
-    const crect = containerRef.current.getBoundingClientRect();
-    const newCenters: typeof centers = {};
-    for (const key of Object.keys(PANES) as Array<keyof typeof PANES>) {
-      const el = paneRefs.current[key];
-      if (!el) continue;
-      const r = el.getBoundingClientRect();
-      newCenters[key] = {
-        x: r.left + r.width / 2 - crect.left,
-        y: r.top + r.height / 2 - crect.top,
-      };
-    }
-    setCenters(newCenters);
+    const container = containerRef.current;
+    if (!container) return;
+
+    const updateCenters = () => {
+      const rect = container.getBoundingClientRect();
+      for (const pane of PANES) {
+        const el = container.querySelector(`[data-id="${pane.id}"]`);
+        if (!el) continue;
+        const paneRect = el.getBoundingClientRect();
+        centerRefs[pane.id].current = {
+          x: paneRect.left + paneRect.width / 2 - rect.left - rect.width / 2,
+          y: paneRect.top + paneRect.height / 2 - rect.top - rect.height / 2,
+        };
+      }
+    };
+
+    updateCenters();
   }, []);
 
   return (
     <div ref={containerRef} className={styles.container}>
-      {(Object.keys(PANES) as Array<keyof typeof PANES>).map((key) => {
-        const { side, hiddenX } = PANES[key];
-        const t = transforms[key];
+      {PANES.map(({ id, side, hiddenX }) => {
+        const magnet = magnets[id];
         return (
           <motion.div
-            key={key}
-            ref={(el) => {
-              paneRefs.current[key] = el;
-            }}
-            data-id={key}
+            key={id}
+            data-id={id}
             className={styles.pane}
-            style={
-              {
-                "--magnet-bg": t.bg,
-                [side]: "16px",
-                top: "50%",
-                translate: "0 -50%",
-                scale: t.scale,
-                x: t.x,
-                y: t.y,
-              } as unknown as React.CSSProperties
-            }
+            style={{
+              [side]: 16,
+              top: "50%",
+              x: magnet.x,
+              y: magnet.y,
+              scale: magnet.scale,
+              backgroundColor: magnet.background,
+              translateY: "-50%",
+            }}
             animate={{
               opacity: isDragging ? 1 : 0,
               x: isDragging ? 0 : hiddenX,
-              scale: isDragging ? 1 : 0.8,
-              filter: isDragging ? "none" : "blur(4px)",
+              filter: isDragging ? "blur(0px)" : "blur(4px)",
             }}
-            transition={{
-              type: "spring",
-              stiffness: 150,
-              damping: 19,
-              mass: 1.2,
-            }}
+            transition={{ type: "spring", damping: 20, stiffness: 200 }}
           />
         );
       })}
 
       <Browser
         drag
-        whileDrag={{ scale: 0.95, opacity: 0.8 }}
-        animate={{ scale: 1, opacity: 1 }}
         dragSnapToOrigin
+        whileDrag={{ scale: 0.95, opacity: 0.8 }}
         style={{
-          x: springX,
-          y: springY,
+          x: dragX,
+          y: dragY,
           left: "50%",
           top: "50%",
           translate: "-50% -50%",
