@@ -36,8 +36,6 @@ export function useAudioReader(slugSegments: string[]): AudioReaderHookState {
   const rafRef = useRef<number | null>(null);
   const spansRef = useRef<SpanMeta[]>([]);
   const mappingRef = useRef<number[]>([]);
-  const spanToWordIndexRef = useRef<Map<HTMLElement, number>>(new Map());
-  const interactionCleanupRef = useRef<(() => void) | null>(null);
   const activeSpanRef = useRef<HTMLElement | null>(null);
   const activeBlockRef = useRef<HTMLElement | null>(null);
   const lastWordIndexRef = useRef(-1);
@@ -184,14 +182,12 @@ export function useAudioReader(slugSegments: string[]): AudioReaderHookState {
   useEffect(() => {
     if (!timestamps.length || !spansRef.current.length) {
       mappingRef.current = [];
-      spanToWordIndexRef.current.clear();
       return;
     }
 
     const mapping = alignTimeline(timestamps, spansRef.current);
     mappingRef.current = mapping;
 
-    spanToWordIndexRef.current = new Map();
     spansRef.current.forEach((meta) => {
       delete meta.element.dataset.wordTimeIndex;
     });
@@ -200,7 +196,6 @@ export function useAudioReader(slugSegments: string[]): AudioReaderHookState {
       if (spanIndex < 0) return;
       const meta = spansRef.current[spanIndex];
       if (!meta) return;
-      spanToWordIndexRef.current.set(meta.element, wordIndex);
       meta.element.dataset.wordTimeIndex = String(wordIndex);
     });
   }, [timestamps]);
@@ -394,65 +389,6 @@ export function useAudioReader(slugSegments: string[]): AudioReaderHookState {
     lastWordIndexRef.current = -1;
     clearActiveHighlight();
   }, [clearActiveHighlight, isPlaying]);
-
-  useEffect(() => {
-    interactionCleanupRef.current?.();
-
-    const audio = audioRef.current;
-    if (!audio || !timestamps.length || !spanToWordIndexRef.current.size) {
-      interactionCleanupRef.current = null;
-      return;
-    }
-
-    const seekToWord = (wordIndex: number) => {
-      const entry = timestamps[wordIndex];
-      if (!entry) return;
-      audio.currentTime = entry.start;
-      setCurrentTime(entry.start);
-      const runHighlight = () => {
-        lastWordIndexRef.current = wordIndex;
-        applyHighlight(wordIndex);
-      };
-
-      if (audio.paused) {
-        audio
-          .play()
-          .then(() => {
-            startTicker();
-            runHighlight();
-          })
-          .catch(() => {});
-        return;
-      }
-
-      runHighlight();
-    };
-
-    const cleanupFns: Array<() => void> = [];
-
-    spanToWordIndexRef.current.forEach((wordIndex, element) => {
-      const handleClick = () => {
-        seekToWord(wordIndex);
-      };
-
-      element.addEventListener("click", handleClick);
-
-      cleanupFns.push(() => {
-        element.removeEventListener("click", handleClick);
-      });
-    });
-
-    interactionCleanupRef.current = () => {
-      cleanupFns.forEach((fn) => {
-        fn();
-      });
-    };
-
-    return () => {
-      interactionCleanupRef.current?.();
-      interactionCleanupRef.current = null;
-    };
-  }, [applyHighlight, startTicker, timestamps, setCurrentTime]);
 
   return {
     status,

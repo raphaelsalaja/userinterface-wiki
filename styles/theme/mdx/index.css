@@ -272,7 +272,6 @@
     position: relative;
     z-index: 0;
     display: inline-block;
-    cursor: pointer;
     transition: all 0.16s ease-out;
 
     &::after {
@@ -287,12 +286,6 @@
       transition:
         all 0.16s ease-out,
         box-shadow 0.16s ease-out;
-    }
-
-    &:hover {
-      text-shadow:
-        0 0 4px rgba(0, 144, 255, 1),
-        0 0 8px rgba(0, 144, 255, 1);
     }
   }
 
