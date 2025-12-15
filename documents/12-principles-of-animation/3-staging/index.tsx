@@ -48,11 +48,24 @@ export function Staging() {
       <AnimatePresence initial={false} mode="popLayout">
         {staged && (
           <motion.div
+            key="overlay"
+            initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
+            animate={{ opacity: 1, backdropFilter: "blur(2px)" }}
+            exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
+            transition={{ duration: 0.2 }}
+            className={styles.overlay}
+            onTap={() => setStaged(false)}
+          />
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence initial={false} mode="popLayout">
+        {staged && (
+          <motion.div
             key="image"
             style={{
               backgroundImage: `url(${url})`,
             }}
-            layoutCrossfade={false}
             transformTemplate={(_latest, generated) =>
               `translate(-50%, -50%) ${generated}`
             }
@@ -66,20 +79,6 @@ export function Staging() {
             className={`${styles.image} ${styles.staged}`}
             onTap={() => setStaged(false)}
             layoutId="image"
-          />
-        )}
-      </AnimatePresence>
-
-      <AnimatePresence initial={false} mode="popLayout">
-        {staged && (
-          <motion.div
-            key="overlay"
-            initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
-            animate={{ opacity: 1, backdropFilter: "blur(2px)" }}
-            exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
-            transition={{ duration: 0.2 }}
-            className={styles.overlay}
-            onTap={() => setStaged(false)}
           />
         )}
       </AnimatePresence>

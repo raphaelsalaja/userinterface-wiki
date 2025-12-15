@@ -12,7 +12,7 @@ import { Browser } from "./browser";
 import styles from "./styles.module.css";
 
 const MAGNET_RADIUS = 150;
-const PULL_STRENGTH = 0.15;
+const PULL_STRENGTH = 0.5;
 
 const PANES = [
   { id: "left", side: "left", hiddenX: -100 },
@@ -128,7 +128,7 @@ export function FollowThroughAndOverlappingAction() {
       <Browser
         drag
         dragSnapToOrigin
-        whileDrag={{ scale: 0.95, opacity: 0.8 }}
+        whileDrag={{ scale: 0.9, opacity: 0.8 }}
         style={{
           x: dragX,
           y: dragY,

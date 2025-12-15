@@ -1,152 +1,131 @@
 "use client";
 
-import { Checkbox } from "@base-ui-components/react/checkbox";
-import { AnimatePresence, motion } from "motion/react";
+import chroma from "chroma-js";
+import { animate, motion, useMotionValue, useTransform } from "motion/react";
+import { getNearestPantone } from "pantone-tcx";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Avatar, Bolt, Check, HighPriority, InProgress } from "./icons";
 import styles from "./styles.module.css";
 
-const EASE_OUT_EXPO = [0.19, 1, 0.22, 1] as const;
-const HOLD_DURATION = 1000;
-const RESTORE_DELAY = 2000;
-
-interface Issue {
-  id: string;
-  title: string;
-  visible: boolean;
-}
-
-const initialIssue: Issue = {
-  id: "TPA-42",
-  title: "Anticipate Future Deletions",
-  visible: true,
-};
+const REFRESH_THRESHOLD = 80;
+const RANDOMIZE_INTERVAL = 100;
 
 export function Anticipation() {
-  const [issue, setIssue] = useState<Issue>(initialIssue);
-  const [isSelected, setIsSelected] = useState(false);
-  const [isHolding, setIsHolding] = useState(false);
-  const holdTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const restoreTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const [colorHex, setColorHex] = useState("#fff");
+  const [isShaking, setIsShaking] = useState(false);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const isPastThreshold = useRef(false);
 
-  const clearTimers = useCallback(() => {
-    if (holdTimerRef.current) {
-      clearTimeout(holdTimerRef.current);
-      holdTimerRef.current = null;
-    }
-    if (restoreTimerRef.current) {
-      clearTimeout(restoreTimerRef.current);
-      restoreTimerRef.current = null;
-    }
+  const y = useMotionValue(0);
+  const x = useMotionValue(0);
+  const scale = useTransform(y, [0, REFRESH_THRESHOLD], [1, 0.95]);
+
+  const refreshColor = useCallback(() => {
+    setColorHex(chroma.random().hex());
   }, []);
 
-  const handleDeleteStart = useCallback(() => {
-    if (!isSelected) return;
+  useEffect(() => {
+    refreshColor();
+  }, [refreshColor]);
 
-    setIsHolding(true);
-    holdTimerRef.current = setTimeout(() => {
-      setIssue((prev) => ({ ...prev, visible: false }));
-      setIsSelected(false);
-      setIsHolding(false);
+  useEffect(() => {
+    let shakeInterval: NodeJS.Timeout | null = null;
 
-      restoreTimerRef.current = setTimeout(() => {
-        setIssue((prev) => ({ ...prev, visible: true }));
-      }, RESTORE_DELAY);
-    }, HOLD_DURATION);
-  }, [isSelected]);
-
-  const handleDeleteEnd = useCallback(() => {
-    setIsHolding(false);
-    if (holdTimerRef.current) {
-      clearTimeout(holdTimerRef.current);
-      holdTimerRef.current = null;
+    if (isShaking) {
+      let direction = 1;
+      shakeInterval = setInterval(() => {
+        const offset = (Math.random() * 2 + 1) * direction;
+        animate(x, offset, { duration: 0.05, ease: "linear" });
+        direction *= -1;
+      }, 50);
+    } else {
+      animate(x, 0, { duration: 0.1, ease: "easeOut" });
     }
-  }, []);
 
-  const handleClearClick = useCallback(() => {
-    setIsSelected(false);
-    clearTimers();
-  }, [clearTimers]);
+    return () => {
+      if (shakeInterval) clearInterval(shakeInterval);
+    };
+  }, [isShaking, x]);
 
-  const handleIssueClick = useCallback(() => {
-    if (!issue.visible) return;
-    setIsSelected((prev) => !prev);
-  }, [issue.visible]);
+  useEffect(() => {
+    const unsubscribe = y.on("change", (latest) => {
+      const pastThreshold = latest >= REFRESH_THRESHOLD;
 
-  useEffect(() => clearTimers, [clearTimers]);
+      if (pastThreshold && !isPastThreshold.current) {
+        isPastThreshold.current = true;
+        setIsShaking(true);
+        refreshColor();
+        intervalRef.current = setInterval(refreshColor, RANDOMIZE_INTERVAL);
+      } else if (!pastThreshold && isPastThreshold.current) {
+        isPastThreshold.current = false;
+        setIsShaking(false);
+        if (intervalRef.current) {
+          clearInterval(intervalRef.current);
+          intervalRef.current = null;
+        }
+      }
+    });
+
+    return () => {
+      unsubscribe();
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [y, refreshColor]);
+
+  const handleDragEnd = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+    isPastThreshold.current = false;
+    setIsShaking(false);
+
+    animate(y, 0, {
+      type: "spring",
+      stiffness: 400,
+      damping: 25,
+    });
+  };
+
+  const pantone = getNearestPantone(colorHex);
 
   return (
     <div className={styles.container}>
-      <div className={styles.issues}>
-        <div className={styles.header}>
-          <h2 className={styles.title}>Tasks</h2>
-          <div className={styles.line} />
+      <motion.div
+        key={isPastThreshold.current ? "hint-refresh" : "hint-swipe"}
+        initial={{ opacity: 0, filter: "blur(4px)" }}
+        animate={{ opacity: 1, filter: "blur(0px)" }}
+        exit={{ opacity: 0, filter: "blur(4px)" }}
+        className={styles.hint}
+      >
+        {isPastThreshold.current ? "Release" : "Swipe Down"}
+      </motion.div>
+      <motion.div
+        className={styles.card}
+        style={{ x, y, scale, cursor: "grab" }}
+        drag="y"
+        dragConstraints={{ top: 0, bottom: 0 }}
+        dragElastic={{ top: 0, bottom: 0.5 }}
+        onDragEnd={handleDragEnd}
+        whileDrag={{ cursor: "grabbing" }}
+        animate={{
+          filter: isShaking ? "blur(8px)" : "blur(0px)",
+        }}
+      >
+        <motion.div
+          className={styles.swatch}
+          animate={{
+            background: chroma(pantone.hex).hex(),
+          }}
+          transition={{ duration: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+        />
+        <div className={styles.info}>
+          <span className={styles.title}>PANTONE®</span>
+          <span className={styles.tcx}>{pantone.tcx} TCX</span>
+          <span className={styles.name}>{pantone.name}</span>
         </div>
-        <AnimatePresence>
-          {issue.visible && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ ease: EASE_OUT_EXPO, duration: 0.4 }}
-              className={styles.issue}
-              onClick={handleIssueClick}
-              data-state={isSelected ? "checked" : "unchecked"}
-            >
-              <Checkbox.Root checked={isSelected} className={styles.checkbox}>
-                <Checkbox.Indicator className={styles.indicator}>
-                  <Check className={styles.check} color="var(--white-a12)" />
-                </Checkbox.Indicator>
-              </Checkbox.Root>
-              <div className={styles.priority}>
-                <HighPriority />
-              </div>
-              <span className={styles.id}>{issue.id}</span>
-              <InProgress className={styles.status} />
-              <span className={styles.title}>{issue.title}</span>
-              <div className={styles.spacer} />
-              <Avatar className={styles.avatar} />
-              <div className={styles.date}>Dec 28</div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-
-      <AnimatePresence>
-        {isSelected && (
-          <motion.div
-            initial={{ opacity: 0, y: 64, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 64, scale: 1 }}
-            style={{ x: "-50%" }}
-            transition={{ ease: EASE_OUT_EXPO, duration: 0.6 }}
-            className={styles.popup}
-          >
-            <Bolt className={styles.bolt} />
-            <span className={styles.selected}>Quick Actions</span>
-            <button
-              type="button"
-              className={styles.clear}
-              onClick={handleClearClick}
-            >
-              Clear
-            </button>
-            <button
-              type="button"
-              className={styles.delete}
-              onMouseDown={handleDeleteStart}
-              onMouseUp={handleDeleteEnd}
-              onMouseLeave={handleDeleteEnd}
-              onTouchStart={handleDeleteStart}
-              onTouchEnd={handleDeleteEnd}
-              data-holding={isHolding}
-            >
-              <div aria-hidden="true" className={styles.hold} />
-              Delete
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      </motion.div>
     </div>
   );
 }
