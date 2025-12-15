@@ -26,9 +26,9 @@
 
   hr {
     width: 100%;
-    height: 1px;
+    height: 0.5px;
     margin: var(--prose-block-spacing-large) 0;
-    background: var(--gray-6);
+    background: var(--gray-4);
     border: none;
   }
 
@@ -99,11 +99,6 @@
   [data-prose-type="text"] + [data-prose-type="block"],
   [data-prose-type="block"] + [data-prose-type="list"] {
     margin-top: var(--prose-block-spacing-large);
-  }
-
-  [data-prose-type="list"] {
-    padding-left: var(--prose-list-inset);
-    list-style: none;
   }
 
   ul[data-prose-type="list"] {
@@ -210,6 +205,22 @@
 
     li + li {
       margin-top: var(--prose-block-spacing-small);
+    }
+  }
+
+  [data-footnotes] {
+    [data-prose-type="text"] {
+      position: relative;
+      z-index: 0;
+      margin: 0px;
+      font-size: 12px;
+      font-weight: var(--font-weight-normal);
+      line-height: 24px;
+      color: var(--gray-11);
+      letter-spacing: var(--font-inter-letter-spacing-14px);
+      overflow-wrap: break-word;
+      scroll-margin-top: var(--prose-block-spacing);
+      isolation: isolate;
     }
   }
 
