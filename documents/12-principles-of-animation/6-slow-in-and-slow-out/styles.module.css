@@ -24,14 +24,7 @@
   gap: 12px;
   align-items: center;
   padding: 16px;
-  background: var(--background);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-}
-
-.visualization:hover {
-  background: var(--background-hover);
-  border-color: var(--border-hover);
+  background: var(--gray-1);
 }
 
 .graphContainer {
@@ -48,8 +41,7 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cg opacity='0.25'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M24 43L24 44L23 44L23 43L24 43ZM24 39L24 40L23 40L23 39L24 39ZM24 35L24 36L23 36L23 35L24 35ZM24 31L24 32L23 32L23 31L24 31ZM24 27L24 28L23 28L23 27L24 27ZM24 23L24 24L23 24L23 23L24 23ZM24 19L24 20L23 20L23 19L24 19ZM24 15L24 16L23 16L23 15L24 15ZM24 11L24 12L23 12L23 11L24 11ZM24 7L24 8L23 8L23 7L24 7ZM24 3L24 4L23 4L23 3L24 3Z' fill='currentColor'%3E%3C/path%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M48 43L48 44L47 44L47 43L48 43ZM48 39L48 40L47 40L47 39L48 39ZM48 35L48 36L47 36L47 35L48 35ZM48 31L48 32L47 32L47 31L48 31ZM48 27L48 28L47 28L47 27L48 27ZM48 23L48 24L47 24L47 23L48 23ZM48 19L48 20L47 20L47 19L48 19ZM48 15L48 16L47 16L47 15L48 15ZM48 11L48 12L47 12L47 11L48 11ZM48 7L48 8L47 8L47 7L48 7ZM48 3L48 4L47 4L47 3L48 3Z' fill='currentColor'%3E%3C/path%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M43 23L44 23L44 24L43 24L43 23ZM39 23L40 23L40 24L39 24L39 23ZM35 23L36 23L36 24L35 24L35 23ZM31 23L32 23L32 24L31 24L31 23ZM27 23L28 23L28 24L27 24L27 23ZM19 23L20 23L20 24L19 24L19 23ZM15 23L16 23L16 24L15 24L15 23ZM11 23L12 23L12 24L11 24L11 23ZM7 23L8 23L8 24L7 24L7 23ZM3 23L4 23L4 24L3 24L3 23Z' fill='currentColor'%3E%3C/path%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M47 47L48 47L48 48L47 48L47 47ZM43 47L44 47L44 48L43 48L43 47ZM39 47L40 47L40 48L39 48L39 47ZM35 47L36 47L36 48L35 48L35 47ZM31 47L32 47L32 48L31 48L31 47ZM27 47L28 47L28 48L27 48L27 47ZM23 47L24 47L24 48L23 48L23 47ZM19 47L20 47L20 48L19 48L19 47ZM15 47L16 47L16 48L15 48L15 47ZM11 47L12 47L12 48L11 48L11 47ZM7 47L8 47L8 48L7 48L7 47ZM3 47L4 47L4 48L3 48L3 47Z' fill='currentColor'%3E%3C/path%3E%3C/g%3E%3C/svg%3E");
   background-repeat: repeat;
   background-position: center;
-
-  border: 1px solid var(--border-secondary);
+  border: 1px solid var(--gray-4);
   border-radius: 6px;
 }
 
@@ -60,9 +52,7 @@
   justify-content: center;
   width: 20px;
   height: 80px;
-
-  background: var(--background-tertiary);
-  border: 1px solid var(--border-secondary);
+  border: 1px solid var(--gray-4);
   border-radius: 4px;
 }
 
@@ -70,7 +60,7 @@
   position: relative;
   width: 10px;
   height: 10px;
-  background: var(--black);
+  background: var(--gray-12);
   border-radius: 100px;
 }
 
@@ -84,6 +74,6 @@
   font-size: 12px;
   font-weight: var(--font-weight-medium);
   line-height: 1.2;
-  color: var(--gray-11);
+  color: var(--gray-12);
   text-align: center;
 }

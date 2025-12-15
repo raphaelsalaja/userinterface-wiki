@@ -57,7 +57,7 @@ const Visualization = ({ ease, name }: VisualizationProps) => {
                 <path
                   d="M 10 0 L 0 0 0 10"
                   fill="none"
-                  stroke="var(--border-secondary)"
+                  stroke="var(--gray-4)"
                   strokeWidth="0.5"
                   opacity="0.3"
                 />
@@ -71,7 +71,7 @@ const Visualization = ({ ease, name }: VisualizationProps) => {
               width="60"
               height="60"
               fill="none"
-              stroke="var(--border)"
+              stroke="var(--gray-4)"
               strokeWidth="1"
             />
 
@@ -79,7 +79,7 @@ const Visualization = ({ ease, name }: VisualizationProps) => {
               <path
                 d={pathData}
                 fill="none"
-                stroke="var(--black)"
+                stroke="var(--gray-12)"
                 strokeWidth="2.5"
                 strokeLinecap="round"
               />
@@ -88,7 +88,7 @@ const Visualization = ({ ease, name }: VisualizationProps) => {
             <path
               d="M 20 80 L 80 20"
               fill="none"
-              stroke="var(--pink)"
+              stroke="var(--pink-9)"
               strokeWidth="1.5"
               strokeDasharray="2,2"
               opacity="0.6"

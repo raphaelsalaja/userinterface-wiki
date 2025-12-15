@@ -1,5 +1,5 @@
 import type { MDXComponents } from "mdx/types";
-import { Principles } from "@/documents/12-principles";
+import { Principles } from "@/documents/12-principles-of-animation";
 import { Caption, Figure } from "./components/figure";
 
 export function getMDXComponents(components?: MDXComponents): MDXComponents {
