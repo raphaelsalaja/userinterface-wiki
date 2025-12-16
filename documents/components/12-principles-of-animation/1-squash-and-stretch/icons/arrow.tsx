@@ -1,4 +1,4 @@
-import type { IconProps } from "@/components/icons";
+import type { IconProps } from "@/components/icons/types";
 
 export const ArrowIcon = ({
   size = 24,

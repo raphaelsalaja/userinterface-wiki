@@ -14,7 +14,7 @@ export function getGradientColors(value: string): [string, string] {
     saturation: 0.5,
     lightness: 0.65,
     hue: { min: 180, max: 360 },
-  }).hex(value + "-secondary");
+  }).hex(`${value}-secondary`);
 
   return [primary, secondary];
 }

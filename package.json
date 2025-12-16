@@ -4,10 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "pnpm generate:tts && next build",
+    "build:next": "next build",
     "start": "next start",
     "lint": "biome check --fix --unsafe . --reporter=summary",
-    "postinstall": "fumadocs-mdx"
+    "postinstall": "fumadocs-mdx",
+    "generate:tts": "tsx scripts/generate-tts.ts"
   },
   "dependencies": {
     "@base-ui-components/react": "1.0.0-rc.0",
@@ -63,7 +65,10 @@
     "autoprefixer": "^10.4.22",
     "babel-plugin-react-compiler": "^1.0.0",
     "baseline-browser-mapping": "^2.9.7",
+    "dotenv": "^17.2.3",
+    "picocolors": "^1.1.1",
     "tailwindcss": "^4.1.18",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   },
   "pnpm": {

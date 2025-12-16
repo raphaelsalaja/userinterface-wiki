@@ -24,7 +24,7 @@ export function rehypeWordSpans() {
     const isInFootnotes = (element: Element): boolean => {
       let current: Element | null = element;
       while (current) {
-        if (current.properties?.["dataFootnotes"] !== undefined) {
+        if (current.properties?.dataFootnotes !== undefined) {
           return true;
         }
         current = parentMap.get(current) ?? null;
