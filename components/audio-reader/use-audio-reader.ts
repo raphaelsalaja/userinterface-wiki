@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useShallow } from "zustand/react/shallow";
+import { getGradientColors } from "@/lib/utils/colors";
 import {
   type AgentState,
+  type PlaybackRate,
   useAudioReaderStore,
   type WordTimestamp,
 } from "./store";
@@ -25,13 +27,31 @@ interface AudioReaderHookState {
   duration: number;
   currentTime: number;
   agentState: AgentState;
+  playbackRate: PlaybackRate;
+  colors: [string, string];
   setAgentState: (state: AgentState) => void;
   handleToggle: () => Promise<void> | void;
   seek: (time: number) => void;
+  cyclePlaybackRate: () => void;
 }
 
-export function useAudioReader(slugSegments: string[]): AudioReaderHookState {
+interface AudioReaderOptions {
+  slugSegments: string[];
+  title: string;
+  authorName: string;
+}
+
+export function useAudioReader({
+  slugSegments,
+  title,
+  authorName,
+}: AudioReaderOptions): AudioReaderHookState {
   const slugKey = useMemo(() => slugSegments.join("/"), [slugSegments]);
+
+  const colors = useMemo(
+    () => getGradientColors(slugSegments.join("-")),
+    [slugSegments],
+  );
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const rafRef = useRef<number | null>(null);
@@ -52,6 +72,7 @@ export function useAudioReader(slugSegments: string[]): AudioReaderHookState {
     currentTime,
     duration,
     agentState,
+    playbackRate,
     setAudioData,
     setStatus,
     setError,
@@ -59,6 +80,7 @@ export function useAudioReader(slugSegments: string[]): AudioReaderHookState {
     setCurrentTime,
     setDuration,
     setAgentState,
+    cyclePlaybackRate,
     reset,
   } = useAudioReaderStore(
     useShallow((state) => ({
@@ -70,6 +92,7 @@ export function useAudioReader(slugSegments: string[]): AudioReaderHookState {
       currentTime: state.currentTime,
       duration: state.duration,
       agentState: state.agentState,
+      playbackRate: state.playbackRate,
       setAudioData: state.setAudioData,
       setStatus: state.setStatus,
       setError: state.setError,
@@ -77,6 +100,7 @@ export function useAudioReader(slugSegments: string[]): AudioReaderHookState {
       setCurrentTime: state.setCurrentTime,
       setDuration: state.setDuration,
       setAgentState: state.setAgentState,
+      cyclePlaybackRate: state.cyclePlaybackRate,
       reset: state.reset,
     })),
   );
@@ -293,6 +317,12 @@ export function useAudioReader(slugSegments: string[]): AudioReaderHookState {
     audio.load();
   }, [audioUrl]);
 
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.playbackRate = playbackRate;
+  }, [playbackRate]);
+
   const handleToggle = useCallback(async () => {
     if (!audioRef.current || !audioUrl) return;
 
@@ -334,6 +364,136 @@ export function useAudioReader(slugSegments: string[]): AudioReaderHookState {
     },
     [duration, setCurrentTime],
   );
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (
+        e.target instanceof HTMLInputElement ||
+        e.target instanceof HTMLTextAreaElement
+      ) {
+        return;
+      }
+
+      const audio = audioRef.current;
+      if (!audio) return;
+
+      switch (e.code) {
+        case "Space":
+          e.preventDefault();
+          handleToggle();
+          break;
+        case "ArrowLeft":
+          e.preventDefault();
+          seek(audio.currentTime - 5);
+          break;
+        case "ArrowRight":
+          e.preventDefault();
+          seek(audio.currentTime + 5);
+          break;
+        case "KeyJ":
+          e.preventDefault();
+          seek(audio.currentTime - 10);
+          break;
+        case "KeyL":
+          e.preventDefault();
+          seek(audio.currentTime + 10);
+          break;
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [handleToggle, seek]);
+
+  const artworkUrl = useMemo(() => {
+    if (typeof document === "undefined") return null;
+
+    const size = 512;
+    const canvas = document.createElement("canvas");
+    canvas.width = size;
+    canvas.height = size;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return null;
+
+    const gradient = ctx.createRadialGradient(
+      size / 2,
+      size / 2,
+      0,
+      size / 2,
+      size / 2,
+      size / 2,
+    );
+
+    colors.forEach((color, index) => {
+      gradient.addColorStop(index / (colors.length - 1), color);
+    });
+
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, size, size);
+
+    return canvas.toDataURL("image/png");
+  }, [colors]);
+
+  useEffect(() => {
+    if (!("mediaSession" in navigator)) return;
+
+    const artwork: MediaImage[] = artworkUrl
+      ? [{ src: artworkUrl, sizes: "512x512", type: "image/png" }]
+      : [];
+
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title,
+      artist: authorName,
+      album: "userinterface.wiki",
+      artwork,
+    });
+
+    navigator.mediaSession.setActionHandler("play", () => {
+      audioRef.current?.play();
+    });
+
+    navigator.mediaSession.setActionHandler("pause", () => {
+      audioRef.current?.pause();
+    });
+
+    navigator.mediaSession.setActionHandler("seekbackward", () => {
+      const audio = audioRef.current;
+      if (audio) seek(audio.currentTime - 10);
+    });
+
+    navigator.mediaSession.setActionHandler("seekforward", () => {
+      const audio = audioRef.current;
+      if (audio) seek(audio.currentTime + 10);
+    });
+
+    navigator.mediaSession.setActionHandler("seekto", (details) => {
+      if (details.seekTime !== undefined) {
+        seek(details.seekTime);
+      }
+    });
+
+    return () => {
+      navigator.mediaSession.setActionHandler("play", null);
+      navigator.mediaSession.setActionHandler("pause", null);
+      navigator.mediaSession.setActionHandler("seekbackward", null);
+      navigator.mediaSession.setActionHandler("seekforward", null);
+      navigator.mediaSession.setActionHandler("seekto", null);
+    };
+  }, [artworkUrl, authorName, seek, title]);
+
+  useEffect(() => {
+    if (!("mediaSession" in navigator)) return;
+    navigator.mediaSession.playbackState = isPlaying ? "playing" : "paused";
+  }, [isPlaying]);
+
+  useEffect(() => {
+    if (!("mediaSession" in navigator) || duration === 0) return;
+    navigator.mediaSession.setPositionState({
+      duration,
+      playbackRate,
+      position: currentTime,
+    });
+  }, [currentTime, duration, playbackRate]);
 
   const applyHighlight = useCallback(
     (wordIndex: number) => {
@@ -413,5 +573,8 @@ export function useAudioReader(slugSegments: string[]): AudioReaderHookState {
     setAgentState,
     handleToggle,
     seek,
+    playbackRate,
+    cyclePlaybackRate,
+    colors,
   };
 }

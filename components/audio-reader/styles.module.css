@@ -82,7 +82,14 @@
   min-width: 32px;
   min-height: 32px;
   aspect-ratio: 1 / 1;
+  font-variant-numeric: tabular-nums;
+  border-radius: 8px;
   transition: all 0.2s;
+}
+
+.button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--white-a4);
 }
 
 .button svg {

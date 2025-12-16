@@ -8,9 +8,6 @@ import type { ComponentProps } from "react";
 import React from "react";
 import { PauseIcon } from "@/components/icons/pause";
 import { PlayIcon } from "@/components/icons/play";
-import { getGradientColors } from "@/lib/utils/colors";
-import { ExpandIcon } from "../icons/expand";
-import { PictureInPictureIcon } from "../icons/picture-in-picture";
 import { Orb } from "../orb";
 import styles from "./styles.module.css";
 import { useAudioReader } from "./use-audio-reader";
@@ -18,9 +15,15 @@ import { formatTime } from "./utils";
 
 interface AudioReaderProps {
   slugSegments: string[];
+  title: string;
+  authorName: string;
 }
 
-export const AudioReader = ({ slugSegments }: AudioReaderProps) => {
+export const AudioReader = ({
+  slugSegments,
+  title,
+  authorName,
+}: AudioReaderProps) => {
   const {
     status,
     isPlaying,
@@ -29,9 +32,13 @@ export const AudioReader = ({ slugSegments }: AudioReaderProps) => {
     agentState,
     handleToggle,
     seek,
-  } = useAudioReader(slugSegments);
+    playbackRate,
+    cyclePlaybackRate,
+    colors,
+  } = useAudioReader({ slugSegments, title, authorName });
 
   const readerRef = React.useRef<HTMLDivElement | null>(null);
+
   const [isReaderVisible, setIsReaderVisible] = React.useState(true);
 
   const progress =
@@ -74,19 +81,10 @@ export const AudioReader = ({ slugSegments }: AudioReaderProps) => {
     };
   }, []);
 
-  const orbColors = React.useMemo(
-    () => getGradientColors(slugSegments.join("-")),
-    [slugSegments],
-  );
-
   return (
     <React.Fragment>
       <div ref={readerRef} className={styles.reader}>
-        <Orb
-          colors={orbColors}
-          agentState={agentState}
-          className={styles.orb}
-        />
+        <Orb colors={colors} agentState={agentState} className={styles.orb} />
         {status !== "loading" && (
           <motion.div
             className={styles.controls}
@@ -108,7 +106,9 @@ export const AudioReader = ({ slugSegments }: AudioReaderProps) => {
               </AnimatePresence>
             </MediaPlayerButton>
 
-            <MediaPlayerButton>1x</MediaPlayerButton>
+            <MediaPlayerButton onClick={cyclePlaybackRate}>
+              {playbackRate}x
+            </MediaPlayerButton>
 
             <Slider.Root
               value={progress}
@@ -124,14 +124,6 @@ export const AudioReader = ({ slugSegments }: AudioReaderProps) => {
               </Slider.Control>
               <Time>{formatTime(duration)}</Time>
             </Slider.Root>
-
-            <MediaPlayerButton>
-              <PictureInPictureIcon />
-            </MediaPlayerButton>
-
-            <MediaPlayerButton>
-              <ExpandIcon />
-            </MediaPlayerButton>
           </motion.div>
         )}
       </div>
@@ -200,7 +192,9 @@ export const AudioReader = ({ slugSegments }: AudioReaderProps) => {
                 </AnimatePresence>
               </MediaPlayerButton>
 
-              <MediaPlayerButton>1x</MediaPlayerButton>
+              <MediaPlayerButton onClick={cyclePlaybackRate}>
+                {playbackRate}x
+              </MediaPlayerButton>
 
               <Slider.Root
                 value={progress}
@@ -216,14 +210,6 @@ export const AudioReader = ({ slugSegments }: AudioReaderProps) => {
                 </Slider.Control>
                 <Time>{formatTime(duration)}</Time>
               </Slider.Root>
-
-              <MediaPlayerButton>
-                <PictureInPictureIcon />
-              </MediaPlayerButton>
-
-              <MediaPlayerButton>
-                <ExpandIcon />
-              </MediaPlayerButton>
             </motion.div>
           )}
         </AnimatePresence>
