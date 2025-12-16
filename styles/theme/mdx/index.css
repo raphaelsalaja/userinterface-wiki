@@ -409,13 +409,24 @@
   }
 
   table {
-    width: 100%;
+    display: block;
+    width: max-content;
+    max-width: 100%;
+    overflow-x: auto;
     font-size: 15px;
     font-variant-numeric: tabular-nums;
     letter-spacing: var(--font-inter-letter-spacing-14px);
     border-spacing: 0;
     border-collapse: collapse;
     scroll-margin-top: var(--prose-block-spacing);
+  }
+
+  thead,
+  tbody,
+  tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
   }
 
   thead {
