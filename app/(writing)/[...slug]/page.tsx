@@ -20,9 +20,30 @@ export async function generateMetadata(props: {
 
   if (!page) notFound();
 
+  const slugPath = params.slug.join("/");
+  const ogImageUrl = `/api/og?slug=${encodeURIComponent(slugPath)}`;
+
   return {
     title: page.data.title,
     description: page.data.description,
+    openGraph: {
+      title: page.data.title,
+      description: page.data.description,
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: page.data.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: page.data.title,
+      description: page.data.description,
+      images: [ogImageUrl],
+    },
   };
 }
 

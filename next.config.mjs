@@ -10,8 +10,6 @@ const config = {
     position: "bottom-right",
   },
   experimental: {
-    turbopackFileSystemCacheForDev: true,
-    staleTimes: { dynamic: 30, static: 180 },
     viewTransition: true,
   },
   images: {
