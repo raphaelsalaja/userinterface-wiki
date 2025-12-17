@@ -1,17 +1,28 @@
+import { notFound } from "next/navigation";
 import { ImageResponse } from "next/og";
+import { source } from "@/lib/features/content";
 
 export const runtime = "edge";
 
-export const alt = "ui.wiki - A Living Manual for Better Interfaces.";
+export const alt = "ui.wiki";
 export const size = {
   width: 1200,
   height: 630,
 };
 export const contentType = "image/png";
 
-export default async function Image() {
+export default async function Image({
+  params,
+}: {
+  params: Promise<{ slug: string[] }>;
+}) {
+  const { slug } = await params;
+  const page = source.getPage(slug);
+
+  if (!page) notFound();
+
   const interSemiBold = await fetch(
-    new URL("../public/fonts/inter/semi-bold.ttf", import.meta.url),
+    new URL("../../../public/fonts/inter/semi-bold.ttf", import.meta.url),
   ).then((res) => res.arrayBuffer());
 
   return new ImageResponse(
@@ -62,7 +73,7 @@ export default async function Image() {
             lineHeight: 1,
           }}
         >
-          A Living Manual for Better Interfaces.
+          {page.data.title}
         </div>
       </div>
     </div>,

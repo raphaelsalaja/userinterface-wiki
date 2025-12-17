@@ -6,7 +6,11 @@ export const size = {
 };
 export const contentType = "image/png";
 
-export default function AppleIcon() {
+export default async function AppleIcon() {
+  const inter = await fetch(
+    new URL("../public/fonts/inter/bold.ttf", import.meta.url),
+  ).then((res) => res.arrayBuffer());
+
   return new ImageResponse(
     <div
       style={{
@@ -19,14 +23,22 @@ export default function AppleIcon() {
         justifyContent: "center",
         color: "#fcfcfc",
         borderRadius: 40,
-        fontWeight: 600,
-        fontFamily: "system-ui",
+        fontWeight: 700,
+        fontFamily: "Inter",
       }}
     >
       U
     </div>,
     {
       ...size,
+      fonts: [
+        {
+          name: "Inter",
+          data: inter,
+          style: "normal",
+          weight: 700,
+        },
+      ],
     },
   );
 }

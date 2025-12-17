@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "UI Wiki",
-    short_name: "UI Wiki",
+    name: "userinterface.wiki",
+    short_name: "ui.wiki",
     description:
       "A living manual for better interfaces. Learn design principles, motion, typography, and more.",
     start_url: "/",

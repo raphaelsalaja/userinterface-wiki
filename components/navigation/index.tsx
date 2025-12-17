@@ -6,7 +6,7 @@ import styles from "./styles.module.css";
 
 const LINKS = [
   {
-    href: "https://twitter.com/raphaelsalaja",
+    href: "https://twitter.com/intent/follow?screen_name=raphaelsalaja",
     title: "X (Twitter)",
     external: true,
   },
@@ -21,7 +21,11 @@ export default function Navigation() {
   return (
     <NavigationMenu.Root className={styles.root}>
       <div className={styles.container}>
-        <Link href="/" className={styles.logo} aria-label="UI Wiki Home">
+        <Link
+          href="/"
+          className={styles.logo}
+          aria-label="userinterface.wiki home"
+        >
           ui.wiki
         </Link>
         <NavigationMenu.List className={styles.list}>

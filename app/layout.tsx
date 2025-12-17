@@ -9,7 +9,7 @@ import Navigation from "@/components/navigation";
 import { Providers } from "@/components/providers";
 
 const SITE_URL = "https://userinterface.wiki";
-const SITE_NAME = "UI Wiki";
+const SITE_NAME = "userinterface.wiki";
 const SITE_DESCRIPTION =
   "A living manual for better interfaces. Learn design principles, motion, typography, and more.";
 
