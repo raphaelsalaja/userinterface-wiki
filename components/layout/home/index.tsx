@@ -1,6 +1,6 @@
 "use client";
 
-import { Field } from "@base-ui-components/react/field";
+import { Field } from "@base-ui/react/field";
 import Fuse from "fuse.js";
 import { useMemo, useState } from "react";
 import { SearchIcon } from "@/components/icons";

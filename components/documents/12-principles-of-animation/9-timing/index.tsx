@@ -1,6 +1,6 @@
 "use client";
 
-import { Popover } from "@base-ui-components/react/popover";
+import { Popover } from "@base-ui/react/popover";
 import chroma from "chroma-js";
 import { getNearestPantone } from "pantone-tcx";
 import { useEffect, useState } from "react";

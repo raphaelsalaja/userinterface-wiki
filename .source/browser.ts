@@ -7,6 +7,6 @@ const create = browser<typeof Config, import("fumadocs-mdx/runtime/types").Inter
   }
 }>();
 const browserCollections = {
-  docs: create.doc("docs", {"12-principles-of-animation.mdx": () => import("../documents/12-principles-of-animation.mdx?collection=docs"), }),
+  docs: create.doc("docs", {"12-principles-of-animation.mdx": () => import("../documents/12-principles-of-animation.mdx?collection=docs"), "ease-vs-springs.mdx": () => import("../documents/ease-vs-springs.mdx?collection=docs"), }),
 };
 export default browserCollections;

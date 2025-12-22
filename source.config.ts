@@ -27,6 +27,7 @@ export const docs = defineDocs({
 export default defineConfig({
   mdxOptions: {
     providerImportSource: "@/mdx-components",
+    remarkPlugins: [],
     rehypePlugins: [rehypeWordSpans],
     rehypeCodeOptions: {
       themes: {

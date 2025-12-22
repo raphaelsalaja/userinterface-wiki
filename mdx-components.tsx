@@ -1,6 +1,44 @@
 import type { MDXComponents } from "mdx/types";
-import { Principles } from "@/documents/components/12-principles-of-animation";
+import {
+  Anticipation,
+  Appeal,
+  Arcs,
+  DecisionFlow,
+  Exaggeration,
+  FollowThroughAndOverlappingAction,
+  SecondaryAction,
+  SlowInSlowOut,
+  SolidDrawing,
+  SquashStretch,
+  Staging,
+  StraightAheadActionAndPoseToPose,
+  Timing,
+} from "./components/documents";
 import { Caption, Figure } from "./components/figure";
+
+const Principles: MDXComponents = {
+  SquashStretch,
+  Anticipation,
+  Staging,
+  StraightAheadActionAndPoseToPose,
+  FollowThroughAndOverlappingAction,
+  SlowInSlowOut,
+  Arcs,
+  SecondaryAction,
+  Timing,
+  Exaggeration,
+  SolidDrawing,
+  Appeal,
+};
+
+const EaseVsSpringsComponents: MDXComponents = {
+  DecisionFlow,
+};
+
+const BaseComponents: MDXComponents = {
+  Figure,
+  Caption,
+};
 
 export function getMDXComponents(components?: MDXComponents): MDXComponents {
   return {
@@ -20,9 +58,9 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     li: (props) => <li data-prose-type="text" {...props} />,
     ul: (props) => <ul data-prose-type="list" {...props} />,
     ol: (props) => <ol data-prose-type="list" {...props} />,
-    Figure,
-    Caption,
     ...Principles,
+    ...EaseVsSpringsComponents,
+    ...BaseComponents,
   };
 }
 

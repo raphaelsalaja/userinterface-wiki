@@ -1,6 +1,6 @@
 "use client";
 
-import { Button as BaseButton } from "@base-ui-components/react/button";
+import { Button as BaseButton } from "@base-ui/react/button";
 import clsx from "clsx";
 import { motion } from "motion/react";
 import type React from "react";

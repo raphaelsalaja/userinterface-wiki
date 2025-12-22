@@ -1,7 +1,7 @@
 "use client";
 
-import { Button } from "@base-ui-components/react/button";
-import { Tooltip } from "@base-ui-components/react/tooltip";
+import { Button } from "@base-ui/react/button";
+import { Tooltip } from "@base-ui/react/tooltip";
 import type { ComponentProps } from "react";
 import interactiveStyles from "../styles/interactive.module.css";
 import popoverStyles from "../styles/popover.module.css";

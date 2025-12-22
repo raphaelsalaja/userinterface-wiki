@@ -1,0 +1,37 @@
+---
+title: "Ease vs Springs"
+description: "When to ship ease curves and when to switch to springs, with concrete numbers, heuristics, and before/after interaction sketches."
+date:
+  published: "2024-06-15"
+  modified: "2025-12-21"
+tags: ["animation", "design", "principles", "motion"]
+author: "raphael-salaja"
+icon: motion
+---
+
+When designing user interface animations, one big question is whether to use traditional timing curves or physics-based spring animations. I often go through this process when building, and it's a question when asked to me that always leaves me stumped for a clear answer. To solve this i've retraced my steps multiple times when trying to decide on what to use and why to use it, and i've laid out my findings here. This isn't an end all or be all document, and it shouldn't be taken as such. There's always user input involved in these sort of things but hopefully this guide document will help you in your next decision.
+
+# Foundational Knowledge
+
+Before deciding when to use either, it helps to slow down and talk about what these things actually are. A lot of the confusion I see, comes from treating easing curves and springs as if they’re just two flavors of the same thing. Like you pick one based on taste, tweak it until it feels okay, and move on. They’re not in my opinion interchangeable like that. They come from very different ways of thinking about motion, and once that clicked for me, the decision started getting much easier.
+
+## Easing Curves
+
+An easing curve is really just a way of describing time. It's basically a mathematical function that defines the acceleration of an animation over a fixed duration. Luckily we don't need math to understand what they are inherently. Just know that if something needs to go from point a to point b, then the kind of easing curve you use, determines how it reaches that destination within a set time.
+
+## Springs
+
+If you've ever bounced a ball, or felt a car's suspension then you've felt a spring. Springs are based on physics models rather than fixed timing. Instead of telling the system how long something should take, you describe how it behaves when pushed or pulled. How stiff it is. How much energy it loses. How heavy it feels. You give it a target and let the system figure out how to get there.
+  
+## Key Differences
+
+To keep things simple, it really boils down to this. Easing functions have a predefined start and end, whereas springs do not. One requires a time period while the other uses physics to determine their period.
+
+# So What Do I Choose?
+
+This is the hard part, so i've tried my best to break it down into a few questions that you can ask yourself before making a choice. I could write out a lot of words here but i think having a visual would explain my thought process way simpler.
+
+<Figure>
+  <DecisionFlow />
+  <Caption>Decision flow for choosing between easing curves and springs.</Caption>
+</Figure>

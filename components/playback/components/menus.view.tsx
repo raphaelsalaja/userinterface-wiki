@@ -1,8 +1,8 @@
 "use client";
 
-import { Menu } from "@base-ui-components/react/menu";
-import { Slider } from "@base-ui-components/react/slider";
-import { Tooltip } from "@base-ui-components/react/tooltip";
+import { Menu } from "@base-ui/react/menu";
+import { Slider } from "@base-ui/react/slider";
+import { Tooltip } from "@base-ui/react/tooltip";
 import clsx from "clsx";
 import { AnimatePresence, motion } from "motion/react";
 import {

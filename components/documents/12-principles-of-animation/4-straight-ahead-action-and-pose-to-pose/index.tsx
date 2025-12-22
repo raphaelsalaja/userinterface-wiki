@@ -1,6 +1,6 @@
 "use client";
 
-import { Select } from "@base-ui-components/react/select";
+import { Select } from "@base-ui/react/select";
 import { CheckIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 import styles from "./styles.module.css";
 

@@ -101,6 +101,7 @@ var docs = defineDocs({
 var source_config_default = defineConfig({
   mdxOptions: {
     providerImportSource: "@/mdx-components",
+    remarkPlugins: [],
     rehypePlugins: [rehypeWordSpans],
     rehypeCodeOptions: {
       themes: {
