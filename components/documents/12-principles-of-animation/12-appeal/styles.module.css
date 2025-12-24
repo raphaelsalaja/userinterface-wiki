@@ -3,15 +3,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 640px;
+  width: 100%;
   height: 512px;
 }
 
 .frame {
   position: absolute;
-  width: max-content;
-  max-width: 100vw;
-  height: max-content;
   overflow: hidden;
   background: var(--gray-2);
   border-radius: 8px;

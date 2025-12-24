@@ -1,27 +1,104 @@
 .container {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: calc(100vh - 56px);
-  margin: 0 auto;
+  width: 100%;
+  height: 100vh;
+  max-height: 100vh;
 }
+
+.spacer {
+  min-height: var(--page-navigation-height);
+}
+
+.scroll {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  width: 100%;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--gray-1);
+  border: 1px solid var(--gray-a4);
+  box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.08);
+}
+
+.viewport {
+  position: relative;
+  width: 100%;
+  min-height: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  &:focus-visible {
+    outline: 2px solid var(--color-blue);
+  }
+
+  &::before,
+  &::after {
+    position: absolute;
+    left: 0;
+    display: block;
+    width: 100%;
+    pointer-events: none;
+    content: "";
+    border-radius: 0.375rem;
+    transition: height 0.1s ease-out;
+  }
+
+  &::before {
+    --scroll-area-overflow-y-start: inherit;
+    top: 0;
+    height: min(40px, var(--scroll-area-overflow-y-start));
+    background: linear-gradient(to bottom, var(--gray-1), transparent);
+  }
+
+  &::after {
+    --scroll-area-overflow-y-end: inherit;
+    bottom: 0;
+    height: min(40px, var(--scroll-area-overflow-y-end, 40px));
+    background: linear-gradient(to top, var(--gray-1), transparent);
+  }
+}
+
+
+
+.scrollbar {
+  display: flex;
+  justify-content: center;
+  width: 4px;
+  opacity: 0;
+  transition: opacity 150ms;
+  pointer-events: none;
+
+  &[data-scrolling] {
+    transition-duration: 0ms;
+  }
+
+  &[data-hovering],
+  &[data-scrolling] {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    width: 1.25rem;
+    height: 100%;
+  }
+}
+
+.thumb {
+  width: 100%;
+  border-radius: inherit;
+  background-color: var(--gray-a4);
+}
+
 
 .article {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  align-self: stretch;
-  height: 100%;
+  margin: 0 auto;
   padding: 32px;
-  overflow: auto;
-  background: var(--gray-1);
-  border: 1px solid var(--gray-a6);
-  border-radius: 8px;
-  box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.08);
-
-  ::selection {
-    color: var(--gray-1);
-    background-color: var(--gray-12);
-  }
 }

@@ -1,3 +1,4 @@
+import { ScrollArea } from "@base-ui/react/scroll-area";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Footer } from "@/components/footer";
@@ -7,7 +8,6 @@ import { PageTransition } from "@/components/page-transition";
 import { Playback } from "@/components/playback";
 import { formatPageData, source } from "@/lib/features/content";
 import { getMDXComponents } from "@/mdx-components";
-
 import styles from "./styles.module.css";
 
 export async function generateStaticParams() {
@@ -64,15 +64,27 @@ export default async function Page(props: {
   return (
     <PageTransition>
       <div className={styles.container}>
-        <article className={styles.article}>
-          <Header page={page} />
-          <MDX components={getMDXComponents()} />
-          <Footer
-            slug={params.slug}
-            title={page.data.title}
-            description={page.data.description}
-          />
-        </article>
+        <div className={styles.spacer} />
+        <ScrollArea.Root className={styles.scroll}>
+          <ScrollArea.Viewport className={styles.viewport}>
+            <ScrollArea.Content
+              className={styles.article}
+              render={<article />}
+              style={{
+                minWidth: "100%",
+              }}
+            >
+              <Header page={page} />
+              <MDX components={getMDXComponents()} />
+            </ScrollArea.Content>
+          </ScrollArea.Viewport>{" "}
+          <ScrollArea.Scrollbar
+            className={styles.scrollbar}
+            orientation="vertical"
+          >
+            <ScrollArea.Thumb className={styles.thumb} />
+          </ScrollArea.Scrollbar>
+        </ScrollArea.Root>
         <Playback
           slugSegments={params.slug}
           title={page.data.title}

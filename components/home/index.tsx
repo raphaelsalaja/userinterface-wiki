@@ -37,7 +37,7 @@ export function HomeLayout({ pages }: { pages: FormattedPage[] }) {
 
       <div className={styles.container}>
         <Field.Root className={styles.search}>
-          <Search className={styles.icon} size={18} />
+          <Search strokeWidth={2} className={styles.icon} size={18} />
           <Field.Control
             type="search"
             className={styles.input}

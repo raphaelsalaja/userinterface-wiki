@@ -12,7 +12,6 @@
   flex: 1;
   flex-direction: column;
   min-height: calc(100 * var(--dvh));
-  padding-top: var(--header-height);
 }
 
 html {
@@ -29,7 +28,6 @@ html {
 }
 
 body {
-  padding-top: 56px;
   font-family: var(--font-family-display);
   color: var(--gray-12);
   text-wrap: pretty;

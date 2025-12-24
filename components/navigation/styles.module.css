@@ -7,7 +7,7 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  height: 56px;
+  height: var(--page-navigation-height);
   background: linear-gradient(to bottom, var(--gray-2), transparent 75%);
   backdrop-filter: blur(12px);
   mask-image: linear-gradient(
@@ -26,6 +26,7 @@
   width: 100%;
   max-width: var(--page-max-width);
   padding: 0 24px;
+  padding-block: 32px;
   margin: 0 auto;
 }
 

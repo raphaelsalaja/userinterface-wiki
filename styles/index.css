@@ -12,6 +12,7 @@
   --prose-bullet-disc-offset: 8px;
   --page-padding-inline: 24px;
   --page-padding-block: 64px;
+  --page-navigation-height: 88px;
   --page-padding-left: max(
     env(safe-area-inset-left),
     var(--page-padding-inline)
