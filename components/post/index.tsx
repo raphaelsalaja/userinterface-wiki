@@ -1,9 +1,11 @@
 import { clsx } from "clsx";
 import Link from "next/link";
+import {
+  CodePreview,
+  EssayPreview,
+  MotionPreview,
+} from "@/components/previews";
 import type { FormattedPage } from "@/lib/features/content";
-import { CodePreviewIcon } from "../icons";
-import { EssayPreviewIcon } from "../icons/essay-preview";
-import { MotionPreviewIcon } from "../icons/motion-preview";
 import styles from "./styles.module.css";
 
 interface PageCardProps {
@@ -17,13 +19,13 @@ export function PageCard({ page, className, ...props }: PageCardProps) {
   const Icon = () => {
     switch (icon) {
       case "motion":
-        return <MotionPreviewIcon />;
+        return <MotionPreview />;
       case "code":
-        return <CodePreviewIcon seed={title} />;
+        return <CodePreview seed={title} />;
       case "writing":
-        return <EssayPreviewIcon seed={title} />;
+        return <EssayPreview seed={title} />;
       default:
-        return <EssayPreviewIcon seed={title} />;
+        return <EssayPreview seed={title} />;
     }
   };
 

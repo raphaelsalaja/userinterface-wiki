@@ -1,4 +1,5 @@
 import { Inter, JetBrains_Mono } from "next/font/google";
+import localFont from "next/font/local";
 
 const inter = Inter({
   variable: "--font-family-display",
@@ -10,4 +11,10 @@ const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
 });
 
-export const fonts = [inter.variable, jetbrainsMono.variable];
+const newYork = localFont({
+  variable: "--font-family-serif",
+  src: "../../public/fonts/new-york/new-york.ttf",
+  display: "swap",
+});
+
+export const fonts = [inter.variable, jetbrainsMono.variable, newYork.variable];

@@ -7,9 +7,8 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  height: 128px;
-
-  background: linear-gradient(to bottom, var(--gray-1), transparent 75%);
+  height: 56px;
+  background: linear-gradient(to bottom, var(--gray-2), transparent 75%);
   backdrop-filter: blur(12px);
   mask-image: linear-gradient(
     to bottom,
@@ -32,18 +31,46 @@
 
 .logo,
 .trigger {
-  font-family: var(--font-family-display);
-  font-size: 14px;
-  font-weight: var(--font-weight-normal);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 4px;
+  color: var(--gray-8);
+}
+
+.logo {
+  font-family: var(--font-family-serif);
+  font-size: 16px;
+  font-weight: var(--font-weight-bold);
   line-height: 24px;
-  color: var(--gray-10);
-  letter-spacing: var(--font-inter-letter-spacing-16px);
-  transition: all 0.2s ease-in-out;
+  text-align: center;
+}
+
+.logo::before,
+.trigger::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: var(--gray-a4);
+  border-radius: 6px;
+  opacity: 0;
+  scale: 0.8;
+  transition: all 0.2s;
 }
 
 .logo:hover,
 .trigger:hover {
   color: var(--gray-12);
+}
+
+.logo:hover::before,
+.trigger:hover::before {
+  color: var(--gray-12);
+  opacity: 1;
+  scale: 1;
 }
 
 .list {

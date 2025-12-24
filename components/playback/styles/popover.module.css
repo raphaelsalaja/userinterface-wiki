@@ -1,5 +1,19 @@
 .positioner {
-  z-index: 2000;
+  animation: mask-up;
+  animation-timeline: scroll(self);
+  animation-range: 0 1rem;
+  mask-composite: exclude;
+
+  scrollbar-width: thin;
+  scrollbar-color: currentColor transparent;
+}
+
+@keyframes mask-up {
+  to {
+    mask-size:
+      100% 120px,
+      100% 100%;
+  }
 }
 
 .popup {

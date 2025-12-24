@@ -1,20 +1,8 @@
 "use client";
 
 import React from "react";
-import type {
-  ChaptersMenuProps,
-  SettingsMenuProps,
-  VolumeControlProps,
-} from "../playback.types";
-import {
-  ChaptersMenuView,
-  SettingsMenuView,
-  VolumeControlView,
-} from "./menus.view";
-
-export const ChaptersMenu = (props: ChaptersMenuProps) => (
-  <ChaptersMenuView {...props} />
-);
+import type { SettingsMenuProps, VolumeControlProps } from "../playback.types";
+import { SettingsMenuView, VolumeControlView } from "./menus.view";
 
 export const VolumeControl = (props: VolumeControlProps) => (
   <VolumeControlView {...props} />

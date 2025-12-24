@@ -1,4 +1,5 @@
 import type { MDXComponents } from "mdx/types";
+import { Callout } from "./components/callout";
 import {
   Anticipation,
   Appeal,
@@ -38,6 +39,7 @@ const EaseVsSpringsComponents: MDXComponents = {
 const BaseComponents: MDXComponents = {
   Figure,
   Caption,
+  Callout,
 };
 
 export function getMDXComponents(components?: MDXComponents): MDXComponents {
@@ -58,6 +60,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     li: (props) => <li data-prose-type="text" {...props} />,
     ul: (props) => <ul data-prose-type="list" {...props} />,
     ol: (props) => <ol data-prose-type="list" {...props} />,
+
     ...Principles,
     ...EaseVsSpringsComponents,
     ...BaseComponents,

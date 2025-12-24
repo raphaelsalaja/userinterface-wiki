@@ -4,12 +4,12 @@ import { Slider } from "@base-ui/react/slider";
 import clsx from "clsx";
 import { AnimatePresence, motion } from "motion/react";
 import React from "react";
-import { PauseIcon, PlayIcon } from "@/components/icons";
+import { PauseIcon, PlayIcon } from "@/icons";
 import { ICON_TRANSITION } from "../playback.constants";
 import type { ControlsProps } from "../playback.types";
 import { formatTime } from "../playback.utils";
 import interactiveStyles from "../styles/interactive.module.css";
-import { ChaptersMenu, SettingsMenu, VolumeControl } from "./menus";
+import { SettingsMenu, VolumeControl } from "./menus";
 import { Time, TooltipButton } from "./primitives";
 
 export const Controls = ({
@@ -17,17 +17,14 @@ export const Controls = ({
   currentTime,
   duration,
   progress,
-  chapters,
   autoScroll,
   audioUrl,
   playbackRate,
   volume,
   isMuted,
   isLooping,
-  showChapters = true,
   onToggle,
   onSeek,
-  onChapterClick,
   onAutoScrollChange,
   onDownload,
   onPlaybackRateChange,
@@ -67,10 +64,7 @@ export const Controls = ({
       value={progress}
       onValueChange={onSeek}
       aria-label="Playback progress"
-      className={clsx(
-        interactiveStyles.slider,
-        showChapters ? interactiveStyles.withChapters : undefined,
-      )}
+      className={clsx(interactiveStyles.slider)}
     >
       <Time>{formatTime(currentTime)}</Time>
       <Slider.Control className={interactiveStyles.control}>
@@ -81,8 +75,6 @@ export const Controls = ({
       </Slider.Control>
       <Time>{formatTime(duration)}</Time>
     </Slider.Root>
-
-    <ChaptersMenu chapters={chapters} onChapterClick={onChapterClick} />
 
     <SettingsMenu
       autoScroll={autoScroll}

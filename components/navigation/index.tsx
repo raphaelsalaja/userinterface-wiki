@@ -2,17 +2,20 @@
 
 import { NavigationMenu } from "@base-ui/react/navigation-menu";
 import Link from "next/link";
+import { GithubIcon, TwitterIcon } from "@/icons";
 import styles from "./styles.module.css";
 
 const LINKS = [
   {
+    id: "twitter",
     href: "https://twitter.com/intent/follow?screen_name=raphaelsalaja",
-    title: "X (Twitter)",
+    title: <TwitterIcon size={16} />,
     external: true,
   },
   {
+    id: "github",
     href: "https://github.com/raphaelsalaja/userinterface-wiki",
-    title: "GitHub",
+    title: <GithubIcon size={16} />,
     external: true,
   },
 ];
@@ -26,11 +29,11 @@ export default function Navigation() {
           className={styles.logo}
           aria-label="userinterface.wiki home"
         >
-          ui.wiki
+          U
         </Link>
         <NavigationMenu.List className={styles.list}>
           {LINKS.map((link) => (
-            <NavigationMenu.Item key={link.title}>
+            <NavigationMenu.Item key={link.id}>
               <NavigationMenu.Link
                 className={styles.trigger}
                 href={link.href}

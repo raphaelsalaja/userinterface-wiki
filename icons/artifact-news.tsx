@@ -1,0 +1,24 @@
+import type { IconProps } from "@/types";
+
+export const ArtifactNewsIcon = ({
+  size = 24,
+  color = "currentColor",
+  ...props
+}: IconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      width={size}
+      height={size}
+      {...props}
+    >
+      <title>Artifact News</title>
+      <path
+        d="M22.0015 10.6253H14.3844L18.1976 4.03185L15.8178 2.65564L13.3762 6.87552V2H10.6253V9.61713L4.03185 5.80393L2.65563 8.1837L6.87707 10.6253H2V13.3747H9.61713L5.80393 19.9681L8.18525 21.3459L10.6253 17.1245V22H13.3762V14.3844L19.9697 18.1976L21.3459 15.8163L17.1245 13.3747H22.0015V10.6253Z"
+        fill={color}
+      />
+    </svg>
+  );
+};

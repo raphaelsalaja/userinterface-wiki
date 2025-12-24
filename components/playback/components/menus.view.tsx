@@ -4,63 +4,14 @@ import { Menu } from "@base-ui/react/menu";
 import { Slider } from "@base-ui/react/slider";
 import { Tooltip } from "@base-ui/react/tooltip";
 import clsx from "clsx";
+import { Check, Settings, Volume, Volume2, VolumeOff } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-import {
-  CheckIcon,
-  GearIcon,
-  PlaylistIcon,
-  VolumeHighIcon,
-  VolumeLowIcon,
-  VolumeMuteIcon,
-} from "@/components/icons";
 import { PLAYBACK_RATES } from "../playback.constants";
-import type {
-  ChaptersMenuProps,
-  SettingsMenuProps,
-  VolumeControlProps,
-} from "../playback.types";
+import type { SettingsMenuProps, VolumeControlProps } from "../playback.types";
 import popoverStyles from "../styles/popover.module.css";
 import speedStyles from "../styles/speed.module.css";
 import volumeStyles from "../styles/volume.module.css";
 import { Kbd, MediaPlayerButton } from "./primitives";
-
-export const ChaptersMenuView = ({
-  chapters,
-  onChapterClick,
-}: ChaptersMenuProps) => (
-  <Menu.Root>
-    <Menu.Trigger render={<MediaPlayerButton aria-label="Chapters" />}>
-      <PlaylistIcon />
-    </Menu.Trigger>
-    <Menu.Portal>
-      <Menu.Positioner
-        className={popoverStyles.positioner}
-        sideOffset={8}
-        align="end"
-        side="top"
-      >
-        <Menu.Popup className={popoverStyles.popup}>
-          {chapters.length > 0 ? (
-            chapters.map((chapter) => (
-              <Menu.Item
-                key={chapter.id}
-                className={clsx(popoverStyles.item)}
-                style={{ paddingLeft: `${(chapter.level - 1) * 12}px` }}
-                onClick={() => onChapterClick(chapter.id)}
-              >
-                {chapter.number}. {chapter.text}
-              </Menu.Item>
-            ))
-          ) : (
-            <Menu.Item className={popoverStyles.item} disabled>
-              No chapters
-            </Menu.Item>
-          )}
-        </Menu.Popup>
-      </Menu.Positioner>
-    </Menu.Portal>
-  </Menu.Root>
-);
 
 export const VolumeControlView = ({
   volume,
@@ -68,11 +19,7 @@ export const VolumeControlView = ({
   onVolumeChange,
   onMuteToggle,
 }: VolumeControlProps) => {
-  const VolumeIcon = isMuted
-    ? VolumeMuteIcon
-    : volume > 0.5
-      ? VolumeHighIcon
-      : VolumeLowIcon;
+  const VolumeIcon = isMuted ? VolumeOff : volume > 0.5 ? Volume2 : Volume;
 
   return (
     <Menu.Root>
@@ -123,7 +70,7 @@ export const VolumeControlView = ({
               aria-label={isMuted ? "Unmute" : "Mute"}
               style={{ marginTop: 4 }}
             >
-              <VolumeIcon />
+              <Volume />
             </MediaPlayerButton>
           </Menu.Popup>
         </Menu.Positioner>
@@ -152,7 +99,7 @@ export const SettingsMenuView = ({
 }: SettingsMenuViewProps) => (
   <Menu.Root>
     <Menu.Trigger render={<MediaPlayerButton aria-label="Settings" />}>
-      <GearIcon />
+      <Settings />
     </Menu.Trigger>
     <Menu.Portal>
       <Menu.Positioner
@@ -185,7 +132,7 @@ export const SettingsMenuView = ({
                       exit={{ opacity: 0, scale: 0.8, filter: "blur(2px)" }}
                       transition={{ duration: 0.18 }}
                     >
-                      <CheckIcon size={16} />
+                      <Check />
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -216,7 +163,7 @@ export const SettingsMenuView = ({
                       exit={{ opacity: 0, scale: 0.8, filter: "blur(2px)" }}
                       transition={{ duration: 0.18 }}
                     >
-                      <CheckIcon size={16} />
+                      <Check />
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -265,7 +212,7 @@ export const SettingsMenuView = ({
                             }}
                             transition={{ duration: 0.18 }}
                           >
-                            <CheckIcon size={16} />
+                            <Check />
                           </motion.div>
                         )}
                       </AnimatePresence>

@@ -1,11 +1,11 @@
 import { clsx } from "clsx";
 import type { Metadata, Viewport } from "next";
+import Navigation from "@/components/navigation";
+import { Providers } from "@/components/providers";
 import { fonts } from "@/lib/config/fonts";
 
 import "@/styles/index.css";
-import { Main, Root } from "@/components/layout";
-import Navigation from "@/components/navigation";
-import { Providers } from "@/components/providers";
+import styles from "./styles.module.css";
 
 const SITE_URL = "https://userinterface.wiki";
 const SITE_NAME = "userinterface.wiki";
@@ -81,16 +81,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={clsx(fonts)}>
-        <a href="#main-content" className="skip-link">
+    <html lang="en" suppressHydrationWarning className={styles.html}>
+      <body className={clsx(fonts, styles.body)}>
+        <a href="#main-content" className={styles.skip}>
           Skip to content
         </a>
         <Providers>
           <Navigation />
-          <Main>
-            <Root id="main-content">{children}</Root>
-          </Main>
+          <main className={styles.main}>
+            <div className={styles.root} id="main-content">
+              {children}
+            </div>
+          </main>
         </Providers>
       </body>
     </html>

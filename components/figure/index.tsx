@@ -1,8 +1,12 @@
 "use client";
 
-import { ClipboardCopyIcon, DownloadIcon } from "@radix-ui/react-icons";
+import {
+  CheckIcon,
+  ClipboardCopyIcon,
+  DownloadIcon,
+} from "@radix-ui/react-icons";
+import { AnimatePresence, motion } from "motion/react";
 import React from "react";
-
 import styles from "./styles.module.css";
 import { getRenderablePngBlob } from "./utils";
 
@@ -11,17 +15,38 @@ type FigureProps = React.HTMLAttributes<HTMLElement> & {
   downloadable?: boolean;
 };
 
+const animationProps: React.ComponentProps<typeof motion.div> = {
+  initial: { opacity: 0, scale: 0.8, filter: "blur(2px)" },
+  animate: { opacity: 1, scale: 1, filter: "blur(0px)" },
+  exit: { opacity: 0, scale: 0.8, filter: "blur(2px)" },
+  transition: { duration: 0.2 },
+};
+
 export function Figure({
   children,
   className,
-  downloadable = true,
+  downloadable = false,
   ...props
 }: FigureProps) {
   const figureRef = React.useRef<HTMLElement | null>(null);
+  const [isCopied, setIsCopied] = React.useState(false);
+  const [isDownloaded, setIsDownloaded] = React.useState(false);
   const [isProcessing, setIsProcessing] = React.useState<
     "copy" | "download" | null
   >(null);
   const [hasRenderableContent, setHasRenderableContent] = React.useState(false);
+
+  React.useEffect(() => {
+    if (!isCopied) return undefined;
+    const timeoutId = window.setTimeout(() => setIsCopied(false), 1500);
+    return () => window.clearTimeout(timeoutId);
+  }, [isCopied]);
+
+  React.useEffect(() => {
+    if (!isDownloaded) return undefined;
+    const timeoutId = window.setTimeout(() => setIsDownloaded(false), 1500);
+    return () => window.clearTimeout(timeoutId);
+  }, [isDownloaded]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: rerun when figure children change
   React.useEffect(() => {
@@ -33,6 +58,7 @@ export function Figure({
   }, [children]);
 
   const copyAsPng = React.useCallback(async () => {
+    setIsCopied(false);
     setIsProcessing("copy");
     try {
       const node = figureRef.current;
@@ -47,6 +73,7 @@ export function Figure({
       ) {
         const item = new ClipboardItem({ "image/png": blob });
         await navigator.clipboard.write([item]);
+        setIsCopied(true);
       } else {
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
@@ -54,6 +81,7 @@ export function Figure({
         link.download = "figure.png";
         link.click();
         URL.revokeObjectURL(url);
+        setIsCopied(true);
       }
     } catch (error) {
       console.error("Failed to copy PNG", error);
@@ -63,6 +91,7 @@ export function Figure({
   }, []);
 
   const downloadPng = React.useCallback(async () => {
+    setIsDownloaded(false);
     setIsProcessing("download");
     try {
       const node = figureRef.current;
@@ -75,6 +104,7 @@ export function Figure({
       link.download = "figure.png";
       link.click();
       URL.revokeObjectURL(url);
+      setIsDownloaded(true);
     } catch (error) {
       console.error("Failed to download PNG", error);
     } finally {
@@ -92,22 +122,31 @@ export function Figure({
       {...props}
     >
       {children}
-
-      <div
-        className={styles.toolbar}
-        aria-hidden={!hasRenderableContent}
-        data-figure-toolbar="true"
-      >
-        <button
-          type="button"
-          className={styles.button}
-          onClick={copyAsPng}
-          disabled={!hasRenderableContent || isBusy}
-          aria-label="Copy figure as PNG"
+      {downloadable && (
+        <div
+          className={styles.toolbar}
+          aria-hidden={!hasRenderableContent}
+          data-figure-toolbar="true"
         >
-          <ClipboardCopyIcon />
-        </button>
-        {downloadable ? (
+          <button
+            type="button"
+            className={styles.button}
+            onClick={copyAsPng}
+            disabled={!hasRenderableContent || isBusy}
+            aria-label="Copy figure as PNG"
+          >
+            <AnimatePresence mode="wait" initial={false}>
+              {isCopied ? (
+                <motion.div key="check" {...animationProps}>
+                  <CheckIcon />
+                </motion.div>
+              ) : (
+                <motion.div key="link" {...animationProps}>
+                  <ClipboardCopyIcon />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </button>
           <button
             type="button"
             className={styles.button}
@@ -115,10 +154,20 @@ export function Figure({
             disabled={!hasRenderableContent || isBusy}
             aria-label="Download figure as PNG"
           >
-            <DownloadIcon />
+            <AnimatePresence mode="wait" initial={false}>
+              {isDownloaded ? (
+                <motion.div key="check" {...animationProps}>
+                  <CheckIcon />
+                </motion.div>
+              ) : (
+                <motion.div key="download" {...animationProps}>
+                  <DownloadIcon />
+                </motion.div>
+              )}
+            </AnimatePresence>
           </button>
-        ) : null}
-      </div>
+        </div>
+      )}
     </figure>
   );
 }

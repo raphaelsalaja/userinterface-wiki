@@ -8,10 +8,6 @@
   cursor: pointer;
 }
 
-.slider.withChapters {
-  margin-inline: 16px;
-}
-
 .control {
   box-sizing: border-box;
   display: flex;
@@ -24,7 +20,8 @@
 }
 
 .track {
-  width: 100%;
+  position: relative;
+  flex: 1 0 0;
   height: var(--height);
   overflow: hidden;
   user-select: none;
@@ -33,6 +30,7 @@
 }
 
 .indicator {
+  height: 100%;
   user-select: none;
   background: var(--white-a10);
 }
@@ -103,4 +101,24 @@
 
 .button:active {
   scale: 0.95;
+}
+
+.speed {
+  display: flex;
+  gap: 0.5px;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  font-family: var(--font-family-display);
+  font-size: 12px;
+  font-weight: var(--font-weight-medium, 500);
+  line-height: 24px;
+  color: var(--gray-a10, rgba(0, 0, 0, 0.49));
+  letter-spacing: -0.09px;
+  border-radius: 8px;
+}
+
+.speed svg {
+  width: 6px;
+  height: 7px;
 }

@@ -2,7 +2,7 @@
 
 import { motion } from "motion/react";
 import { useState } from "react";
-import type { IconProps } from "@/components/icons/types";
+import type { IconProps } from "@/types";
 import styles from "./styles.module.css";
 
 export const ToastIcon = ({

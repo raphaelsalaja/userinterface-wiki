@@ -1,17 +1,12 @@
 "use client";
 
+import { CheckIcon, CopyIcon, LinkIcon } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { usePathname } from "next/navigation";
 import type React from "react";
 import { useCallback, useState } from "react";
 import { Button } from "@/components/button";
-import {
-  CheckIcon,
-  CopyIcon,
-  GithubIcon,
-  LinkIcon,
-  TwitterIcon,
-} from "@/components/icons";
+import { GithubIcon, TwitterIcon } from "@/icons";
 import styles from "./styles.module.css";
 
 interface FooterProps {

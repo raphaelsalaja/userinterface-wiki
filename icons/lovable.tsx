@@ -1,0 +1,26 @@
+import type { IconProps } from "@/types";
+
+export const LovableIcon = ({
+  size = 24,
+  color = "currentColor",
+  ...props
+}: IconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      width={size}
+      height={size}
+      {...props}
+    >
+      <title>Lovable</title>
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M8.5509 2.19C11.6166 2.19 14.1018 4.68178 14.1018 7.75553V9.87078H15.9491C19.0149 9.87078 21.5 12.3626 21.5 15.4363C21.5 18.5101 19.0149 21.0018 15.9491 21.0018H3V7.75553C3 4.68178 5.48522 2.19 8.5509 2.19Z"
+        fill={color}
+      />
+    </svg>
+  );
+};

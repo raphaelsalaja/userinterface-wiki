@@ -1,5 +1,5 @@
 import type { Element, Root, Text } from "hast";
-import { visit } from "unist-util-visit";
+import { visitParents } from "unist-util-visit-parents";
 import { normalizeWord } from "@/lib/utils/strings";
 
 const SKIP_TAGS = new Set([
@@ -16,27 +16,21 @@ export function rehypeWordSpans() {
   return (tree: Root) => {
     let counter = 0;
 
-    const parentMap = new WeakMap<Element, Element | null>();
-    visit(tree, "element", (node, _index, parent) => {
-      parentMap.set(node, parent as Element | null);
-    });
-
-    const isInFootnotes = (element: Element): boolean => {
-      let current: Element | null = element;
-      while (current) {
-        if (current.properties?.dataFootnotes !== undefined) {
-          return true;
-        }
-        current = parentMap.get(current) ?? null;
-      }
-      return false;
-    };
-
-    visit(tree, "text", (node, index, parent) => {
-      if (typeof index !== "number" || !parent) return;
-
+    visitParents(tree, "text", (node, ancestors) => {
       const textNode = node as Text;
       if (!textNode.value.trim()) return;
+
+      const parent = ancestors[ancestors.length - 1] as
+        | Element
+        | Root
+        | undefined;
+      if (
+        !parent ||
+        !("children" in parent) ||
+        !Array.isArray(parent.children)
+      ) {
+        return;
+      }
 
       const parentElement = parent as Element;
       if (
@@ -46,9 +40,16 @@ export function rehypeWordSpans() {
         return;
       }
 
-      if (isInFootnotes(parentElement)) {
+      const isFootnote = ancestors.some((ancestor) => {
+        const element = ancestor as Element;
+        return element.properties?.dataFootnotes !== undefined;
+      });
+      if (isFootnote) {
         return;
       }
+
+      const index = parent.children.indexOf(node as Element | Text);
+      if (index === -1) return;
 
       const segments = textNode.value.split(/(\s+)/);
       if (segments.length <= 1) return;

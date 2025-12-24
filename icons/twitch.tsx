@@ -1,0 +1,34 @@
+import type { IconProps } from "@/types";
+
+export const TwitchIcon = ({
+  size = 24,
+  color = "currentColor",
+  ...props
+}: IconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      width={size}
+      height={size}
+      {...props}
+    >
+      <title>Twitch</title>
+      <path
+        d="M13.5421 6.60715H12.0004V11.2143H13.5421V6.60715Z"
+        fill={color}
+      />
+      <path
+        d="M17.3962 11.2143V6.60715H15.8546V11.2143H17.3962Z"
+        fill={color}
+      />
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M6.60417 2L2.75 5.83929V19.6607H7.375V23.5L11.2292 19.6607H14.3125L21.25 12.75V2H6.60417ZM16.6269 15.0536L19.7103 11.9821V3.53571H7.37693V15.0536H10.4603V18.125L13.5436 15.0536H16.6269Z"
+        fill={color}
+      />
+    </svg>
+  );
+};

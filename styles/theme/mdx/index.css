@@ -82,6 +82,14 @@
     isolation: isolate;
   }
 
+  :is(
+      [data-prose-type="text"]:first-of-type,
+      [data-prose-type="list"]:first-of-type,
+      [data-prose-type="block"]:first-of-type
+    ) {
+    margin-top: var(--prose-block-spacing-large);
+  }
+
   p[data-prose-type="text"] {
     transition: color 200ms ease-out;
   }

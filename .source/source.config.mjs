@@ -7,7 +7,7 @@ import {
 import { z } from "zod";
 
 // lib/features/content/plugins/rehype-word-spans.ts
-import { visit } from "unist-util-visit";
+import { visitParents } from "unist-util-visit-parents";
 
 // lib/utils/strings/normalize.ts
 var NON_WORD_CHARACTERS = /[^\p{L}\p{N}''-]+/gu;
@@ -29,31 +29,26 @@ var SKIP_TAGS = /* @__PURE__ */ new Set([
 function rehypeWordSpans() {
   return (tree) => {
     let counter = 0;
-    const parentMap = /* @__PURE__ */ new WeakMap();
-    visit(tree, "element", (node, _index, parent) => {
-      parentMap.set(node, parent);
-    });
-    const isInFootnotes = (element) => {
-      let current = element;
-      while (current) {
-        if (current.properties?.dataFootnotes !== void 0) {
-          return true;
-        }
-        current = parentMap.get(current) ?? null;
-      }
-      return false;
-    };
-    visit(tree, "text", (node, index, parent) => {
-      if (typeof index !== "number" || !parent) return;
+    visitParents(tree, "text", (node, ancestors) => {
       const textNode = node;
       if (!textNode.value.trim()) return;
+      const parent = ancestors[ancestors.length - 1];
+      if (!parent || !("children" in parent) || !Array.isArray(parent.children)) {
+        return;
+      }
       const parentElement = parent;
       if (parentElement.tagName && SKIP_TAGS.has(parentElement.tagName.toLowerCase())) {
         return;
       }
-      if (isInFootnotes(parentElement)) {
+      const isFootnote = ancestors.some((ancestor) => {
+        const element = ancestor;
+        return element.properties?.dataFootnotes !== void 0;
+      });
+      if (isFootnote) {
         return;
       }
+      const index = parent.children.indexOf(node);
+      if (index === -1) return;
       const segments = textNode.value.split(/(\s+)/);
       if (segments.length <= 1) return;
       const replacements = segments.map((segment) => {

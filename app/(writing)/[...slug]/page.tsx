@@ -2,10 +2,13 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
-import { Article } from "@/components/layout";
+
 import { PageTransition } from "@/components/page-transition";
+import { Playback } from "@/components/playback";
 import { formatPageData, source } from "@/lib/features/content";
 import { getMDXComponents } from "@/mdx-components";
+
+import styles from "./styles.module.css";
 
 export async function generateStaticParams() {
   return source.generateParams();
@@ -60,20 +63,22 @@ export default async function Page(props: {
 
   return (
     <PageTransition>
-      <Header page={page} />
-      <Article>
-        {/* <Playback
+      <div className={styles.container}>
+        <article className={styles.article}>
+          <Header page={page} />
+          <MDX components={getMDXComponents()} />
+          <Footer
+            slug={params.slug}
+            title={page.data.title}
+            description={page.data.description}
+          />
+        </article>
+        <Playback
           slugSegments={params.slug}
           title={page.data.title}
           authorName={author.name}
-        /> */}
-        <MDX components={getMDXComponents()} />
-      </Article>
-      <Footer
-        slug={params.slug}
-        title={page.data.title}
-        description={page.data.description}
-      />
+        />
+      </div>
     </PageTransition>
   );
 }

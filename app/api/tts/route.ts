@@ -1,16 +1,8 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { getPlainArticleText } from "@/lib/features/tts/article";
-import {
-  buildCacheKey,
-  readFromCache,
-  writeToCache,
-} from "@/lib/features/tts/cache";
-import {
-  resolveModelId,
-  resolveVoiceId,
-  synthesizeSpeech,
-} from "@/lib/features/tts/elevenlabs";
+import { buildCacheKey, readFromCache } from "@/lib/features/tts/cache";
+import { resolveModelId, resolveVoiceId } from "@/lib/features/tts/elevenlabs";
 import { ArticleNotFoundError, ResponseError } from "@/lib/features/tts/errors";
 import { toSlugSegments } from "@/lib/features/tts/slug";
 
@@ -37,14 +29,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ ...cached, hash: cacheKey.hash });
     }
 
-    const synthesized = await synthesizeSpeech(plainText, voiceId, modelId);
-    const audioUrl = await writeToCache(cacheKey, synthesized);
-
-    return NextResponse.json({
-      audioUrl,
-      timestamps: synthesized.timestamps,
-      hash: cacheKey.hash,
-    });
+    return NextResponse.json(
+      { error: "Narration not pre-generated" },
+      { status: 404 },
+    );
   } catch (error) {
     if (error instanceof ArticleNotFoundError) {
       return NextResponse.json({ error: "Article not found" }, { status: 404 });

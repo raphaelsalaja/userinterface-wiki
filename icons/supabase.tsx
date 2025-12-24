@@ -1,0 +1,28 @@
+import type { IconProps } from "@/types";
+
+export const SupabaseIcon = ({
+  size = 24,
+  color = "currentColor",
+  ...props
+}: IconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      width={size}
+      height={size}
+      {...props}
+    >
+      <title>Supabase</title>
+      <path
+        d="M13.6849 21.9296C13.1601 22.5905 12.096 22.2284 12.0833 21.3845L11.8984 9.04199H20.1975C21.7007 9.04199 22.5391 10.7782 21.6044 11.9554L13.6849 21.9296Z"
+        fill={color}
+      />
+      <path
+        d="M10.3124 2.06985C10.8372 1.40889 11.9013 1.77105 11.914 2.61492L11.995 14.9574H3.79976C2.29653 14.9574 1.45815 13.2212 2.3929 12.044L10.3124 2.06985Z"
+        fill={color}
+      />
+    </svg>
+  );
+};

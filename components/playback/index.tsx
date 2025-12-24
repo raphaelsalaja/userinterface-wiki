@@ -1,12 +1,19 @@
 "use client";
 
-import { Portal } from "@radix-ui/react-portal";
+import { Slider } from "@base-ui/react/slider";
+import clsx from "clsx";
+import { FastForward, Pause, Play, Rewind } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import React from "react";
 import { Orb } from "../orb";
-import { Controls } from "./components/controls";
+import { SettingsMenu, VolumeControl } from "./components/menus";
+import { Time, TooltipButton } from "./components/primitives";
+import { ICON_TRANSITION } from "./playback.constants";
 import { usePlayback } from "./playback.hook";
-import type { Chapter, PlaybackProps } from "./playback.types";
+import type { PlaybackRate } from "./playback.store";
+import type { PlaybackProps } from "./playback.types";
+import { formatTime } from "./playback.utils";
+import interactiveStyles from "./styles/interactive.module.css";
 import styles from "./styles/layout.module.css";
 
 export const Playback = ({
@@ -15,7 +22,6 @@ export const Playback = ({
   authorName,
 }: PlaybackProps) => {
   const {
-    status,
     isPlaying,
     duration,
     currentTime,
@@ -38,63 +44,7 @@ export const Playback = ({
   } = usePlayback({ slugSegments, title, authorName });
 
   const readerRef = React.useRef<HTMLDivElement | null>(null);
-  const [isReaderVisible, setIsReaderVisible] = React.useState(true);
-  const [chapters, setChapters] = React.useState<Chapter[]>([]);
-
-  React.useEffect(() => {
-    const headings = document.querySelectorAll<HTMLHeadingElement>(
-      "article h1, article h2, article h3, article h4, article h5, article h6",
-    );
-
-    if (headings.length === 0) {
-      setChapters([]);
-      return;
-    }
-
-    const levels = Array.from(headings).map((h) =>
-      parseInt(h.tagName.charAt(1), 10),
-    );
-    const minLevel = Math.min(...levels);
-
-    const collected: Chapter[] = [];
-    const counters = [0, 0, 0, 0, 0, 0];
-
-    headings.forEach((heading) => {
-      const id =
-        heading.id ||
-        heading.textContent?.toLowerCase().replace(/\s+/g, "-") ||
-        "";
-      if (!heading.id && id) heading.id = id;
-
-      const level = parseInt(heading.tagName.charAt(1), 10);
-      const levelIndex = level - minLevel;
-
-      counters[levelIndex]++;
-      for (let i = levelIndex + 1; i < counters.length; i++) {
-        counters[i] = 0;
-      }
-
-      const number = counters
-        .slice(0, levelIndex + 1)
-        .filter((n) => n > 0)
-        .join(".");
-
-      collected.push({
-        id,
-        level,
-        text: heading.textContent || "",
-        number,
-      });
-    });
-
-    setChapters(collected);
-  }, []);
-
-  const scrollToChapter = React.useCallback((id: string) => {
-    document
-      .getElementById(id)
-      ?.scrollIntoView({ behavior: "smooth", block: "start" });
-  }, []);
+  const [_isReaderVisible, setIsReaderVisible] = React.useState(true);
 
   const handleDownload = React.useCallback(() => {
     if (!audioUrl) return;
@@ -131,73 +81,133 @@ export const Playback = ({
     return () => observer.disconnect();
   }, []);
 
-  const controlsProps = {
-    isPlaying,
-    currentTime,
-    duration,
-    progress,
-    chapters,
-    autoScroll,
-    audioUrl,
-    playbackRate,
-    volume,
-    isMuted,
-    isLooping,
-    onToggle: handleToggle,
-    onSeek: handleSeek,
-    onChapterClick: scrollToChapter,
-    onAutoScrollChange: setAutoScroll,
-    onDownload: handleDownload,
-    onPlaybackRateChange: setPlaybackRate,
-    onVolumeChange: setVolume,
-    onMuteToggle: toggleMute,
-    onLoopChange: setIsLooping,
-    onCopyTimestamp: copyTimestampUrl,
-  };
+  const onToggle = handleToggle;
+  const onSeek = handleSeek;
+  const onAutoScrollChange = setAutoScroll;
+  const onDownload = handleDownload;
+  const onPlaybackRateChange = setPlaybackRate;
+  const onVolumeChange = setVolume;
+  const onMuteToggle = toggleMute;
+  const onLoopChange = setIsLooping;
+  const onCopyTimestamp = copyTimestampUrl;
 
   return (
-    <React.Fragment>
-      <div ref={readerRef} className={styles.reader}>
-        <Orb colors={colors} agentState={agentState} className={styles.orb} />
-        {status !== "loading" && (
-          <motion.div
-            className={styles.controls}
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, ease: [0.19, 1, 0.22, 1] }}
-          >
-            <Controls {...controlsProps} />
-          </motion.div>
-        )}
+    <div ref={readerRef} className={styles.reader}>
+      <div className={styles.details}>
+        <div className={styles.cover}>
+          <div className={styles.glow}>
+            <Orb
+              colors={colors}
+              agentState={agentState}
+              className={styles.canvas}
+            />
+          </div>
+          <div className={styles.orb}>
+            <Orb
+              colors={colors}
+              agentState={agentState}
+              className={styles.canvas}
+            />
+          </div>
+        </div>
+        <div className={styles.info}>
+          <div className={styles.title} title={title}>
+            {title}
+          </div>
+          <div className={styles.author}>{authorName}</div>
+        </div>
+        <div className={styles.voice}>
+          <VolumeControl
+            volume={volume}
+            isMuted={isMuted}
+            onVolumeChange={onVolumeChange}
+            onMuteToggle={onMuteToggle}
+          />
+        </div>
       </div>
 
-      <Portal className={styles.floating}>
-        <AnimatePresence mode="sync">
-          {!isReaderVisible && status !== "loading" && (
-            <motion.div
-              initial={{ backdropFilter: "blur(0px) opacity(0)" }}
-              animate={{ backdropFilter: "blur(6px) opacity(1)" }}
-              exit={{ backdropFilter: "blur(0px) opacity(0)" }}
-              transition={{ duration: 0.4, ease: [0.19, 1, 0.22, 1] }}
-              className={styles.background}
-            />
-          )}
-        </AnimatePresence>
-        <AnimatePresence mode="sync">
-          {!isReaderVisible && status !== "loading" && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, filter: "blur(2px)" }}
-              animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-              exit={{ opacity: 0, scale: 0.95, filter: "blur(2px)" }}
-              transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-              className={styles.controls}
-              style={{ bottom: 48 }}
-            >
-              <Controls {...controlsProps} showChapters={false} />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </Portal>
-    </React.Fragment>
+      <Slider.Root
+        value={progress}
+        onValueChange={onSeek}
+        aria-label="Playback progress"
+        className={clsx(interactiveStyles.slider)}
+      >
+        <Time>{formatTime(currentTime)}</Time>
+        <Slider.Control className={interactiveStyles.control}>
+          <Slider.Track className={interactiveStyles.track}>
+            <Slider.Indicator className={interactiveStyles.indicator} />
+            <Slider.Thumb className={interactiveStyles.thumb} />
+          </Slider.Track>
+        </Slider.Control>
+        <Time>{formatTime(duration)}</Time>
+      </Slider.Root>
+
+      <div className={styles.actions}>
+        <div className={styles.left}>
+          <TooltipButton
+            onClick={() => {
+              const rates: PlaybackRate[] = [0.5, 0.75, 1, 1.25, 1.5, 2];
+              const currentIndex = rates.indexOf(playbackRate);
+              const nextIndex = (currentIndex + 1) % rates.length;
+              onPlaybackRateChange(rates[nextIndex] ?? 1);
+            }}
+            aria-label={`Playback speed: ${playbackRate}x`}
+            label={`Speed: ${playbackRate}x`}
+            className={interactiveStyles.speed}
+          >
+            {playbackRate}
+          </TooltipButton>
+        </div>
+        <div className={styles.center}>
+          <TooltipButton
+            onClick={() => seek(Math.max(0, currentTime - 15))}
+            aria-label="Rewind 15 seconds"
+            label="Rewind"
+            shortcut="-15s"
+          >
+            <Rewind />
+          </TooltipButton>
+          <TooltipButton
+            onClick={onToggle}
+            aria-label={isPlaying ? "Pause" : "Play"}
+            label={isPlaying ? "Pause" : "Play"}
+            shortcut="Space"
+          >
+            <AnimatePresence mode="wait">
+              {isPlaying ? (
+                <motion.div {...ICON_TRANSITION} key="pause">
+                  <Pause />
+                </motion.div>
+              ) : (
+                <motion.div {...ICON_TRANSITION} key="play">
+                  <Play />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </TooltipButton>
+          <TooltipButton
+            onClick={() => seek(Math.min(duration, currentTime + 15))}
+            aria-label="Fast forward 15 seconds"
+            label="Fast Forward"
+            shortcut="+15s"
+          >
+            <FastForward />
+          </TooltipButton>
+        </div>
+        <div className={styles.right}>
+          <SettingsMenu
+            autoScroll={autoScroll}
+            canDownload={!!audioUrl}
+            isLooping={isLooping}
+            playbackRate={playbackRate}
+            onAutoScrollChange={onAutoScrollChange}
+            onDownload={onDownload}
+            onLoopChange={onLoopChange}
+            onPlaybackRateChange={onPlaybackRateChange}
+            onCopyTimestamp={onCopyTimestamp}
+          />
+        </div>
+      </div>
+    </div>
   );
 };

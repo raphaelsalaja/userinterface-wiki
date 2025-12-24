@@ -1,0 +1,24 @@
+import type { IconProps } from "@/types";
+
+export const AnthropicIcon = ({
+  size = 24,
+  color = "currentColor",
+  ...props
+}: IconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      width={size}
+      height={size}
+      {...props}
+    >
+      <title>Anthropic</title>
+      <path
+        d="M17.0977 4H13.5611L19.8941 20H23.3484L17.0977 4ZM6.89916 4L0.648438 20H4.18503L5.58322 16.6359H12.1629L13.4789 19.9179H17.0155L10.6003 4H6.98141H6.89916ZM6.57018 13.6821L8.70858 8.02051L10.9292 13.6821H6.65242H6.57018Z"
+        fill={color}
+      />
+    </svg>
+  );
+};

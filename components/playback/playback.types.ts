@@ -1,12 +1,5 @@
 import type { PlaybackRate } from "./playback.store";
 
-export interface Chapter {
-  id: string;
-  level: number;
-  text: string;
-  number: string;
-}
-
 export interface PlaybackProps {
   slugSegments: string[];
   title: string;
@@ -18,17 +11,14 @@ export interface ControlsProps {
   currentTime: number;
   duration: number;
   progress: number;
-  chapters: Chapter[];
   autoScroll: boolean;
   audioUrl: string | null;
   playbackRate: PlaybackRate;
   volume: number;
   isMuted: boolean;
   isLooping: boolean;
-  showChapters?: boolean;
   onToggle: () => void;
   onSeek: (value: number | number[]) => void;
-  onChapterClick: (id: string) => void;
   onAutoScrollChange: (value: boolean) => void;
   onDownload: () => void;
   onPlaybackRateChange: (rate: PlaybackRate) => void;
@@ -36,11 +26,6 @@ export interface ControlsProps {
   onMuteToggle: () => void;
   onLoopChange: (looping: boolean) => void;
   onCopyTimestamp: () => void;
-}
-
-export interface ChaptersMenuProps {
-  chapters: Chapter[];
-  onChapterClick: (id: string) => void;
 }
 
 export interface VolumeControlProps {
