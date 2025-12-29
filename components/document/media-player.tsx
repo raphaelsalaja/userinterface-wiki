@@ -2,11 +2,11 @@
 
 import { Menu } from "@base-ui/react/menu";
 import { Slider } from "@base-ui/react/slider";
-import { Tooltip } from "@base-ui/react/tooltip";
 import { FloatingPortal as Portal } from "@floating-ui/react";
 import { AnimatePresence, motion } from "motion/react";
 import { useCallback } from "react";
 import { Button } from "@/components/button";
+import { Shortcut } from "@/components/shortcut";
 import {
   Checkmark1Icon,
   FastForwardIcon,
@@ -34,43 +34,6 @@ function PlayerBackground() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// TooltipButton
-// ─────────────────────────────────────────────────────────────────────────────
-
-interface TooltipButtonProps
-  extends React.ComponentPropsWithoutRef<typeof Button> {
-  label: string;
-  shortcut?: string;
-}
-
-function TooltipButton({
-  label,
-  shortcut,
-  children,
-  ...props
-}: TooltipButtonProps) {
-  return (
-    <Tooltip.Root>
-      <Tooltip.Trigger
-        render={
-          <Button variant="ghost" className={styles.button} {...props}>
-            {children}
-          </Button>
-        }
-      />
-      <Tooltip.Portal>
-        <Tooltip.Positioner sideOffset={8} side="top">
-          <Tooltip.Popup className={styles.tooltip}>
-            <span>{label}</span>
-            {shortcut && <kbd className={styles.kbd}>{shortcut}</kbd>}
-          </Tooltip.Popup>
-        </Tooltip.Positioner>
-      </Tooltip.Portal>
-    </Tooltip.Root>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
 // VolumeControl
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -95,31 +58,19 @@ function VolumeControl({
 
   return (
     <Menu.Root>
-      <Tooltip.Root>
-        <Tooltip.Trigger
+      <Shortcut shortcut={{ label: "Volume", command: "M" }}>
+        <Menu.Trigger
           render={
-            <Menu.Trigger
-              render={
-                <Button
-                  variant="ghost"
-                  className={styles.button}
-                  aria-label="Volume"
-                >
-                  <VolumeIcon size={ICON_SIZE.small} />
-                </Button>
-              }
-            />
+            <Button
+              variant="ghost"
+              className={styles.button}
+              aria-label="Volume"
+            >
+              <VolumeIcon size={ICON_SIZE.small} />
+            </Button>
           }
         />
-        <Tooltip.Portal>
-          <Tooltip.Positioner sideOffset={8} side="top">
-            <Tooltip.Popup className={styles.tooltip}>
-              <span>Volume</span>
-              <kbd className={styles.kbd}>M</kbd>
-            </Tooltip.Popup>
-          </Tooltip.Positioner>
-        </Tooltip.Portal>
-      </Tooltip.Root>
+      </Shortcut>
       <Menu.Portal>
         <Menu.Positioner
           className={styles.positioner}
@@ -178,30 +129,19 @@ interface SettingsMenuProps {
 function SettingsMenu(props: SettingsMenuProps) {
   return (
     <Menu.Root>
-      <Tooltip.Root>
-        <Tooltip.Trigger
+      <Shortcut shortcut={{ label: "Settings" }}>
+        <Menu.Trigger
           render={
-            <Menu.Trigger
-              render={
-                <Button
-                  variant="ghost"
-                  className={styles.button}
-                  aria-label="Settings"
-                >
-                  <VoiceSettingsIcon size={ICON_SIZE.large} />
-                </Button>
-              }
-            />
+            <Button
+              variant="ghost"
+              className={styles.button}
+              aria-label="Settings"
+            >
+              <VoiceSettingsIcon size={ICON_SIZE.large} />
+            </Button>
           }
         />
-        <Tooltip.Portal>
-          <Tooltip.Positioner sideOffset={8} side="top">
-            <Tooltip.Popup className={styles.tooltip}>
-              <span>Settings</span>
-            </Tooltip.Popup>
-          </Tooltip.Positioner>
-        </Tooltip.Portal>
-      </Tooltip.Root>
+      </Shortcut>
       <Menu.Portal>
         <Menu.Positioner
           className={styles.positioner}
@@ -415,40 +355,51 @@ export function MediaPlayer({ className }: MediaPlayerProps) {
               onMuteToggle={toggleMute}
             />
             <div className={styles.options}>
-              <TooltipButton
-                onClick={() => skipBackward()}
-                aria-label="Rewind 15 seconds"
-                label="Rewind"
-                shortcut="-15s"
+              <Shortcut shortcut={{ label: "Rewind", command: "-15s" }}>
+                <Button
+                  variant="ghost"
+                  className={styles.button}
+                  onClick={() => skipBackward()}
+                  aria-label="Rewind 15 seconds"
+                >
+                  <RewindIcon size={ICON_SIZE.small} />
+                </Button>
+              </Shortcut>
+              <Shortcut
+                shortcut={{
+                  label: isPlaying ? "Pause" : "Play",
+                  command: "Space",
+                }}
               >
-                <RewindIcon size={ICON_SIZE.small} />
-              </TooltipButton>
-              <TooltipButton
-                onClick={toggle}
-                aria-label={isPlaying ? "Pause" : "Play"}
-                label={isPlaying ? "Pause" : "Play"}
-                shortcut="Space"
-              >
-                <AnimatePresence mode="wait" initial={false}>
-                  {isPlaying ? (
-                    <motion.div {...ICON_TRANSITION} key="pause">
-                      <PauseIcon size={ICON_SIZE.large} />
-                    </motion.div>
-                  ) : (
-                    <motion.div {...ICON_TRANSITION} key="play">
-                      <PlayIcon size={ICON_SIZE.large} />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </TooltipButton>
-              <TooltipButton
-                onClick={() => skipForward()}
-                aria-label="Fast forward 15 seconds"
-                label="Fast Forward"
-                shortcut="+15s"
-              >
-                <FastForwardIcon size={ICON_SIZE.small} />
-              </TooltipButton>
+                <Button
+                  variant="ghost"
+                  className={styles.button}
+                  onClick={toggle}
+                  aria-label={isPlaying ? "Pause" : "Play"}
+                >
+                  <AnimatePresence mode="wait" initial={false}>
+                    {isPlaying ? (
+                      <motion.div {...ICON_TRANSITION} key="pause">
+                        <PauseIcon size={ICON_SIZE.large} />
+                      </motion.div>
+                    ) : (
+                      <motion.div {...ICON_TRANSITION} key="play">
+                        <PlayIcon size={ICON_SIZE.large} />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </Button>
+              </Shortcut>
+              <Shortcut shortcut={{ label: "Fast Forward", command: "+15s" }}>
+                <Button
+                  variant="ghost"
+                  className={styles.button}
+                  onClick={() => skipForward()}
+                  aria-label="Fast forward 15 seconds"
+                >
+                  <FastForwardIcon size={ICON_SIZE.small} />
+                </Button>
+              </Shortcut>
             </div>
             <SettingsMenu
               autoScroll={autoScroll}
