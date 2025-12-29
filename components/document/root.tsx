@@ -297,11 +297,15 @@ export function Root({
   }, [timestamps]);
 
   // User scroll detection
+  const isProgrammaticScrollRef = useRef(false);
+
   const resetUserScrolling = useDebounceCallback(() => {
     isUserScrollingRef.current = false;
-  }, 1200);
+  }, 800);
 
   const markScrolling = useCallback(() => {
+    // Ignore scroll events triggered by programmatic scrolling
+    if (isProgrammaticScrollRef.current) return;
     isUserScrollingRef.current = true;
     resetUserScrolling();
   }, [resetUserScrolling]);
@@ -648,12 +652,20 @@ export function Root({
       if (!autoScroll || isUserScrollingRef.current) return;
 
       const rect = meta.element.getBoundingClientRect();
-      const offset = window.innerHeight * 0.2;
+      const viewportHeight = window.innerHeight;
+      const topThreshold = viewportHeight * 0.35;
+      const bottomThreshold = viewportHeight * 0.65;
       const outOfView =
-        rect.top < offset || rect.bottom > window.innerHeight - offset;
+        rect.top < topThreshold || rect.bottom > bottomThreshold;
 
       if (outOfView) {
+        // Mark as programmatic scroll to prevent triggering user scroll detection
+        isProgrammaticScrollRef.current = true;
         meta.element.scrollIntoView({ behavior: "smooth", block: "center" });
+        // Reset after scroll animation completes
+        setTimeout(() => {
+          isProgrammaticScrollRef.current = false;
+        }, 500);
       }
     },
     [autoScroll, clearActiveHighlight],

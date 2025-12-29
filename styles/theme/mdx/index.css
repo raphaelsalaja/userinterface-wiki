@@ -343,10 +343,12 @@
   }
 
   [data-word-block-state="active"] {
+    color: var(--gray-12);
     text-shadow: 0 0 8px rgba(0, 144, 255, 0.4);
   }
 
   [data-word-state="active"] {
+    color: var(--gray-12);
     text-shadow:
       0 0 4px rgba(0, 144, 255, 1),
       0 0 8px rgba(0, 144, 255, 1);
@@ -398,11 +400,11 @@
     position: relative;
     display: inline-block;
     font-weight: inherit;
+    font-variant-numeric: tabular-nums;
     line-height: inherit;
     color: inherit;
     text-decoration: none;
     transition: all 0.2s ease;
-font-variant-numeric: tabular-nums;
   }
 
   sup a::after {

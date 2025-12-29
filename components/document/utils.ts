@@ -38,7 +38,7 @@ export interface SpanMeta {
 
 export function collectSpans(): SpanMeta[] {
   return Array.from(
-    document.querySelectorAll<HTMLElement>("[page-word-id]"),
+    document.querySelectorAll<HTMLElement>("[data-word-id]"),
   ).map((element) => ({
     element,
     normalized:
