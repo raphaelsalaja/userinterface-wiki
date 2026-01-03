@@ -1,11 +1,36 @@
+/**
+ * Authors - load, validate, and lookup author data
+ */
+
 import { readdirSync, readFileSync } from "node:fs";
 import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
+import { z } from "zod";
 
-import type { Author } from "@/lib/types";
-import { schema } from "./schema";
+const slug = /^[a-z0-9-]+$/;
 
-const directory = join(dirname(fileURLToPath(import.meta.url)), "data");
+export const authorSchema = z
+  .object({
+    id: z.string().regex(slug),
+    name: z.string().min(1),
+    bio: z.string().min(1).optional(),
+    avatar: z.string().url().optional(),
+    socials: z
+      .object({
+        twitter: z.string().url().optional(),
+        instagram: z.string().url().optional(),
+        cosmos: z.string().url().optional(),
+        github: z.string().url().optional(),
+        linkedin: z.string().url().optional(),
+        website: z.string().url().optional(),
+      })
+      .optional(),
+  })
+  .strict();
+
+export type Author = z.infer<typeof authorSchema>;
+
+const directory = join(dirname(fileURLToPath(import.meta.url)), "authors");
 
 const registry = new Map<string, Author>();
 
@@ -27,7 +52,7 @@ export const authors = readdirSync(directory)
       );
     }
 
-    const result = schema.safeParse(definition);
+    const result = authorSchema.safeParse(definition);
 
     if (!result.success) {
       throw new Error(

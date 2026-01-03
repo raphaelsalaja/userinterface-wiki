@@ -1,1 +1,0 @@
-export { fonts } from "./fonts";

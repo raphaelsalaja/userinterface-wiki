@@ -2,7 +2,7 @@ import { clsx } from "clsx";
 import type { Metadata, Viewport } from "next";
 import Navigation from "@/components/navigation";
 import { Providers } from "@/components/providers";
-import { fonts } from "@/lib/config/fonts";
+import { fonts } from "@/lib/fonts";
 
 import "@/styles/styles.css";
 import styles from "./styles.module.css";

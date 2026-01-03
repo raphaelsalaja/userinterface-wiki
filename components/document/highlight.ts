@@ -1,4 +1,4 @@
-import { normalizeWord } from "@/lib/utils/strings";
+import { normalizeWord } from "@/lib/strings";
 import type { WordTimestamp } from "./types";
 
 export interface WordPosition {

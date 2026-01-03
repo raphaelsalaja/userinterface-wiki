@@ -1,5 +1,36 @@
-import { getAuthorById } from "@/lib/features/authors";
-import type { FormattedPage, Page } from "./types";
+/**
+ * Content source - Fumadocs loader and page formatting
+ */
+
+import { docs } from "fumadocs/server";
+import { loader } from "fumadocs-core/source";
+import { type Author, getAuthorById } from "./authors";
+
+export const source = loader({
+  baseUrl: "/",
+  source: docs.toFumadocsSource(),
+});
+
+/**
+ * A full page object from Fumadocs source.
+ */
+export type Page = NonNullable<ReturnType<typeof source.getPage>>;
+
+/**
+ * A formatted page with resolved author data and formatted dates.
+ */
+export interface FormattedPage {
+  url: string;
+  title: string;
+  description: string;
+  tags: string[];
+  author: Author;
+  coauthors: Author[];
+  icon?: "motion" | "code" | "writing";
+  date: {
+    published: string;
+  };
+}
 
 function formatData(data: Page["data"]) {
   if (!data.author) {

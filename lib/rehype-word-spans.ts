@@ -1,6 +1,10 @@
+/**
+ * Rehype plugin to wrap words in spans for TTS highlighting
+ */
+
 import type { Element, Root, Text } from "hast";
 import { visitParents } from "unist-util-visit-parents";
-import { normalizeWord } from "@/lib/utils/strings";
+import { normalizeWord } from "./strings";
 
 const SKIP_TAGS = new Set([
   "code",

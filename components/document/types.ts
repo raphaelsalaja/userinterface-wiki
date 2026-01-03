@@ -1,4 +1,5 @@
-import type { Author, Page } from "@/lib/types";
+import type { Author } from "@/lib/authors";
+import type { Page } from "@/lib/source";
 
 export type AgentState = "thinking" | "listening" | "talking" | null;
 

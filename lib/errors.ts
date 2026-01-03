@@ -1,3 +1,7 @@
+/**
+ * Shared error utilities
+ */
+
 export class ArticleNotFoundError extends Error {
   constructor(message = "Article not found") {
     super(message);
@@ -15,7 +19,7 @@ export class ResponseError extends Error {
   }
 }
 
-export function isEnoent(error: unknown) {
+export function isEnoent(error: unknown): boolean {
   return Boolean(
     error &&
       typeof error === "object" &&
@@ -23,7 +27,7 @@ export function isEnoent(error: unknown) {
   );
 }
 
-export function isNotFound(error: unknown) {
+export function isNotFound(error: unknown): boolean {
   if (!error || typeof error !== "object") return false;
   const status = (error as { status?: number }).status;
   if (status === 404) return true;

@@ -3,7 +3,7 @@ import { join } from "node:path";
 import { notFound } from "next/navigation";
 import { ImageResponse } from "next/og";
 import type { NextRequest } from "next/server";
-import { source } from "@/lib/features/content";
+import { source } from "@/lib/source";
 
 export const runtime = "nodejs";
 

@@ -1,4 +1,15 @@
+/**
+ * Color utilities
+ */
+
 import ColorHash from "color-hash";
+
+export function getColorHash(value: string): string {
+  return new ColorHash({
+    saturation: 0.6,
+    lightness: 0.6,
+  }).hex(value);
+}
 
 /**
  * Generates two complementary hex colors from a string (e.g., title or slug).

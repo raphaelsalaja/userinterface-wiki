@@ -1,10 +1,10 @@
-import type { Author } from "@/lib/types";
-import type { source } from "./source";
+import type { z } from "zod";
+import type { authorSchema } from "./authors";
 
 /**
- * A full page object from Fumadocs source.
+ * Author data from JSON files
  */
-export type Page = NonNullable<ReturnType<typeof source.getPage>>;
+export type Author = z.infer<typeof authorSchema>;
 
 /**
  * A formatted page with resolved author data and formatted dates.
@@ -21,4 +21,14 @@ export interface FormattedPage {
   date: {
     published: string;
   };
+}
+
+/**
+ * Word timestamp from TTS alignment
+ */
+export interface WordTimestamp {
+  word: string;
+  start: number;
+  end: number;
+  normalized: string;
 }

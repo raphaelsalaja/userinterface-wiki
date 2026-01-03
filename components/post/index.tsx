@@ -5,7 +5,7 @@ import {
   EssayPreview,
   MotionPreview,
 } from "@/components/previews";
-import type { FormattedPage } from "@/lib/features/content";
+import type { FormattedPage } from "@/lib/source";
 import styles from "./styles.module.css";
 
 interface PageCardProps {

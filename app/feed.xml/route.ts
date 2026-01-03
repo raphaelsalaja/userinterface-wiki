@@ -1,4 +1,4 @@
-import { source } from "@/lib/features/content";
+import { source } from "@/lib/source";
 
 const SITE_URL = "https://userinterface.wiki";
 const SITE_NAME = "userinterface.wiki";

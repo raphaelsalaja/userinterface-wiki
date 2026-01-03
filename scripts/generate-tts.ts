@@ -18,17 +18,17 @@ import pc from "picocolors";
 
 config({ path: ".env.local", quiet: true });
 
-import { getPlainArticleText } from "../lib/features/tts/article";
+import path from "node:path";
 import {
   buildCacheKey,
-  readFromCache,
-  writeToCache,
-} from "../lib/features/tts/cache";
-import { CONTENT_DIR } from "../lib/features/tts/constants";
-import {
+  getPlainArticleText,
   getQuotaInfo,
-  synthesizeSpeechElevenLabs,
-} from "../lib/features/tts/elevenlabs";
+  readFromCache,
+  synthesizeSpeech,
+  writeToCache,
+} from "../lib/speech";
+
+const CONTENT_DIR = path.join(process.cwd(), "content");
 
 interface GenerationResult {
   slug: string;
@@ -81,7 +81,7 @@ async function generateTTSForDocument(
     process.stdout.write(pc.dim(`  generating ${slug}...`));
     const startTime = performance.now();
 
-    const synthesized = await synthesizeSpeechElevenLabs(plainText);
+    const synthesized = await synthesizeSpeech(plainText);
     await writeToCache(cacheKey, synthesized);
 
     const duration = performance.now() - startTime;

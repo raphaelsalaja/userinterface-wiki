@@ -6,7 +6,7 @@ import { useMemo, useState } from "react";
 import { PageTransition } from "@/components/page-transition";
 import { PageCard } from "@/components/post";
 import { MagnifyingGlassIcon } from "@/icons";
-import type { FormattedPage } from "@/lib/features/content";
+import type { FormattedPage } from "@/lib/source";
 import styles from "./styles.module.css";
 
 export function HomeLayout({ pages }: { pages: FormattedPage[] }) {

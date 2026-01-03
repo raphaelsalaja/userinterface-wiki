@@ -1,4 +1,4 @@
-import { normalizeWord } from "@/lib/utils/strings";
+import { normalizeWord } from "@/lib/strings";
 import { BASE_WINDOW, MAX_WINDOW } from "./constants";
 import type { WordTimestamp } from "./types";
 

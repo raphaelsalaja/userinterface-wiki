@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { source } from "@/lib/features/content";
+import { source } from "@/lib/source";
 
 const SITE_URL = "https://userinterface.wiki";
 

@@ -1,3 +1,7 @@
+/**
+ * Font configuration
+ */
+
 import { Inter, JetBrains_Mono } from "next/font/google";
 import localFont from "next/font/local";
 
@@ -13,7 +17,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 const newYork = localFont({
   variable: "--font-family-serif",
-  src: "../../public/fonts/new-york/new-york.ttf",
+  src: "../public/fonts/new-york/new-york.ttf",
   display: "swap",
 });
 

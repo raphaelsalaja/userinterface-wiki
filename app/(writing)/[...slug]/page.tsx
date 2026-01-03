@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Document, toSerializablePageData } from "@/components/document";
 import { PageTransition } from "@/components/page-transition";
-import { formatPageData, source } from "@/lib/features/content";
+import { formatPageData, source } from "@/lib/source";
 import { getMDXComponents } from "@/mdx-components";
 import styles from "./styles.module.css";
 

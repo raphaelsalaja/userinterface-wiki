@@ -9,8 +9,8 @@ import {
   useLocalStorage,
 } from "usehooks-ts";
 import { useShallow } from "zustand/react/shallow";
-import type { Author } from "@/lib/types";
-import { getGradientColors } from "@/lib/utils";
+import type { Author } from "@/lib/authors";
+import { getGradientColors } from "@/lib/colors";
 import { DocumentContext } from "./context";
 import {
   alignTimestamps,
