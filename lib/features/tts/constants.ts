@@ -2,5 +2,4 @@ import path from "node:path";
 
 export const CONTENT_DIR = path.join(process.cwd(), "documents");
 export const CACHE_PREFIX = "tts";
-export const STANDARD_VOICE_FALLBACK = "onwK4e9ZLuTAKqWW03F9";
-export const DEFAULT_MODEL_ID = "eleven_flash_v2";
+export const DEFAULT_VOICE = "en-US-GuyNeural";

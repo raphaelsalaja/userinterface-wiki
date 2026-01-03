@@ -1,48 +1,87 @@
 .button {
   display: flex;
-  grid-row: 1 / span 1;
-  grid-column: 2 / span 1;
   gap: 4px;
   align-items: center;
-  justify-self: stretch;
+  justify-content: center;
+  font-weight: var(--font-weight-medium);
   white-space: nowrap;
+  border-radius: 6px;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.18s ease,
+    box-shadow 0.2s ease;
+}
 
-  &[data-size="small"] {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    justify-content: center;
-    height: 28px;
-    padding: 5px 6px;
-  }
+.button:active {
+  transform: scale(0.98);
+}
 
-  &[data-variant="ghost"] {
-    position: relative;
-    font-size: 14px;
-    font-weight: var(--font-weight-medium);
-    color: var(--gray-10);
-    letter-spacing: var(--font-letter-spacing-14px);
-    border-radius: 6px;
-    transition: all 0.2s;
+.small {
+  height: 28px;
+  padding: 5px 8px;
+  font-size: 13px;
+  letter-spacing: var(--font-letter-spacing-13px);
+}
 
-    &:hover {
-      color: var(--gray-a12);
-      background: var(--gray-a3);
-    }
-  }
+.medium {
+  height: 32px;
+  padding: 6px 12px;
+  font-size: 14px;
+  letter-spacing: var(--font-letter-spacing-14px);
+}
 
-  &[data-variant="text"] {
-    position: relative;
-    padding-inline: 0;
-    font-size: 14px;
-    font-weight: var(--font-weight-medium);
-    color: var(--gray-10);
-    letter-spacing: var(--font-letter-spacing-14px);
-    border-radius: 6px;
-    transition: all 0.2s;
+.large {
+  height: 40px;
+  padding: 8px 16px;
+  font-size: 15px;
+  letter-spacing: var(--font-letter-spacing-15px);
+}
 
-    &:hover {
-      color: var(--gray-a12);
-    }
-  }
+.primary {
+  color: var(--gray-10);
+  background: var(--gray-1);
+  box-shadow: var(--shadow-2);
+}
+
+.primary:hover {
+  color: var(--gray-a12);
+  background: var(--gray-a3);
+}
+
+.secondary {
+  color: var(--gray-11);
+  background: var(--gray-a3);
+}
+
+.secondary:hover {
+  color: var(--gray-12);
+  background: var(--gray-a4);
+}
+
+.ghost {
+  color: var(--gray-10);
+  background: transparent;
+}
+
+.ghost:hover {
+  color: var(--gray-a12);
+  background: var(--gray-a3);
+}
+
+.text {
+  padding-inline: 0;
+  color: var(--gray-10);
+  background: transparent;
+}
+
+.text:hover {
+  color: var(--gray-a12);
+}
+
+.controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
 }

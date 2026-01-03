@@ -190,87 +190,71 @@
 
 /* family */
 :root {
-  --family-wallet-redPink: #ee4562;
-  --family-wallet-pink: #ec4899;
-  --family-wallet-purple: #d946ef;
-  --family-wallet-darkPurple: #9553f9;
-  --family-wallet-bluePurple: #5647f0;
-  --family-wallet-darkBlue: #0680fa;
-  --family-wallet-seaBlue: #4dafff;
-  --family-wallet-blue: #0ea5e9;
-  --family-wallet-emerald: #14bbc7;
-  --family-wallet-grassGreen: #10b981;
-  --family-wallet-green: #34c759;
-  --family-wallet-lime: #84cc16;
-  --family-wallet-offYellow: #eab308;
-  --family-wallet-orange: #f59e0b;
-  --family-wallet-burntOrange: #f97316;
-  --family-wallet-red: #ef4444;
-  --family-wallet-yellowBrown: #cdb35e;
-  --family-wallet-copper: #c48c54;
-  --family-wallet-navy: #023364;
-  --family-wallet-black: #1a1a1a;
-  --family-wallet-gray: grey;
+  --family-redPink: #ee4562;
+  --family-pink: #ec4899;
+  --family-purple: #d946ef;
+  --family-darkPurple: #9553f9;
+  --family-bluePurple: #5647f0;
+  --family-darkBlue: #0680fa;
+  --family-seaBlue: #4dafff;
+  --family-blue: #0ea5e9;
+  --family-emerald: #14bbc7;
+  --family-grassGreen: #10b981;
+  --family-green: #34c759;
+  --family-lime: #84cc16;
+  --family-offYellow: #eab308;
+  --family-orange: #f59e0b;
+  --family-burntOrange: #f97316;
+  --family-red: #ef4444;
+  --family-yellowBrown: #cdb35e;
+  --family-copper: #c48c54;
+  --family-navy: #023364;
+  --family-black: #1a1a1a;
+  --family-gray: grey;
 }
 
 @supports (color: color(display-p3 1 1 1)) {
   @media (color-gamut: p3) {
     :root {
-      --family-wallet-redPink: color(
+      --family-redPink: color(
         display-p3 0.9333333333 0.2705882353 0.3843137255
       );
-      --family-wallet-pink: color(display-p3 0.9254901961 0.2823529412 0.6);
-      --family-wallet-purple: color(
-        display-p3 0.8509803922 0.2745098039 0.937254902
-      );
-      --family-wallet-darkPurple: color(
+      --family-pink: color(display-p3 0.9254901961 0.2823529412 0.6);
+      --family-purple: color(display-p3 0.8509803922 0.2745098039 0.937254902);
+      --family-darkPurple: color(
         display-p3 0.5843137255 0.3254901961 0.9764705882
       );
-      --family-wallet-bluePurple: color(
+      --family-bluePurple: color(
         display-p3 0.337254902 0.2784313725 0.9411764706
       );
-      --family-wallet-darkBlue: color(
+      --family-darkBlue: color(
         display-p3 0.0235294118 0.5019607843 0.9803921569
       );
-      --family-wallet-seaBlue: color(display-p3 0.3019607843 0.6862745098 1);
-      --family-wallet-blue: color(
-        display-p3 0.0549019608 0.6470588235 0.9137254902
-      );
-      --family-wallet-emerald: color(
+      --family-seaBlue: color(display-p3 0.3019607843 0.6862745098 1);
+      --family-blue: color(display-p3 0.0549019608 0.6470588235 0.9137254902);
+      --family-emerald: color(
         display-p3 0.0784313725 0.7333333333 0.7803921569
       );
-      --family-wallet-grassGreen: color(
+      --family-grassGreen: color(
         display-p3 0.062745098 0.7254901961 0.5058823529
       );
-      --family-wallet-green: color(
-        display-p3 0.2039215686 0.7803921569 0.3490196078
-      );
-      --family-wallet-lime: color(display-p3 0.5176470588 0.8 0.0862745098);
-      --family-wallet-offYellow: color(
+      --family-green: color(display-p3 0.2039215686 0.7803921569 0.3490196078);
+      --family-lime: color(display-p3 0.5176470588 0.8 0.0862745098);
+      --family-offYellow: color(
         display-p3 0.9176470588 0.7019607843 0.031372549
       );
-      --family-wallet-orange: color(
-        display-p3 0.9607843137 0.6196078431 0.0431372549
-      );
-      --family-wallet-burntOrange: color(
+      --family-orange: color(display-p3 0.9607843137 0.6196078431 0.0431372549);
+      --family-burntOrange: color(
         display-p3 0.9764705882 0.4509803922 0.0862745098
       );
-      --family-wallet-red: color(
-        display-p3 0.937254902 0.2666666667 0.2666666667
-      );
-      --family-wallet-yellowBrown: color(
+      --family-red: color(display-p3 0.937254902 0.2666666667 0.2666666667);
+      --family-yellowBrown: color(
         display-p3 0.8039215686 0.7019607843 0.368627451
       );
-      --family-wallet-copper: color(
-        display-p3 0.768627451 0.5490196078 0.3294117647
-      );
-      --family-wallet-navy: color(display-p3 0.0078431373 0.2 0.3921568627);
-      --family-wallet-black: color(
-        display-p3 0.1019607843 0.1019607843 0.1019607843
-      );
-      --family-wallet-gray: color(
-        display-p3 0.5019607843 0.5019607843 0.5019607843
-      );
+      --family-copper: color(display-p3 0.768627451 0.5490196078 0.3294117647);
+      --family-navy: color(display-p3 0.0078431373 0.2 0.3921568627);
+      --family-black: color(display-p3 0.1019607843 0.1019607843 0.1019607843);
+      --family-gray: color(display-p3 0.5019607843 0.5019607843 0.5019607843);
     }
   }
 }

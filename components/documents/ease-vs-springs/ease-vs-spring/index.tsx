@@ -1,66 +1,79 @@
 "use client";
 
-import { motion } from "motion/react";
-import { useCallback, useState } from "react";
+import { motion, type Transition } from "motion/react";
+import { useState } from "react";
+import { Button, Controls } from "@/components/button";
 import styles from "./styles.module.css";
 
-export function EaseVsSpring() {
-  const [isAnimating, setIsAnimating] = useState(false);
+type Animation = {
+  label: string;
+  transition: Transition;
+};
 
-  const handlePlay = useCallback(() => {
-    setIsAnimating(false);
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        setIsAnimating(true);
-      });
-    });
-  }, []);
+const ease: Animation = {
+  label: "Easing",
+  transition: {
+    duration: 0.5,
+    ease: [0.19, 1, 0.22, 1],
+  },
+};
+
+const spring: Animation = {
+  label: "Spring",
+  transition: {
+    type: "spring",
+    stiffness: 300,
+    damping: 15,
+    mass: 1,
+  },
+};
+
+const animations = [ease, spring];
+
+type BoxProps = {
+  label: string;
+  isExpanded: boolean;
+  transition: Transition;
+};
+
+function Box({ label, isExpanded, transition }: BoxProps) {
+  return (
+    <div className={styles.box}>
+      <div className={styles.scale}>
+        <div className={styles.marker} />
+        <motion.div
+          className={styles.ball}
+          animate={{
+            width: isExpanded ? 128 : 32,
+            height: isExpanded ? 128 : 32,
+          }}
+          transition={transition}
+        />
+      </div>
+      <span className={styles.label}>{label}</span>
+    </div>
+  );
+}
+
+export function EaseVsSpring() {
+  const [isExpanded, setIsExpanded] = useState(false);
 
   return (
     <div className={styles.container}>
-      <div className={styles.tracks}>
-        <div className={styles.row}>
-          <span className={styles.label}>Ease</span>
-          <div className={styles.track}>
-            <motion.div
-              className={styles.dot}
-              data-type="ease"
-              animate={{
-                x: isAnimating ? "calc(100% - 12px)" : 0,
-              }}
-              transition={{
-                duration: 0.5,
-                ease: [0.19, 1, 0.22, 1],
-              }}
-            />
-          </div>
-        </div>
-        <div className={styles.row}>
-          <span className={styles.label}>Spring</span>
-          <div className={styles.track}>
-            <motion.div
-              className={styles.dot}
-              data-type="spring"
-              animate={{
-                x: isAnimating ? "calc(100% - 12px)" : 0,
-              }}
-              transition={{
-                type: "spring",
-                stiffness: 300,
-                damping: 25,
-                mass: 1,
-              }}
-            />
-          </div>
-        </div>
+      <div className={styles.visualization}>
+        {animations.map(({ label, transition }) => (
+          <Box
+            key={label}
+            label={label}
+            isExpanded={isExpanded}
+            transition={transition}
+          />
+        ))}
       </div>
-      <p className={styles.hint}>
-        Notice how the spring settles naturally while the ease curve has a fixed
-        duration.
-      </p>
-      <button type="button" className={styles.button} onClick={handlePlay}>
-        Play
-      </button>
+
+      <Controls>
+        <Button onClick={() => setIsExpanded((prev) => !prev)}>Animate</Button>
+      </Controls>
     </div>
   );
 }

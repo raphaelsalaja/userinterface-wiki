@@ -14,15 +14,30 @@ interface ButtonProps
   size?: "small" | "medium" | "large";
 }
 
-function Button({ className, ...props }: ButtonProps) {
+function Button({
+  className,
+  variant = "primary",
+  size = "medium",
+  ...props
+}: ButtonProps) {
   return (
     <MotionBaseButton
-      data-size={props.size || "medium"}
-      data-variant={props.variant || "primary"}
-      className={clsx(styles.button, className)}
+      className={clsx(styles.button, styles[size], styles[variant], className)}
       {...props}
     />
   );
 }
 
-export { Button };
+interface ControlsProps extends React.HTMLAttributes<HTMLDivElement> {
+  children: React.ReactNode;
+}
+
+function Controls({ className, children, ...props }: ControlsProps) {
+  return (
+    <div className={clsx(styles.controls, className)} {...props}>
+      {children}
+    </div>
+  );
+}
+
+export { Button, Controls };

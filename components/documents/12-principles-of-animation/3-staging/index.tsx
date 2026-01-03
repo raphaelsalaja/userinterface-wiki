@@ -20,26 +20,26 @@ interface Wallet {
 }
 
 const COLORS = [
-  "--family-wallet-redPink",
-  "--family-wallet-pink",
-  "--family-wallet-purple",
-  "--family-wallet-darkPurple",
-  "--family-wallet-bluePurple",
-  "--family-wallet-darkBlue",
-  "--family-wallet-seaBlue",
-  "--family-wallet-blue",
-  "--family-wallet-emerald",
-  "--family-wallet-grassGreen",
-  "--family-wallet-green",
-  "--family-wallet-lime",
-  "--family-wallet-offYellow",
-  "--family-wallet-orange",
-  "--family-wallet-burntOrange",
-  "--family-wallet-red",
-  "--family-wallet-yellowBrown",
-  "--family-wallet-copper",
-  "--family-wallet-navy",
-  "--family-wallet-black",
+  "--family-redPink",
+  "--family-pink",
+  "--family-purple",
+  "--family-darkPurple",
+  "--family-bluePurple",
+  "--family-darkBlue",
+  "--family-seaBlue",
+  "--family-blue",
+  "--family-emerald",
+  "--family-grassGreen",
+  "--family-green",
+  "--family-lime",
+  "--family-offYellow",
+  "--family-orange",
+  "--family-burntOrange",
+  "--family-red",
+  "--family-yellowBrown",
+  "--family-copper",
+  "--family-navy",
+  "--family-black",
 ] as const;
 
 const LAYOUT_ID = {
@@ -286,7 +286,7 @@ export function Staging() {
                                   key={c}
                                   role="button"
                                   tabIndex={0}
-                                  aria-label={`Select ${c.replace("--family-wallet-", "")} color`}
+                                  aria-label={`Select ${c.replace("--family-", "")} color`}
                                   aria-pressed={wallet.color === c}
                                   className={styles.color}
                                   style={{ background: `var(${c})` }}

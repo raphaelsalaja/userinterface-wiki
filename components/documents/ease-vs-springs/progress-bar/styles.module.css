@@ -1,0 +1,141 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 32px 24px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 320px;
+  padding: 16px;
+  background: var(--gray-1);
+  border-radius: 12px;
+  box-shadow:
+    0 4px 12px var(--black-a4),
+    0 0 0 1px var(--black-a2);
+}
+
+.header {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.icon {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  font-size: 18px;
+  background: var(--blue-3);
+  border-radius: 10px;
+}
+
+.info {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.filename {
+  font-size: 14px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--gray-12);
+  letter-spacing: var(--font-letter-spacing-14px);
+}
+
+.size {
+  font-size: 13px;
+  color: var(--gray-11);
+}
+
+.progresswrap {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.track {
+  position: relative;
+  flex: 1;
+  height: 8px;
+  overflow: hidden;
+  background: var(--gray-4);
+  border-radius: 4px;
+}
+
+.bar {
+  height: 100%;
+  background: var(--blue-9);
+  border-radius: 4px;
+  transition: width 50ms linear;
+}
+
+.percent {
+  flex-shrink: 0;
+  width: 36px;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: var(--gray-11);
+  text-align: right;
+}
+
+.complete {
+  font-size: 13px;
+  color: var(--green-11);
+  text-align: center;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.start {
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: var(--font-weight-medium);
+  color: var(--white);
+  cursor: pointer;
+  background: var(--blue-9);
+  border: none;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+.start:hover {
+  background: var(--blue-10);
+}
+
+.reset {
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: var(--font-weight-medium);
+  color: var(--gray-11);
+  cursor: pointer;
+  background: var(--gray-3);
+  border: none;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+.reset:hover {
+  background: var(--gray-4);
+}
+
+.hint {
+  margin: 0;
+  font-size: 13px;
+  color: var(--gray-10);
+}

@@ -33,7 +33,7 @@ To keep things simple, it really boils down to this. Easing functions have a pre
 
 <Figure>
   <EaseVsSpring />
-  <Caption>Ease curves have fixed durations, springs settle naturally</Caption>
+  <Caption>Comparison between Easing Curves and Springs</Caption>
 </Figure>
 
 # Creating Easing Functions
@@ -133,11 +133,6 @@ Higher mass increases inertia, requiring more force to change velocity and more 
 
 Mass does not act independently. Its effect is relative to stiffness and damping, shaping how the system responds to applied force rather than determining behavior on its own.
 
-<Figure>
-  <SpringComparison />
-  <Caption>Different spring configurations produce distinct motion characteristics</Caption>
-</Figure>
-
 # So What Do I Choose?
 
 This is the hard part, so i've tried my best to break it down into a few questions that you can ask yourself before making a choice. Rather than starting from curves or spring parameters, I find it more useful to start from the interaction itself. I've made a diagram below to help with this.
@@ -163,6 +158,11 @@ Springs work best when motion is tied directly to user input. Drags, presses, fl
 
 Using a spring where the system is merely announcing a state change can feel restless or overactive. But when continuity and responsiveness matter, springs are often the only model that holds up under real interaction.
 
+<Figure>
+  <SwipeToDismiss />
+  <Caption>Swipe to dismiss notifications with spring physics</Caption>
+</Figure>
+
 ```typescript
 transition={{
   type: "spring",
@@ -182,6 +182,11 @@ Where linear does make sense is when the motion is representing time itself rath
 
 Linear also works well for continuous or looping motion where easing would introduce unwanted rhythm or emphasis. In those cases, acceleration would imply intent that does not exist.
 
+<Figure>
+  <ProgressBarDemo />
+  <Caption>Progress bar with linear motion for accurate feedback</Caption>
+</Figure>
+
 ```css
 transition-timing-function: linear;
 ```
@@ -193,6 +198,11 @@ Ease-out motion starts quickly and slows down as it reaches its destination. Mos
 This pattern works well when something is entering the interface or responding to user input. The fast start makes the system feel responsive, while the slower landing gives the eye time to register where the element ends up. The interaction feels immediate without feeling abrupt.
 
 Ease-out is less about realism and more about communication. It prioritizes clarity at the moment of arrival, which is why it shows up so often in entrances, reveals, and feedback-driven motion.
+
+<Figure>
+  <ToastDemo />
+  <Caption>Toast notifications entering with ease-out</Caption>
+</Figure>
 
 ```css
 transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
@@ -206,6 +216,11 @@ This makes sense for exits. When something is leaving the interface, lingering d
 
 Ease-in rarely feels good for entrances because it delays visible movement, but for removals and dismissals it aligns well with intent. The system acknowledges the action, then clears the space.
 
+<Figure>
+  <SidebarDemo />
+  <Caption>Sidebar collapsing with ease-in on exit</Caption>
+</Figure>
+
 ```css
 transition-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
 ```
@@ -218,14 +233,15 @@ This pattern works best when the interaction is a transition rather than an arri
 
 Ease-in-out tends to feel calmer and more neutral than ease-out. That neutrality is its strength, but it can also make motion feel slower or less responsive if used indiscriminately. It works best when the system is in control, not when the user expects immediate feedback.
 
+<Figure>
+  <TabSwitcher />
+  <Caption>Tab switching with ease-in-out transitions</Caption>
+</Figure>
+
 ```css
 transition-timing-function: cubic-bezier(0.455, 0.03, 0.515, 0.955);
 ```
 
-<Figure>
-  <EasingComparison />
-  <Caption>Compare how different easing curves distribute motion over time</Caption>
-</Figure>
 
 # Closing Thoughts
 

@@ -14,10 +14,9 @@ export interface CacheKey {
 export function buildCacheKey(
   slugSegments: string[],
   text: string,
-  voiceId: string,
-  modelId: string,
+  voice: string,
 ): CacheKey {
-  const contentHash = hashContent(`${text}::${voiceId}::${modelId}`);
+  const contentHash = hashContent(`${text}::${voice}`);
   const base = `${CACHE_PREFIX}/${slugSegments.join("__")}/${contentHash}`;
   return { base, hash: contentHash };
 }

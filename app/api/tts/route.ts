@@ -2,7 +2,7 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { getPlainArticleText } from "@/lib/features/tts/article";
 import { buildCacheKey, readFromCache } from "@/lib/features/tts/cache";
-import { resolveModelId, resolveVoiceId } from "@/lib/features/tts/elevenlabs";
+import { resolveVoice } from "@/lib/features/tts/edgetts";
 import { ArticleNotFoundError, ResponseError } from "@/lib/features/tts/errors";
 import { toSlugSegments } from "@/lib/features/tts/slug";
 
@@ -19,10 +19,9 @@ export async function POST(request: NextRequest) {
     }
 
     const plainText = await getPlainArticleText(slugSegments);
-    const voiceId = resolveVoiceId(payload.voiceId);
-    const modelId = resolveModelId(payload.modelId);
+    const voice = resolveVoice(payload.voice);
 
-    const cacheKey = buildCacheKey(slugSegments, plainText, voiceId, modelId);
+    const cacheKey = buildCacheKey(slugSegments, plainText, voice);
 
     const cached = await readFromCache(cacheKey);
     if (cached) {

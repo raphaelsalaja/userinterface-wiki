@@ -6,17 +6,20 @@ import {
   Arcs,
   DecisionFlow,
   EaseVsSpring,
-  EasingComparison,
   Exaggeration,
   FollowThroughAndOverlappingAction,
+  ProgressBarDemo,
   SecondaryAction,
+  SidebarDemo,
   SlowInSlowOut,
   SolidDrawing,
-  SpringComparison,
   SquashStretch,
   Staging,
   StraightAheadActionAndPoseToPose,
+  SwipeToDismiss,
+  TabSwitcher,
   Timing,
+  ToastDemo,
 } from "./components/documents";
 import { Caption, Figure } from "./components/figure";
 
@@ -38,8 +41,11 @@ const Principles: MDXComponents = {
 const EaseVsSpringsComponents: MDXComponents = {
   DecisionFlow,
   EaseVsSpring,
-  EasingComparison,
-  SpringComparison,
+  ProgressBarDemo,
+  SidebarDemo,
+  SwipeToDismiss,
+  TabSwitcher,
+  ToastDemo,
 };
 
 const BaseComponents: MDXComponents = {
