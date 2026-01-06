@@ -1,13 +1,12 @@
 import type { MetadataRoute } from "next";
+import { SITE_MANIFEST } from "@/lib/site";
 import { source } from "@/lib/source";
-
-const SITE_URL = "https://userinterface.wiki";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const pages = source.getPages();
 
   const articles = pages.map((page) => ({
-    url: `${SITE_URL}${page.url}`,
+    url: `${SITE_MANIFEST.url}${page.url}`,
     lastModified: page.data.date?.modified
       ? new Date(page.data.date.modified)
       : new Date(page.data.date.published),
@@ -17,7 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     {
-      url: SITE_URL,
+      url: SITE_MANIFEST.url,
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 1,

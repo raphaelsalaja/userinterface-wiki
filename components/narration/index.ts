@@ -11,7 +11,4 @@ export type {
 import { Player } from "./player";
 import { Provider } from "./provider";
 
-export const Narration = {
-  Provider,
-  Player,
-};
+export { Provider as NarrationProvider, Player as NarrationPlayer };

@@ -1,8 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Article, toSerializablePageData } from "@/components/article";
-import { Narration } from "@/components/narration";
+import {
+  ArticleContent,
+  ArticleHeader,
+  ArticleRoot,
+} from "@/components/article";
+import { NarrationPlayer, NarrationProvider } from "@/components/narration";
 import { PageTransition } from "@/components/page-transition";
+import { toSerializablePageData } from "@/lib/page-data";
 import { formatPageData, source } from "@/lib/source";
 import { getMDXComponents } from "@/mdx-components";
 import styles from "./styles.module.css";
@@ -65,24 +70,24 @@ export default async function Page(props: {
     <PageTransition>
       <div className={styles.container}>
         <div className={styles.spacer} />
-        <Article.Root
+        <ArticleRoot
           data={pageData}
           author={author}
           coauthors={coauthors}
           className={styles.article}
         >
-          <Narration.Provider
+          <NarrationProvider
             slug={pageData.slugs.join("/")}
             title={pageData.data.title}
             authorName={author.name}
           >
-            <Article.Header />
-            <Article.Content>
+            <ArticleHeader />
+            <ArticleContent>
               <MDX components={getMDXComponents()} />
-            </Article.Content>
-            <Narration.Player />
-          </Narration.Provider>
-        </Article.Root>
+            </ArticleContent>
+            <NarrationPlayer />
+          </NarrationProvider>
+        </ArticleRoot>
       </div>
     </PageTransition>
   );

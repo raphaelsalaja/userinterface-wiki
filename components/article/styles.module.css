@@ -6,17 +6,55 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  gap: 4px;
   align-items: flex-start;
   align-self: stretch;
 }
 
+.row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 100%;
+}
+
 .title {
+  flex: 1;
   font-family: var(--font-family-display);
   font-size: 24px;
   font-weight: var(--font-weight-semibold);
   line-height: 150%;
   color: var(--foreground-primary);
   letter-spacing: var(--font-letter-spacing-20px);
+}
+
+.actions {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  display: flex;
+  gap: 8px;
+  transform: translateY(-50%);
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 4px;
+  color: var(--gray-10);
+  background-color: var(--gray-3);
+  transition:
+    color 200ms ease,
+    background-color 200ms ease;
+}
+
+.button:hover {
+  color: var(--foreground-primary);
+  background-color: var(--gray-4);
 }
 
 .description {

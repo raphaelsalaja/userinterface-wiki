@@ -28,3 +28,64 @@
   --page-max-width: 640px;
   --prose-max-width: 640px;
 }
+
+html {
+  scrollbar-width: none;
+
+  ::selection {
+    color: var(--gray-1);
+    background: var(--gray-12);
+  }
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+body {
+  font-family: var(--font-family-display);
+  font-size: 14px;
+  font-weight: var(--font-weight-normal);
+  line-height: 24px;
+  color: var(--gray-12);
+  letter-spacing: var(--font-letter-spacing-14px);
+  text-wrap: pretty;
+  background: var(--gray-2);
+}
+
+#__next-main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: calc(100 * var(--dvh));
+  isolation: isolate;
+}
+
+#main-content {
+  width: 100%;
+  max-width: var(--page-max-width);
+  padding-right: var(--page-padding-right);
+  padding-left: var(--page-padding-left);
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.skip-to-content {
+  position: absolute;
+  top: -100px;
+  left: 50%;
+  z-index: 100;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: var(--font-weight-medium);
+  color: var(--gray-1);
+  text-decoration: none;
+  background: var(--gray-12);
+  border-radius: 8px;
+  transform: translateX(-50%);
+  transition: top 0.2s ease;
+
+  &:focus {
+    top: 16px;
+  }
+}

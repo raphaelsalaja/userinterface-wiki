@@ -9,9 +9,8 @@ import {
   GithubIcon,
   SquareBehindSquare1Icon,
 } from "@/icons";
+import { SITE_MANIFEST } from "@/lib/site";
 import styles from "./styles.module.css";
-
-const GITHUB_REPO = "raphaelsalaja/userinterface-wiki";
 
 interface GlobalErrorProps {
   error: Error & { digest?: string };
@@ -37,7 +36,7 @@ export function GlobalError({ error, reset }: GlobalErrorProps) {
       `## Description\n\nDescribe what you were doing when this error occurred.\n\n## Error Details\n\n\`\`\`\n${errorText}\`\`\`\n\n## Environment\n\n- URL: ${typeof window !== "undefined" ? window.location.href : "Unknown"}\n- User Agent: ${typeof navigator !== "undefined" ? navigator.userAgent : "Unknown"}`,
     );
     window.open(
-      `https://github.com/${GITHUB_REPO}/issues/new?title=${title}&body=${body}`,
+      `${SITE_MANIFEST.github}/issues/new?title=${title}&body=${body}`,
       "_blank",
     );
   };

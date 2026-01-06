@@ -1,6 +1,5 @@
 import type { MetadataRoute } from "next";
-
-const SITE_URL = "https://userinterface.wiki";
+import { SITE_MANIFEST } from "@/lib/site";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -11,6 +10,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/api/"],
       },
     ],
-    sitemap: `${SITE_URL}/sitemap.xml`,
+    sitemap: `${SITE_MANIFEST.url}/sitemap.xml`,
   };
 }

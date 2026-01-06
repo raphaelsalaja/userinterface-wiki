@@ -21,4 +21,8 @@ const newYork = localFont({
   display: "swap",
 });
 
-export const fonts = [inter.variable, jetbrainsMono.variable, newYork.variable];
+export const fonts = [
+  inter.variable,
+  jetbrainsMono.variable,
+  newYork.variable,
+].join(" ");

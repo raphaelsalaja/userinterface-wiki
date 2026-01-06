@@ -1,0 +1,29 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding: 0 24px;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--gray-12);
+  letter-spacing: var(--font-letter-spacing-32px);
+}
+
+.message {
+  font-size: 14px;
+  color: var(--gray-10);
+  text-align: center;
+
+  letter-spacing: var(--font-letter-spacing-14px);
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}

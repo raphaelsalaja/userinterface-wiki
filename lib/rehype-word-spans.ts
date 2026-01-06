@@ -1,7 +1,3 @@
-/**
- * Rehype plugin to wrap words in spans for TTS highlighting
- */
-
 import type { Element, Root, Text } from "hast";
 import { visitParents } from "unist-util-visit-parents";
 import { normalizeWord } from "./strings";

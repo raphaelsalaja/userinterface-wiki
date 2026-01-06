@@ -1,79 +1,12 @@
-import { clsx } from "clsx";
-import type { Metadata, Viewport } from "next";
 import Navigation from "@/components/navigation";
 import { Providers } from "@/components/providers";
 import { fonts } from "@/lib/fonts";
+import { METADATA, VIEWPORT } from "@/lib/site";
 
 import "@/styles/styles.css";
-import styles from "./styles.module.css";
 
-const SITE_URL = "https://userinterface.wiki";
-const SITE_NAME = "userinterface.wiki";
-const SITE_DESCRIPTION =
-  "A living manual for better interfaces. Learn design principles, motion, typography, and more.";
-
-export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
-  title: {
-    default: SITE_NAME,
-    template: `%s`,
-  },
-  description: SITE_DESCRIPTION,
-  keywords: [
-    "UI design",
-    "user interface",
-    "animation",
-    "motion design",
-    "typography",
-    "design principles",
-    "web design",
-  ],
-  authors: [
-    { name: "Raphael Salaja", url: "https://twitter.com/raphaelsalaja" },
-  ],
-  creator: "Raphael Salaja",
-  openGraph: {
-    type: "website",
-    locale: "en_US",
-    url: SITE_URL,
-    siteName: SITE_NAME,
-    title: SITE_NAME,
-    description: SITE_DESCRIPTION,
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: SITE_NAME,
-    description: SITE_DESCRIPTION,
-    creator: "@raphaelsalaja",
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
-  alternates: {
-    canonical: SITE_URL,
-    types: {
-      "application/rss+xml": `${SITE_URL}/feed.xml`,
-    },
-  },
-};
-
-export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#111113" },
-    { media: "(prefers-color-scheme: light)", color: "#fcfcfc" },
-  ],
-  width: "device-width",
-  initialScale: 1,
-  viewportFit: "cover",
-};
+export const metadata = METADATA;
+export const viewport = VIEWPORT;
 
 export default function RootLayout({
   children,
@@ -81,17 +14,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={styles.html}>
-      <body className={clsx(fonts, styles.body)}>
-        <a href="#main-content" className={styles.skip}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={fonts}>
+        <a href="#main-content" className="skip-to-content">
           Skip to content
         </a>
         <Providers>
           <Navigation />
-          <main className={styles.main}>
-            <div className={styles.root} id="main-content">
-              {children}
-            </div>
+          <main id="__next-main">
+            <div id="main-content">{children}</div>
           </main>
         </Providers>
       </body>

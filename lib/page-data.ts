@@ -1,4 +1,8 @@
-import type { Page } from "@/lib/source";
+/**
+ * Utilities for serializing page data for client components
+ */
+
+import type { Page } from "./source";
 
 export interface SerializablePageData {
   slugs: string[];
