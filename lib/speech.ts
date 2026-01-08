@@ -119,8 +119,11 @@ function stripCodeSections(value: string) {
       .replace(/https?:\/\/[^\s)>\]]+/g, "")
       // Image references
       .replace(/!\[[^\]]*\]\([^)]+\)/g, "")
-      // Import/export statements in MDX
-      .replace(/^import\s+.*$/gm, "")
+      // Import/export statements in MDX (including multi-line)
+      .replace(/^import\s*\{[\s\S]*?\}\s*from\s*["'][^"']+["'];?/gm, "")
+      .replace(/^import\s+\w+\s+from\s+["'][^"']+["'];?/gm, "")
+      .replace(/^import\s+["'][^"']+["'];?/gm, "")
+      .replace(/^export\s+(default\s+)?\{[\s\S]*?\};?/gm, "")
       .replace(/^export\s+.*$/gm, "")
       // Horizontal rules
       .replace(/^---+$/gm, "")
@@ -277,7 +280,7 @@ export async function readDocumentFromCache(
     audioBuffers,
   );
 
-  // Upload combined result
+  // Upload combined result (allow overwrite since manifest hash is content-based)
   const manifestKey = buildManifestCacheKey(
     slugSegments,
     paragraphs.map((p) => p.hash),
@@ -286,8 +289,9 @@ export async function readDocumentFromCache(
     `${manifestKey.base}.mp3`,
     combinedAudio,
     "audio/mpeg",
+    true, // allowOverwrite
   );
-  await uploadJson(`${manifestKey.base}.json`, combinedTimestamps);
+  await uploadJson(`${manifestKey.base}.json`, combinedTimestamps, true);
 
   return { audioUrl, timestamps: combinedTimestamps };
 }
@@ -379,19 +383,28 @@ async function uploadBinary(
   pathname: string,
   data: Buffer,
   contentType: string,
+  allowOverwrite = false,
 ) {
   const result = (await put(pathname, data, {
     access: "public",
     contentType,
+    addRandomSuffix: !allowOverwrite,
+    allowOverwrite,
   })) as PutBlobResult;
   return result.url;
 }
 
-async function uploadJson(pathname: string, payload: unknown) {
+async function uploadJson(
+  pathname: string,
+  payload: unknown,
+  allowOverwrite = false,
+) {
   const buffer = Buffer.from(JSON.stringify(payload));
   await put(pathname, buffer, {
     access: "public",
     contentType: "application/json",
+    addRandomSuffix: !allowOverwrite,
+    allowOverwrite,
   });
 }
 

@@ -10,6 +10,7 @@ import {
   alignTimestamps,
   clearHighlight,
   collectWordPositions,
+  destroyOverlay,
   highlightWord,
   scrollToWord,
   type WordPosition,
@@ -51,6 +52,7 @@ function locateWordIndex(
     Math.min(lastIndex, timestamps.length - 1),
   );
 
+  // Check if we're still on the same word (common case during playback)
   if (clampedLastIndex >= 0) {
     const previous = timestamps[clampedLastIndex];
     if (previous) {
@@ -64,69 +66,63 @@ function locateWordIndex(
     }
   }
 
-  let index = clampedLastIndex;
-
-  const firstTimestamp = timestamps[0];
-  if (index === -1) {
-    if (firstTimestamp && currentTime < startOf(firstTimestamp) - BASE_WINDOW) {
-      return -1;
-    }
-    index = 0;
-  }
-
-  while (
-    index + 1 < timestamps.length &&
-    timestamps[index + 1] &&
-    currentTime >= startOf(timestamps[index + 1] as WordTimestamp) - BASE_WINDOW
-  ) {
-    index += 1;
-  }
-
-  while (
-    index > 0 &&
-    timestamps[index] &&
-    currentTime < startOf(timestamps[index] as WordTimestamp) - BASE_WINDOW
-  ) {
-    index -= 1;
-  }
-
-  const current = timestamps[index];
-  if (!current) return index;
-
-  const currentStart = startOf(current);
-  const currentEnd = endOf(current);
-  const window = resolveWindow(current);
-  const withinCurrent =
-    currentTime >= currentStart - window && currentTime <= currentEnd + window;
-
-  if (withinCurrent) {
-    return index;
-  }
-
-  if (currentTime > currentEnd + window) {
-    if (index + 1 >= timestamps.length) {
-      return timestamps.length - 1;
-    }
-
-    const nextTimestamp = timestamps[index + 1];
-    if (nextTimestamp) {
-      const nextStart = startOf(nextTimestamp);
-      if (currentTime < nextStart - BASE_WINDOW) {
-        return index;
+  // Check if next word is the one (normal playback progression)
+  if (clampedLastIndex >= 0 && clampedLastIndex + 1 < timestamps.length) {
+    const next = timestamps[clampedLastIndex + 1];
+    if (next) {
+      const window = resolveWindow(next);
+      if (
+        currentTime >= startOf(next) - window &&
+        currentTime <= endOf(next) + window
+      ) {
+        return clampedLastIndex + 1;
       }
     }
-
-    return index + 1;
   }
 
-  if (currentTime < currentStart - window) {
-    if (index === 0) {
-      return -1;
+  // For larger jumps (scrubbing), use binary search
+  const firstTimestamp = timestamps[0];
+  if (firstTimestamp && currentTime < startOf(firstTimestamp) - BASE_WINDOW) {
+    return -1;
+  }
+
+  // Binary search to find the closest word
+  let low = 0;
+  let high = timestamps.length - 1;
+
+  while (low < high) {
+    const mid = Math.floor((low + high + 1) / 2);
+    const midEntry = timestamps[mid];
+    if (midEntry && currentTime >= startOf(midEntry) - BASE_WINDOW) {
+      low = mid;
+    } else {
+      high = mid - 1;
     }
-    return index - 1;
   }
 
-  return index;
+  // Verify the found index is within range
+  const found = timestamps[low];
+  if (!found) return low;
+
+  const foundStart = startOf(found);
+  const foundEnd = endOf(found);
+  const window = resolveWindow(found);
+
+  // Check if we're within this word's range
+  if (currentTime >= foundStart - window && currentTime <= foundEnd + window) {
+    return low;
+  }
+
+  // If past this word, might be in a gap before the next
+  if (currentTime > foundEnd + window && low + 1 < timestamps.length) {
+    const nextEntry = timestamps[low + 1];
+    if (nextEntry && currentTime < startOf(nextEntry) - BASE_WINDOW) {
+      return low; // In the gap, stay on current word
+    }
+    return low + 1;
+  }
+
+  return low;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -199,6 +195,9 @@ export function useWordHighlight({ containerRef }: UseWordHighlightOptions) {
 
   useEventListener("visibilitychange", handleVisibilityChange, documentRef);
 
+  // Track previous time for seek detection
+  const prevTimeRef = useRef(0);
+
   // Apply word highlight
   const applyHighlight = useCallback(
     (wordIndex: number) => {
@@ -218,6 +217,14 @@ export function useWordHighlight({ containerRef }: UseWordHighlightOptions) {
   // Word highlighting during playback
   useEffect(() => {
     if (!timestamps.length || !isPlaying) return;
+
+    // Detect large time jump (seek/scrub) - reset last index
+    const timeDelta = Math.abs(currentTime - prevTimeRef.current);
+    if (timeDelta > 1) {
+      // More than 1 second jump = user scrubbed
+      lastWordIndexRef.current = -1;
+    }
+    prevTimeRef.current = currentTime;
 
     const nextIndex = locateWordIndex(
       currentTime,
@@ -243,6 +250,14 @@ export function useWordHighlight({ containerRef }: UseWordHighlightOptions) {
     lastWordIndexRef.current = -1;
     clearHighlight();
   }, [isPlaying]);
+
+  // Cleanup overlay on unmount
+  useEffect(() => {
+    return () => {
+      clearHighlight();
+      destroyOverlay();
+    };
+  }, []);
 
   return {
     resetWordIndex: () => {

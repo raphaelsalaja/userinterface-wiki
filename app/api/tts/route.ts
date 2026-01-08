@@ -2,9 +2,9 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { ArticleNotFoundError, ResponseError } from "@/lib/errors";
 import {
-  buildCacheKey,
+  analyzeParagraphs,
   getPlainArticleText,
-  readFromCache,
+  readDocumentFromCache,
 } from "@/lib/speech";
 import { toSlugSegments } from "@/lib/strings";
 
@@ -21,12 +21,11 @@ export async function POST(request: NextRequest) {
     }
 
     const plainText = await getPlainArticleText(slugSegments);
-    // Simplified: no voice parameter, using single voice from env
-    const cacheKey = buildCacheKey(slugSegments, plainText);
+    const paragraphs = analyzeParagraphs(plainText);
 
-    const cached = await readFromCache(cacheKey);
+    const cached = await readDocumentFromCache(slugSegments, paragraphs);
     if (cached) {
-      return NextResponse.json({ ...cached, hash: cacheKey.hash });
+      return NextResponse.json(cached);
     }
 
     return NextResponse.json(

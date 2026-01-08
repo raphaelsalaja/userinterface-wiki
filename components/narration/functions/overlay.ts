@@ -101,3 +101,13 @@ export function clearHighlight(): void {
     overlayElement.classList.remove("visible");
   }
 }
+
+/**
+ * Destroy and remove the overlay element completely
+ */
+export function destroyOverlay(): void {
+  if (overlayElement) {
+    overlayElement.remove();
+    overlayElement = null;
+  }
+}
