@@ -3,7 +3,7 @@
  *
  * Cost-saving strategies:
  * - Flash v2.5 model: 50% cheaper than Multilingual v2
- * - mp3_22050_32: smallest file size, low bandwidth
+ * - mp3_44100_128: CD-quality audio with reasonable file size
  * - Pre-generation only: no on-demand API calls
  * - Single voice: one great voice vs many
  * - Paragraph-level caching: only regenerate changed paragraphs
@@ -28,7 +28,7 @@ const CONTENT_DIR = path.join(process.cwd(), "content");
 const CACHE_PREFIX = "tts-v2"; // New prefix for paragraph-level cache
 const ELEVENLABS_API_URL = "https://api.elevenlabs.io/v1";
 const MODEL_ID = "eleven_flash_v2_5";
-const OUTPUT_FORMAT = "mp3_22050_32";
+const OUTPUT_FORMAT = "mp3_44100_128"; // CD-quality audio (44.1kHz, 128kbps)
 
 // Minimum paragraph length to avoid tiny API calls
 const MIN_PARAGRAPH_LENGTH = 50;
