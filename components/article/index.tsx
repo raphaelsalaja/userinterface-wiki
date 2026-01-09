@@ -1,5 +1,6 @@
 "use client";
 
+import { clsx } from "clsx";
 import { AnimatePresence, motion } from "motion/react";
 import { createContext, useContext, useMemo, useRef } from "react";
 import { Button } from "@/components/button";
@@ -124,7 +125,7 @@ function Header({ className }: HeaderProps) {
   };
 
   return (
-    <div className={className ?? styles.header}>
+    <div className={clsx(styles.header, className)}>
       <div className={styles.row}>
         <h1 className={styles.title}>{page.data.title}</h1>
         <div className={styles.actions}>

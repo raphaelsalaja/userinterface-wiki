@@ -1,5 +1,6 @@
 "use client";
 
+import { clsx } from "clsx";
 import { useCallback, useEffect, useState } from "react";
 import { useEventListener } from "usehooks-ts";
 import styles from "./styles.module.css";
@@ -28,7 +29,7 @@ export function ReadingProgress({ className }: ReadingProgressProps) {
 
   return (
     <div
-      className={className ?? styles.bar}
+      className={clsx(styles.bar, className)}
       style={{ "--progress": `${progress}%` } as React.CSSProperties}
       role="progressbar"
       aria-valuenow={progress}

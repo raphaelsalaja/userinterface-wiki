@@ -232,7 +232,7 @@ export function Player({ className }: PlayerProps) {
   return (
     <Portal>
       <motion.div
-        className={className ?? styles.player}
+        className={clsx(styles.player, className)}
         initial={{
           opacity: 0,
         }}
