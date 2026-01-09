@@ -10,7 +10,8 @@
     "lint": "biome check --fix --unsafe . --reporter=summary",
     "postinstall": "fumadocs-mdx",
     "generate:tts": "tsx scripts/generate-tts.ts",
-    "convert:icons": "node scripts/convert-icons.mjs"
+    "convert:icons": "node scripts/convert-icons.mjs",
+    "prepare": "husky"
   },
   "dependencies": {
     "@base-ui/react": "1.0.0",
@@ -63,6 +64,7 @@
     "babel-plugin-react-compiler": "^1.0.0",
     "baseline-browser-mapping": "^2.9.11",
     "dotenv": "^17.2.3",
+    "husky": "^9.1.7",
     "picocolors": "^1.1.1",
     "tailwindcss": "^4.1.18",
     "tsx": "^4.21.0",

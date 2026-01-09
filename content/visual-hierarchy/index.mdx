@@ -1,0 +1,579 @@
+---
+title: "Visual Hierarchy"
+description: "Every interface tells users where to look. Visual hierarchy is how you control that order—through size, color, contrast, spacing, and position. Master it, and your interfaces become effortless to use."
+date:
+  published: "2026-01-09"
+  modified: "2026-01-09"
+tags: ["design", "typography", "layout", "accessibility"]
+author: "raphael-salaja"
+icon: "writing"
+---
+
+Open any well-designed interface. Without reading a word, you already know what's important. Your eye lands on the headline first, then the subtext, then the actions. The interface has guided you through a deliberate sequence.
+
+This is visual hierarchy. It's the arrangement of elements to imply importance. It tells users where to look first, second, third. It separates primary content from secondary, actions from information, the essential from the optional.
+
+Poor hierarchy makes interfaces feel chaotic. Everything competes for attention. Users don't know where to start. Good hierarchy makes interfaces feel inevitable. The right thing is always obvious.
+
+This guide covers the principles that create effective hierarchy and how to apply them in your work.
+
+# The Principles
+
+Visual hierarchy operates through contrast. Something stands out because it's different from its surroundings. That difference can come from many sources.
+
+## Size
+
+Larger elements attract attention before smaller ones. This is the most direct form of hierarchy.
+
+```css
+.title {
+  font-size: 48px;
+  font-weight: 600;
+}
+
+.subtitle {
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.body {
+  font-size: 16px;
+  font-weight: 400;
+}
+```
+
+The title dominates because it's nearly three times the size of body text. The subtitle falls between, creating a clear three-level hierarchy.
+
+Size hierarchy should be proportional. The jump from each level to the next should feel consistent. A modular scale helps:
+
+```css
+:root {
+  --scale: 1.25;
+  --text-xs: 12px;
+  --text-sm: calc(var(--text-xs) * var(--scale));
+  --text-base: calc(var(--text-sm) * var(--scale));
+  --text-lg: calc(var(--text-base) * var(--scale));
+  --text-xl: calc(var(--text-lg) * var(--scale));
+  --text-2xl: calc(var(--text-xl) * var(--scale));
+}
+```
+
+## Weight
+
+Font weight creates hierarchy without changing size. Bold text stands out from regular text. This is useful when size changes aren't appropriate.
+
+```css
+.label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.value {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--color-text-secondary);
+}
+```
+
+Labels and values share the same size, but weight distinguishes them. The label asserts itself; the value recedes.
+
+Weight works best in moderation. If everything is bold, nothing is bold. Reserve heavy weights for true emphasis.
+
+## Color and Contrast
+
+Color is a powerful hierarchy tool. High-contrast elements advance; low-contrast elements recede.
+
+```css
+:root {
+  --color-text-primary: oklch(10% 0 0);
+  --color-text-secondary: oklch(40% 0 0);
+  --color-text-tertiary: oklch(60% 0 0);
+}
+```
+
+Primary text is nearly black, commanding attention. Tertiary text fades toward the background, indicating lower importance.
+
+Semantic color adds another layer. A red badge signals urgency. A muted gray timestamp indicates supporting information.
+
+```css
+.badge-urgent {
+  background: var(--color-error);
+  color: white;
+}
+
+.timestamp {
+  color: var(--color-text-tertiary);
+  font-size: 12px;
+}
+```
+
+## Space
+
+Whitespace groups and separates content. Elements with less space between them feel related. Elements with more space feel distinct.
+
+```css
+.card-header {
+  margin-bottom: 8px; /* Tight coupling */
+}
+
+.card-body {
+  margin-bottom: 24px; /* Clear separation */
+}
+
+.card-footer {
+  padding-top: 16px;
+  border-top: 1px solid var(--color-border);
+}
+```
+
+Space also creates emphasis through isolation. A button surrounded by generous whitespace feels more important than one crowded by other elements.
+
+## Position
+
+In Western reading cultures, we scan from top-left to bottom-right. Elements at the top and left get seen first. Important content belongs there.
+
+Primary actions typically go on the right (where the hand naturally reaches) or at the bottom (the conclusion of the content). Destructive actions often go left, creating friction before the user reaches them.
+
+```css
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.dialog-actions .secondary {
+  order: -1; /* Secondary action on left */
+}
+```
+
+## Typography
+
+Beyond size and weight, typographic choices create hierarchy. Serif vs. sans-serif. Uppercase vs. sentence case. Tracking and line height.
+
+```css
+.overline {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+}
+
+.headline {
+  font-size: 32px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+```
+
+The overline is small but distinctive—uppercase and tracked out. It reads as a category or label, not as content. The headline is large with tight tracking, asserting itself as the main focus.
+
+# Building a Type Scale
+
+A coherent type system is the foundation of visual hierarchy. It provides consistent sizes, weights, and styles that work together.
+
+## Define Your Levels
+
+Most interfaces need 5-7 type levels. More than that becomes hard to distinguish and remember.
+
+```css
+/* Heading levels */
+.h1 { font-size: 48px; font-weight: 700; line-height: 1.1; }
+.h2 { font-size: 36px; font-weight: 600; line-height: 1.2; }
+.h3 { font-size: 24px; font-weight: 600; line-height: 1.3; }
+.h4 { font-size: 20px; font-weight: 600; line-height: 1.4; }
+
+/* Body levels */
+.body-lg { font-size: 18px; line-height: 1.6; }
+.body { font-size: 16px; line-height: 1.6; }
+.body-sm { font-size: 14px; line-height: 1.5; }
+
+/* Supporting levels */
+.caption { font-size: 12px; line-height: 1.4; }
+.overline { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
+```
+
+## Responsive Scaling
+
+Headings should scale down on smaller screens. The relative hierarchy remains, but absolute sizes decrease.
+
+```css
+.h1 {
+  font-size: clamp(32px, 5vw, 48px);
+}
+
+.h2 {
+  font-size: clamp(24px, 4vw, 36px);
+}
+```
+
+Body text typically stays fixed. Scaling body text can harm readability. Instead, adjust line length and margins.
+
+## Combine Intentionally
+
+Each element should use exactly one type level. Mixing sizes within elements (outside of intentional superscript or icons) creates visual noise.
+
+# Color Hierarchy
+
+A well-structured color system supports hierarchy naturally.
+
+## Text Colors
+
+Three to four text colors usually suffice:
+
+```css
+:root {
+  --text-primary: oklch(15% 0 0);    /* Headings, important content */
+  --text-secondary: oklch(35% 0 0);  /* Body text */
+  --text-tertiary: oklch(55% 0 0);   /* Captions, metadata */
+  --text-disabled: oklch(70% 0 0);   /* Disabled states */
+}
+```
+
+Each level should be visibly distinct from the others. If you can't tell secondary from tertiary at a glance, they're too similar.
+
+## Semantic Colors
+
+Use color to encode meaning, but never as the only indicator.
+
+```css
+.status-success { color: var(--color-success); }
+.status-warning { color: var(--color-warning); }
+.status-error { color: var(--color-error); }
+```
+
+Always pair color with text, icons, or other redundant cues. Color-blind users need alternative signals.
+
+## Background Hierarchy
+
+Surfaces create depth. A card on a page. A dropdown over a card. Each layer should be visibly distinct.
+
+```css
+:root {
+  --surface-0: oklch(98% 0 0);  /* Page background */
+  --surface-1: oklch(100% 0 0); /* Cards */
+  --surface-2: oklch(97% 0 0);  /* Dropdowns, modals */
+  --surface-3: oklch(95% 0 0);  /* Nested elements */
+}
+```
+
+Shadows reinforce this hierarchy. Higher elements cast larger, softer shadows.
+
+# Hierarchy in Components
+
+Every component has internal hierarchy. A card has a title, content, and actions. A form has labels, inputs, and helper text. The hierarchy principles apply at every scale.
+
+## Card Anatomy
+
+```css
+.card {
+  padding: 24px;
+}
+
+.card-eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-accent);
+  margin-bottom: 8px;
+}
+
+.card-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.card-description {
+  font-size: 16px;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+.card-meta {
+  font-size: 14px;
+  color: var(--text-tertiary);
+}
+```
+
+The eyebrow is small but distinctive, categorizing the card. The title dominates. The description supports. The meta recedes.
+
+## Form Anatomy
+
+```css
+.field {
+  margin-bottom: 24px;
+}
+
+.field-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.field-input {
+  font-size: 16px;
+  padding: 12px;
+  border: 1px solid var(--color-border);
+}
+
+.field-hint {
+  font-size: 13px;
+  color: var(--text-tertiary);
+  margin-top: 6px;
+}
+
+.field-error {
+  font-size: 13px;
+  color: var(--color-error);
+  margin-top: 6px;
+}
+```
+
+Labels are clear but don't compete with input values. Hints recede until needed. Errors assert themselves through color.
+
+## Navigation Hierarchy
+
+```css
+.nav-primary {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.nav-primary.active {
+  color: var(--color-accent);
+}
+
+.nav-secondary {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
+.nav-secondary.active {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+```
+
+Primary navigation is bolder, indicating top-level sections. Secondary navigation is subtler, for subsections or filters.
+
+# Page-Level Hierarchy
+
+At the page level, hierarchy guides users through content.
+
+## The F-Pattern
+
+Users often scan pages in an F-pattern. Two horizontal stripes across the top, then a vertical scan down the left. Place key content along these paths.
+
+```css
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 48px;
+}
+
+.page-title {
+  font-size: 32px;
+  font-weight: 600;
+}
+
+.page-actions {
+  display: flex;
+  gap: 12px;
+}
+```
+
+The title anchors the top-left. Actions sit top-right where they're accessible but don't distract from content.
+
+## Progressive Disclosure
+
+Not everything needs to be visible immediately. Secondary information can be collapsed, nested, or revealed on demand.
+
+```css
+.details-summary {
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.details-content {
+  padding-top: 12px;
+  color: var(--text-secondary);
+}
+```
+
+This reduces cognitive load. Users see what matters first and can drill down when needed.
+
+## Visual Anchors
+
+Large, distinctive elements anchor the page and create orientation points. A hero image. A prominent heading. A data visualization. These landmarks help users understand where they are.
+
+# Common Mistakes
+
+## Everything Is Emphasized
+
+When everything is bold, large, or colorful, nothing stands out. Hierarchy requires restraint. Choose what matters most and emphasize that. Let everything else support it.
+
+## Too Many Levels
+
+Five to seven type levels. Three to four text colors. If you're using more, you're creating distinctions users can't perceive. Simplify.
+
+## Inconsistent Application
+
+If cards in one section use 18px titles and cards in another use 24px, users lose the ability to predict importance. Consistency makes hierarchy learnable.
+
+## Fighting the Platform
+
+Native elements have built-in hierarchy. Heading tags, button states, form structure. Work with these defaults rather than overriding them arbitrarily.
+
+## Ignoring Accessibility
+
+Hierarchy relies on contrast. Low contrast ratios break hierarchy for users with visual impairments. Check your colors against WCAG guidelines—or better, APCA.
+
+# Testing Hierarchy
+
+## The Squint Test
+
+Blur your vision (literally squint) while looking at your interface. What stands out? The important elements should remain visible. If everything becomes a uniform blur, your hierarchy is too flat.
+
+## The Five-Second Test
+
+Show someone your interface for five seconds, then hide it. Ask what they remember. They should recall the primary content and main action. If they remember secondary elements, your hierarchy is inverted.
+
+## Grayscale Test
+
+Remove all color from your interface. Does the hierarchy still work? Size, weight, and space should create structure independent of color. This also tests accessibility.
+
+## Reading Order
+
+Tab through your interface with a keyboard. Does the focus order match the visual hierarchy? It should. If a visually primary element is last in tab order, there's a mismatch.
+
+# Practical Patterns
+
+## Hero Section
+
+```css
+.hero {
+  padding: 80px 0;
+  text-align: center;
+}
+
+.hero-overline {
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-accent);
+  margin-bottom: 16px;
+}
+
+.hero-title {
+  font-size: clamp(40px, 6vw, 64px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 24px;
+}
+
+.hero-description {
+  font-size: 20px;
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto 32px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+```
+
+## Data Table
+
+```css
+.table-header {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-tertiary);
+  padding: 12px 16px;
+}
+
+.table-cell {
+  font-size: 14px;
+  color: var(--text-secondary);
+  padding: 16px;
+}
+
+.table-cell-primary {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.table-cell-numeric {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+```
+
+## Settings Page
+
+```css
+.settings-section {
+  margin-bottom: 48px;
+}
+
+.settings-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.settings-description {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+}
+
+.settings-option {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.settings-option-label {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.settings-option-hint {
+  font-size: 13px;
+  color: var(--text-tertiary);
+  margin-top: 4px;
+}
+```
+
+# Closing Thoughts
+
+Visual hierarchy is invisible when done well. Users don't notice it—they just understand the interface. They know where to look, what matters, what to do next.
+
+The principles are simple: size, weight, color, space, position. The skill is in application. Knowing when to emphasize and when to restrain. Building systems that maintain hierarchy across hundreds of screens.
+
+Every design decision either strengthens or weakens hierarchy. Be intentional about each one. Ask what's most important on this screen. Then make that undeniably clear.
+
+[^1]: The F-pattern was identified by Nielsen Norman Group through eye-tracking studies of how users scan web pages.
+
+[^2]: APCA (Accessible Perceptual Contrast Algorithm) is an emerging standard that provides more accurate contrast ratios than WCAG 2.x formulas.
+
+[^3]: Modular type scales were popularized by Tim Brown and are implemented in tools like [type-scale.com](https://type-scale.com/).

@@ -39,14 +39,10 @@ export function Orb({
   className,
 }: OrbProps) {
   return (
-    <div className={className ?? "relative h-full w-full"}>
+    <div className={className}>
       <Canvas
         resize={{ debounce: resizeDebounce }}
-        gl={{
-          alpha: true,
-          antialias: true,
-          premultipliedAlpha: true,
-        }}
+        gl={{ alpha: true, antialias: true, premultipliedAlpha: true }}
       >
         <Scene
           colors={colors}

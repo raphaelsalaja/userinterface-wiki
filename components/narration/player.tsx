@@ -2,6 +2,7 @@
 
 import { Slider } from "@base-ui/react/slider";
 import { FloatingPortal as Portal } from "@floating-ui/react";
+import { clsx } from "clsx";
 import { AnimatePresence, motion } from "motion/react";
 import { useCallback } from "react";
 import { Button } from "@/components/button";
@@ -113,13 +114,9 @@ function VolumeControl({
 }
 
 interface SettingsMenuProps {
-  autoScroll: boolean;
   canDownload: boolean;
-  isLooping: boolean;
   playbackRate: PlaybackRate;
-  onAutoScrollChange: (value: boolean) => void;
   onDownload: () => void;
-  onLoopChange: (looping: boolean) => void;
   onPlaybackRateChange: (rate: PlaybackRate) => void;
 }
 
@@ -138,43 +135,6 @@ function SettingsMenu(props: SettingsMenuProps) {
       <Menu.Portal keepMounted>
         <Menu.Positioner sideOffset={16} align="end" side="top">
           <Menu.Popup>
-            <Menu.CheckboxItem
-              checked={props.autoScroll}
-              onCheckedChange={props.onAutoScrollChange}
-            >
-              Track Voice Position
-              <Menu.CheckboxItemIndicator
-                keepMounted
-                render={
-                  <AnimatePresence initial={false}>
-                    {props.autoScroll && (
-                      <motion.div key="auto-scroll" {...ICON_TRANSITION}>
-                        <Checkmark2SmallIcon size={18} />
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                }
-              />
-            </Menu.CheckboxItem>
-            <Menu.CheckboxItem
-              checked={props.isLooping}
-              onCheckedChange={props.onLoopChange}
-            >
-              Loop Audio
-              <Menu.CheckboxItemIndicator
-                keepMounted
-                render={
-                  <AnimatePresence initial={false}>
-                    {props.isLooping && (
-                      <motion.div key="looping" {...ICON_TRANSITION}>
-                        <Checkmark2SmallIcon size={18} />
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                }
-              />
-            </Menu.CheckboxItem>
-            <Menu.Separator />
             <Menu.Group>
               <Menu.GroupLabel>Speed</Menu.GroupLabel>
               <Menu.RadioGroup value={props.playbackRate.toString()}>
@@ -236,16 +196,12 @@ export function Player({ className }: PlayerProps) {
     seek,
     skipForward,
     skipBackward,
-    autoScroll,
-    setAutoScroll,
     playbackRate,
     setPlaybackRate,
     volume,
     setVolume,
     isMuted,
     toggleMute,
-    isLooping,
-    setIsLooping,
     download,
     audioUrl,
   } = useNarrationContext("Player");
@@ -299,7 +255,9 @@ export function Player({ className }: PlayerProps) {
               <Orb
                 colors={colors}
                 agentState={agentState}
-                className={styles.shader}
+                className={clsx(styles.shader, {
+                  [styles.talking]: agentState === "talking",
+                })}
               />
             </div>
             <div className={styles.info}>
@@ -379,13 +337,9 @@ export function Player({ className }: PlayerProps) {
               </Shortcut>
             </div>
             <SettingsMenu
-              autoScroll={autoScroll}
               canDownload={!!audioUrl}
-              isLooping={isLooping}
               playbackRate={playbackRate}
-              onAutoScrollChange={setAutoScroll}
               onDownload={download}
-              onLoopChange={setIsLooping}
               onPlaybackRateChange={setPlaybackRate}
             />
           </div>

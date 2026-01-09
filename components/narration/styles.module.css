@@ -74,8 +74,13 @@
   width: 100%;
   height: 100%;
   aspect-ratio: 1 / 1;
-  filter: blur(4px);
+  filter: grayscale(100%);
   transform: translate(-50%, -50%);
+  transition: filter 400ms ease;
+
+  &.talking {
+    filter: none;
+  }
 }
 
 .details .info {
