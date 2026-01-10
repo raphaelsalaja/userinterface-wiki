@@ -108,7 +108,7 @@ function Header({ className }: HeaderProps) {
     useNarrationContext("Header");
 
   const hasCoauthors = coauthors.length > 0;
-  const isReady = status === "ready";
+  const _isReady = status === "ready";
 
   const handlePlayClick = () => {
     toggle();
