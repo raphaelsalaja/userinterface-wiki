@@ -14,6 +14,7 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@base-ui-components/react": "1.0.0-rc.0",
     "@base-ui/react": "1.0.0",
     "@floating-ui/react": "^0.27.16",
     "@radix-ui/colors": "^3.0.0",

@@ -1,0 +1,49 @@
+.root {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.container {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 24px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.button {
+  position: relative;
+  padding: 8px 16px;
+  overflow: hidden;
+  font-size: 16px;
+  font-weight: var(--font-weight-medium);
+  color: var(--red-10);
+  user-select: none;
+  background: var(--red-3);
+  border-radius: 100px;
+}
+
+.label {
+  position: relative;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.fill {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  color: var(--gray-1);
+  background: var(--red-9);
+}

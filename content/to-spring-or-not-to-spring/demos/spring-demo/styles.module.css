@@ -1,0 +1,54 @@
+.root {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.container {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 24px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.track {
+  position: absolute;
+  display: flex;
+  gap: 280px;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.endpoint {
+  width: 12px;
+  height: 12px;
+  background: var(--gray-6);
+  border-radius: 50%;
+}
+
+.ball {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  touch-action: none;
+  cursor: grab;
+  background: var(--gray-1);
+  border-radius: 50%;
+  box-shadow: var(--shadow-2);
+}
+
+.ball:active {
+  cursor: grabbing;
+}
+
+.controls {
+  z-index: 10;
+}

@@ -6,8 +6,8 @@
   --code-font-size: 13px;
   --code-line-height: 1.6;
   --code-tab-size: 2;
-  --code-background: var(--gray-2);
-  --code-border-color: var(--gray-4);
+  --code-background: var(--gray-1);
+  --code-border-color: var(--gray-a4);
   --code-border-radius: var(--prose-block-radius);
 
   a {
@@ -313,8 +313,8 @@
     min-height: 384px;
     overflow: hidden;
     background: var(--gray-1);
-    border: 1px solid var(--gray-4);
     border-radius: 8px;
+    box-shadow: var(--shadow-2);
   }
 
   [data-prose-type="figcaption"] {

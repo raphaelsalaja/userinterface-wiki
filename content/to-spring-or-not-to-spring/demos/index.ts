@@ -1,7 +1,5 @@
-export { DecisionFlow } from "./decision-flow";
-export { EaseVsSpring } from "./ease-vs-spring";
-export { ProgressBarDemo } from "./progress-bar";
-export { SidebarDemo } from "./sidebar-demo";
-export { SwipeToDismiss } from "./swipe-to-dismiss";
-export { TabSwitcher } from "./tab-switcher";
-export { ToastDemo } from "./toast-demo";
+export * from './decision-flow/index';
+export * from './ease-vs-spring/index';
+export * from './easing-demo/index';
+export * from './linear-demo/index';
+export * from './spring-demo/index';
