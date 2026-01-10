@@ -35,9 +35,11 @@ export function HomeLayout({ pages }: { pages: FormattedPage[] }) {
 
   const filteredPages = useMemo(() => {
     const q = query.trim();
-    if (!q) return pages;
+    const results = q ? fuse.search(q).map((result) => result.item) : pages;
 
-    return fuse.search(q).map((result) => result.item);
+    return [...results].sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+    );
   }, [fuse, pages, query]);
 
   return (

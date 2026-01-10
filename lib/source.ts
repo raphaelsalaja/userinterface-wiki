@@ -27,9 +27,7 @@ export interface FormattedPage {
   author: Author;
   coauthors: Author[];
   icon?: "motion" | "code" | "writing";
-  date: {
-    published: string;
-  };
+  date: string;
 }
 
 function formatData(data: Page["data"]) {
@@ -44,13 +42,7 @@ function formatData(data: Page["data"]) {
     author: getAuthorById(data.author),
     coauthors: (data.coauthors ?? []).map(getAuthorById),
     icon: data.icon,
-    date: {
-      published: new Intl.DateTimeFormat("en-US", {
-        year: "numeric",
-        month: "short",
-        day: "2-digit",
-      }).format(new Date(data.date)),
-    },
+    date: data.date,
   };
 }
 

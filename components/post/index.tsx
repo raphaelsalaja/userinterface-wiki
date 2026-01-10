@@ -116,12 +116,9 @@ interface DateProps {
 
 function PublishedDate({ options, locale = "en-US", className }: DateProps) {
   const { date } = usePost();
-  const formatted = new Date(date.published).toLocaleDateString(
-    locale,
-    options,
-  );
+  const formatted = new Date(date).toLocaleDateString(locale, options);
   return (
-    <span data-post-date="" className={className}>
+    <span data-post-date="" className={clsx(styles.date, className)}>
       {formatted}
     </span>
   );

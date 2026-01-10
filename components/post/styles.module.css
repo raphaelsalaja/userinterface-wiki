@@ -5,3 +5,7 @@
   background: var(--gray-10);
   border-radius: 100px;
 }
+
+.date {
+  font-variant-numeric: tabular-nums;
+}
