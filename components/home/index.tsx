@@ -7,16 +7,21 @@ import { clsx } from "clsx";
 import Fuse from "fuse.js";
 import { useMemo, useState } from "react";
 import { PageTransition } from "@/components/page-transition";
-import { PageCard, PageRow } from "@/components/post";
+import { Post } from "@/components/post";
 import { BarsThreeIcon, BarsTwo2Icon, MagnifyingGlassIcon } from "@/icons";
 import type { FormattedPage } from "@/lib/source";
+import { usePreferences } from "@/lib/stores";
 import styles from "./styles.module.css";
-
-type ViewMode = "card" | "row";
 
 export function HomeLayout({ pages }: { pages: FormattedPage[] }) {
   const [query, setQuery] = useState("");
-  const [viewMode, setViewMode] = useState<ViewMode>("card");
+  const { viewMode, setViewMode } = usePreferences();
+
+  function handleViewModeChange(value: string[]) {
+    if (value.length > 0) {
+      setViewMode(value[0] as "card" | "row");
+    }
+  }
 
   const fuse = useMemo(
     () =>
@@ -54,13 +59,9 @@ export function HomeLayout({ pages }: { pages: FormattedPage[] }) {
             />
           </Field.Root>
           <ToggleGroup
-            defaultValue={[viewMode]}
+            value={[viewMode]}
             className={styles.toggle}
-            onValueChange={(value) => {
-              if (value.length > 0) {
-                setViewMode(value[0] as ViewMode);
-              }
-            }}
+            onValueChange={handleViewModeChange}
           >
             <Toggle value="card" aria-label="Card view" className={styles.view}>
               <BarsThreeIcon size={18} />
@@ -74,7 +75,24 @@ export function HomeLayout({ pages }: { pages: FormattedPage[] }) {
         {filteredPages.length !== 0 && viewMode === "card" && (
           <div className={clsx(styles.list, styles.card)}>
             {filteredPages.map((page) => (
-              <PageCard key={page.url} page={page} className={styles.item} />
+              <Post.Root key={page.url} page={page} className={styles.post}>
+                <Post.Link>
+                  <div className={styles.details}>
+                    <Post.Preview />
+                    <div>
+                      <Post.Title />
+                      <Post.Meta>
+                        <Post.Author />
+                        <Post.Separator />
+                        <Post.Date options={{ day: "numeric", month: "short", year: "numeric" }} />
+                      </Post.Meta>
+                    </div>
+                  </div>
+                  <div>
+                    <Post.Description />
+                  </div>
+                </Post.Link>
+              </Post.Root>
             ))}
           </div>
         )}
@@ -82,7 +100,14 @@ export function HomeLayout({ pages }: { pages: FormattedPage[] }) {
         {filteredPages.length !== 0 && viewMode === "row" && (
           <div className={clsx(styles.list, styles.row)}>
             {filteredPages.map((page) => (
-              <PageRow key={page.url} page={page} className={styles.item} />
+              <Post.Root key={page.url} page={page} className={styles.post}>
+                <Post.Link>
+                  <Post.Date options={{ year: "numeric" }} />
+                  <Post.Title as="span" />
+                  <Post.Date options={{ day: "2-digit", month: "2-digit" }} />
+                </Post.Link>
+                <Post.Divider />
+              </Post.Root>
             ))}
           </div>
         )}

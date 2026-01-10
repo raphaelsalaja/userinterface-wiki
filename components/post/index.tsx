@@ -1,5 +1,8 @@
+"use client";
+
 import { clsx } from "clsx";
 import Link from "next/link";
+import { createContext, useContext } from "react";
 import {
   CodePreview,
   EssayPreview,
@@ -8,88 +11,175 @@ import {
 import type { FormattedPage } from "@/lib/source";
 import styles from "./styles.module.css";
 
-function formatRowDate(dateString: string): { year: string; dayMonth: string } {
-  const date = new Date(dateString);
-  const year = date.getFullYear().toString();
-  const dayMonth = date.toLocaleDateString("en-US", {
-    day: "numeric",
-    month: "short",
-  });
-  return { year, dayMonth };
+ 
+const PostContext = createContext<FormattedPage | null>(null);
+
+function usePost() {
+  const context = useContext(PostContext);
+  if (!context) {
+    throw new Error("Post components must be used within Post.Root");
+  }
+  return context;
 }
 
-type ViewMode = "card" | "row";
+/* -------------------------------------------------------------------------------------------------
+ * Primitives
+ * -------------------------------------------------------------------------------------------------*/
 
-interface PageItemProps {
-  className?: string;
+interface RootProps {
   page: FormattedPage;
-  viewMode: ViewMode;
+  children: React.ReactNode;
+  className?: string;
 }
 
-export function PageItem({ page, className, viewMode }: PageItemProps) {
-  const { title, description, author, date, icon, url } = page;
-  const { year, dayMonth } = formatRowDate(date.published);
+function Root({ page, children, className }: RootProps) {
+  return (
+    <PostContext.Provider value={page}>
+      <div data-post-root="" className={className}>
+        {children}
+      </div>
+    </PostContext.Provider>
+  );
+}
 
-  const Icon = () => {
+interface LinkProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+function PostLink({ children, className }: LinkProps) {
+  const { url } = usePost();
+  return (
+    <Link data-post-link="" href={{ pathname: url }} className={className}>
+      {children}
+    </Link>
+  );
+}
+
+interface PreviewProps {
+  className?: string;
+}
+
+function Preview({ className }: PreviewProps) {
+  const { icon, title } = usePost();
+
+  const content = (() => {
     switch (icon) {
       case "motion":
         return <MotionPreview />;
       case "code":
         return <CodePreview seed={title} />;
-      case "writing":
-        return <EssayPreview seed={title} />;
       default:
         return <EssayPreview seed={title} />;
     }
-  };
-
-  if (viewMode === "row") {
-    return (
-      <Link href={{ pathname: url }} className={clsx(styles.row, className)}>
-        <span className={styles["row-year"]}>{year}</span>
-        <span className={styles["row-title"]}>{title}</span>
-        <span className={styles["row-date"]}>{dayMonth}</span>
-      </Link>
-    );
-  }
+  })();
 
   return (
-    <Link href={{ pathname: url }} className={clsx(styles.post, className)}>
-      <div className={styles.details}>
-        <div className={styles.preview}>
-          <Icon />
-        </div>
-        <div>
-          <h2 className={styles.title}>{title}</h2>
-          <span className={styles.meta}>
-            <span>{author.name}</span>
-            <span className={styles.separator} />
-            <span>{date.published}</span>
-          </span>
-        </div>
-      </div>
-      <div>
-        <p className={styles.description}>{description}</p>
-      </div>
-    </Link>
+    <div data-post-preview="" className={className}>
+      {content}
+    </div>
   );
 }
 
-// Legacy exports for backwards compatibility
-interface PageCardProps {
+interface TitleProps {
+  as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "span";
   className?: string;
-  page: FormattedPage;
 }
 
-export function PageCard({ page, className }: PageCardProps) {
-  return <PageItem page={page} className={className} viewMode="card" />;
+function Title({ as: Tag = "h2", className }: TitleProps) {
+  const { title } = usePost();
+  return (
+    <Tag data-post-title="" className={className}>
+      {title}
+    </Tag>
+  );
 }
 
-interface PageRowProps {
+interface DescriptionProps {
+  as?: "p" | "span";
   className?: string;
-  page: FormattedPage;
 }
 
-export function PageRow({ page, className }: PageRowProps) {
-  return <PageItem page={page} className={className} viewMode="row" />;
+function Description({ as: Tag = "p", className }: DescriptionProps) {
+  const { description } = usePost();
+  return (
+    <Tag data-post-description="" className={className}>
+      {description}
+    </Tag>
+  );
 }
+
+interface DateProps {
+  options?: Intl.DateTimeFormatOptions;
+  locale?: string;
+  className?: string;
+}
+
+function Date({ options, locale = "en-US", className }: DateProps) {
+  const { date } = usePost();
+  const formatted = new globalThis.Date(date.published).toLocaleDateString(
+    locale,
+    options,
+  );
+  return (
+    <span data-post-date="" className={className}>
+      {formatted}
+    </span>
+  );
+}
+
+interface AuthorProps {
+  className?: string;
+}
+
+function Author({ className }: AuthorProps) {
+  const { author } = usePost();
+  return (
+    <span data-post-author="" className={className}>
+      {author.name}
+    </span>
+  );
+}
+
+interface MetaProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+function Meta({ children, className }: MetaProps) {
+  return (
+    <span data-post-meta="" className={className}>
+      {children}
+    </span>
+  );
+}
+
+interface SeparatorProps {
+  className?: string;
+}
+
+function Separator({ className }: SeparatorProps) {
+  return <span data-post-separator="" className={clsx(styles.separator, className)} />;
+}
+
+interface DividerProps {
+  className?: string;
+}
+
+function Divider({ className }: DividerProps) {
+  return <hr data-post-divider="" className={className} />;
+}
+
+ 
+export const Post = {
+  Root,
+  Link: PostLink,
+  Preview,
+  Title,
+  Description,
+  Date,
+  Author,
+  Meta,
+  Separator,
+  Divider,
+};

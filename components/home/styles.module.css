@@ -104,24 +104,137 @@
   color: var(--gray-12);
 }
 
-.item {
-  transition-timing-function: ease-in-out;
-  transition-duration: 0.2s;
-  transition-property: all;
-}
-
-.list.card:has(.item:hover) .item {
+.list.card:has(.post:hover) .post {
   filter: opacity(0.2);
 }
 
-.list.card:has(.item:hover) .item:hover {
+.list.card:has(.post:hover) .post:hover {
   filter: opacity(1);
 }
 
-.list.row:has(.item:hover) .item {
+.list.row:has(.post:hover) .post {
   filter: opacity(0.4);
 }
 
-.list.row:has(.item:hover) .item:hover {
+.list.row:has(.post:hover) .post:hover {
   filter: opacity(1);
+}
+
+.post {
+  transition-timing-function: ease-in-out;
+  transition-duration: 0.2s;
+  transition-property: filter;
+}
+
+.list.card .post [data-post-link] {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-start;
+  align-self: stretch;
+}
+
+.list.card .post .details {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  align-self: stretch;
+}
+
+.list.card .post [data-post-title] {
+  font-family: var(--font-family-display);
+  font-size: 16px;
+  font-weight: var(--font-weight-medium);
+  line-height: 24px;
+  color: var(--gray-12);
+  letter-spacing: var(--font-letter-spacing-16px);
+  transition: all 0.2s ease;
+}
+
+.list.card .post [data-post-meta] {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.list.card .post [data-post-meta] > span {
+  font-family: var(--font-family-display);
+  font-size: 14px;
+  font-weight: var(--font-weight-normal);
+  line-height: 24px;
+  color: var(--gray-10);
+  letter-spacing: var(--font-letter-spacing-14px);
+  transition: all 0.2s ease;
+}
+
+.list.card .post [data-post-description] {
+  font-family: var(--font-family-display);
+  font-size: 14px;
+  font-weight: var(--font-weight-normal);
+  line-height: 24px;
+  color: var(--gray-10);
+  letter-spacing: var(--font-letter-spacing-14px);
+  transition: all 0.2s ease;
+}
+
+.list.card .post:hover [data-post-title],
+.list.card .post:hover [data-post-meta] > span,
+.list.card .post:hover [data-post-description] {
+  color: var(--gray-12);
+}
+
+
+.list.row .post [data-post-link] {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  width: 100%;
+  font-family: var(--font-family-display);
+  font-size: 14px;
+  font-weight: var(--font-weight-normal);
+  line-height: 24px;
+  letter-spacing: var(--font-letter-spacing-14px);
+  transition: color 0.2s ease;
+}
+
+.list.row .post [data-post-date]:first-child {
+  flex-shrink: 0;
+  width: 48px;
+  font-variant-numeric: tabular-nums;
+  color: var(--gray-10);
+  transition: color 0.2s ease;
+}
+
+.list.row .post [data-post-title] {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--gray-12);
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.list.row .post [data-post-date]:last-child {
+  flex-shrink: 0;
+  color: var(--gray-10);
+  transition: color 0.2s ease;
+}
+
+.list.row .post:hover [data-post-date],
+.list.row .post:hover [data-post-title] {
+  color: var(--gray-12);
+}
+
+.list.row .post [data-post-divider] {
+  width: 100%;
+  height: 1px;
+  margin-top: 8px;
+  background: var(--gray-4);
+
+  border: none;
+}
+
+.list.row .post:last-child [data-post-divider] {
+  display: none;
 }

@@ -19,6 +19,7 @@
     "@radix-ui/colors": "^3.0.0",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.4.2",
+    "@tanstack/react-db": "^0.1.62",
     "@types/chroma-js": "^3.1.2",
     "@types/color-hash": "^2.0.0",
     "@types/mdx": "^2.0.13",
