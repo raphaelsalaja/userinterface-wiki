@@ -12,9 +12,7 @@ export interface SerializablePageData {
     description?: string;
     author: string;
     coauthors?: string[];
-    date: {
-      published: string;
-    };
+    date: string;
   };
 }
 
@@ -27,9 +25,7 @@ export function toSerializablePageData(page: Page): SerializablePageData {
       description: page.data.description,
       author: page.data.author,
       coauthors: page.data.coauthors,
-      date: {
-        published: page.data.date.published,
-      },
+      date: page.data.date,
     },
   };
 }

@@ -12,8 +12,8 @@ export async function GET() {
 
   const items = pages
     .sort((a, b) => {
-      const dateA = new Date(a.data.date.published);
-      const dateB = new Date(b.data.date.published);
+      const dateA = new Date(a.data.date);
+      const dateB = new Date(b.data.date);
       return dateB.getTime() - dateA.getTime();
     })
     .map(
@@ -23,7 +23,7 @@ export async function GET() {
       <link>${SITE_URL}${page.url}</link>
       <guid isPermaLink="true">${SITE_URL}${page.url}</guid>
       <description><![CDATA[${page.data.description}]]></description>
-      <pubDate>${new Date(page.data.date.published).toUTCString()}</pubDate>
+      <pubDate>${new Date(page.data.date).toUTCString()}</pubDate>
       <author>${page.data.author}</author>
     </item>`,
     )

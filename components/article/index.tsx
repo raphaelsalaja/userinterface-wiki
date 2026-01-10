@@ -108,7 +108,7 @@ function Header({ className }: HeaderProps) {
     useNarrationContext("Header");
 
   const hasCoauthors = coauthors.length > 0;
-  const _isReady = status === "ready";
+  const isReady = status === "ready";
 
   const handlePlayClick = () => {
     toggle();
@@ -132,7 +132,7 @@ function Header({ className }: HeaderProps) {
           <Button
             {...props.button}
             onClick={handlePlayClick}
-            disabled={true}
+            disabled={!isReady}
             aria-label={isPlaying ? "Pause" : "Play"}
           >
             <AnimatePresence mode="wait" initial={false}>
@@ -172,7 +172,7 @@ function Header({ className }: HeaderProps) {
         </div>
       </div>
       <div className={styles.metadata}>
-        {formatDate(page.data.date.published)}&nbsp;by&nbsp;
+        {formatDate(page.data.date)}&nbsp;by&nbsp;
         {author.name}
         {hasCoauthors && <span>&nbsp;and {coauthors.length} others</span>}
       </div>

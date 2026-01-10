@@ -49,7 +49,7 @@ function formatData(data: Page["data"]) {
         year: "numeric",
         month: "short",
         day: "2-digit",
-      }).format(new Date(data.date.published)),
+      }).format(new Date(data.date)),
     },
   };
 }

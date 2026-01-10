@@ -9,10 +9,7 @@ var docs = defineDocs({
   dir: "content",
   docs: {
     schema: frontmatterSchema.extend({
-      date: z.object({
-        published: z.iso.date(),
-        modified: z.iso.date().optional()
-      }),
+      date: z.iso.date(),
       description: z.string(),
       author: z.string(),
       coauthors: z.array(z.string()).optional(),

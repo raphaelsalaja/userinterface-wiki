@@ -7,9 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const articles = pages.map((page) => ({
     url: `${SITE_MANIFEST.url}${page.url}`,
-    lastModified: page.data.date?.modified
-      ? new Date(page.data.date.modified)
-      : new Date(page.data.date.published),
+    lastModified: new Date(page.data.date),
     changeFrequency: "weekly" as const,
     priority: 0.8,
   }));
