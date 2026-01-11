@@ -76,13 +76,16 @@ export function ViewTransitionDemo() {
   return (
     <div className={styles.container}>
       <figure ref={cardRef} className={styles.card}>
-        {/* biome-ignore lint/a11y/useAltText: decorative image */}
         <img src={image} alt="" />
         <button type="button" className={styles.button} onClick={open} />
       </figure>
 
-      {/* biome-ignore lint/a11y/useKeyWithClickEvents: dialog handles keyboard */}
-      <dialog ref={dialogRef} className={styles.dialog} onClick={close} />
+      <dialog
+        ref={dialogRef}
+        className={styles.dialog}
+        onClick={close}
+        onKeyDown={(e) => e.key === "Escape" && close()}
+      />
     </div>
   );
 }

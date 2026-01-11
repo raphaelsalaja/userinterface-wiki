@@ -2,10 +2,9 @@ import { Buffer } from "node:buffer";
 import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 import type { PutBlobResult } from "@vercel/blob";
 import { head, put } from "@vercel/blob";
-import { toString } from "mdast-util-to-string";
+import { toString as mdastToString } from "mdast-util-to-string";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkMdx from "remark-mdx";
 import remarkParse from "remark-parse";
@@ -90,8 +89,8 @@ const DROP_TYPES = new Set([
 function stripNonSpeakable(tree: any): void {
   visit(tree, (node) => {
     if (!node.children || !Array.isArray(node.children)) return;
-    // biome-ignore lint/suspicious/noExplicitAny: AST child nodes
     node.children = node.children.filter(
+      // biome-ignore lint/suspicious/noExplicitAny: AST child nodes have dynamic structure
       (child: any) => !DROP_TYPES.has(child.type),
     );
   });
@@ -109,7 +108,7 @@ function mdxToSpeakableText(mdx: string): string {
 
   stripNonSpeakable(tree);
 
-  return toString(tree)
+  return mdastToString(tree)
     .replace(/\r\n/g, "\n")
     .replace(/\n{3,}/g, "\n\n")
     .replace(/[ \t]+\n/g, "\n")
@@ -345,7 +344,9 @@ export async function readDocumentFromCache(
   if (validParagraphs.length !== cachedParagraphs.length) return null;
 
   // Combine audio buffers
-  const combinedAudio = Buffer.concat(validParagraphs.map((p) => p.audioBuffer));
+  const combinedAudio = Buffer.concat(
+    validParagraphs.map((p) => p.audioBuffer),
+  );
 
   // Combine alignments (adjust timestamps for each paragraph)
   const combinedAlignment = combineAlignments(
@@ -450,19 +451,6 @@ async function uploadJson(
 // ElevenLabs API
 // -----------------------------------------------------------------------------
 
-let client: ElevenLabsClient | null = null;
-
-function getClient(): ElevenLabsClient {
-  if (!client) {
-    const apiKey = process.env.ELEVENLABS_API_KEY;
-    if (!apiKey) {
-      throw new Error("ELEVENLABS_API_KEY environment variable is not set");
-    }
-    client = new ElevenLabsClient({ apiKey });
-  }
-  return client;
-}
-
 function getVoiceId(): string {
   const voiceId = process.env.ELEVENLABS_VOICE_ID;
   if (!voiceId) {
@@ -530,13 +518,36 @@ export async function getQuotaInfo(): Promise<{
   characterLimit: number;
   remainingCharacters: number;
 }> {
-  const client = getClient();
-  const subscription = await client.user.subscription.get();
+  const apiKey = process.env.ELEVENLABS_API_KEY;
+  if (!apiKey) {
+    throw new Error("ELEVENLABS_API_KEY environment variable is not set");
+  }
+
+  const response = await fetch(
+    "https://api.elevenlabs.io/v1/user/subscription",
+    {
+      headers: {
+        "xi-api-key": apiKey,
+      },
+    },
+  );
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(
+      `ElevenLabs subscription check failed: ${response.status} - ${errorText}`,
+    );
+  }
+
+  const subscription = (await response.json()) as {
+    character_count: number;
+    character_limit: number;
+  };
 
   return {
-    characterCount: subscription.characterCount,
-    characterLimit: subscription.characterLimit,
+    characterCount: subscription.character_count,
+    characterLimit: subscription.character_limit,
     remainingCharacters:
-      subscription.characterLimit - subscription.characterCount,
+      subscription.character_limit - subscription.character_count,
   };
 }
