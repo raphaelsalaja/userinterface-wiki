@@ -1,10 +1,6 @@
 import type { MDXComponents } from "mdx/types";
 import { Callout } from "./components/callout";
 import { Caption, Figure } from "./components/figure";
-import {
-  HighlightedListItem,
-  HighlightedParagraph,
-} from "./components/narration";
 import { Video } from "./components/video";
 
 export function getMDXComponents(components?: MDXComponents): MDXComponents {
@@ -21,8 +17,8 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     h4: (props) => <h4 data-prose-type="heading" {...props} />,
     h5: (props) => <h5 data-prose-type="heading" {...props} />,
     h6: (props) => <h6 data-prose-type="heading" {...props} />,
-    p: (props) => <HighlightedParagraph data-prose-type="text" {...props} />,
-    li: (props) => <HighlightedListItem data-prose-type="text" {...props} />,
+    p: (props) => <p data-prose-type="text" {...props} />,
+    li: (props) => <li data-prose-type="text" {...props} />,
     ul: (props) => <ul data-prose-type="list" {...props} />,
     ol: (props) => <ol data-prose-type="list" {...props} />,
     Figure,

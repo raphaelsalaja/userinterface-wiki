@@ -10,15 +10,15 @@ import { Menu } from "@/components/menu";
 import { Orb } from "@/components/orb";
 import { Shortcut } from "@/components/shortcut";
 import {
+  ArrowInboxIcon,
   Checkmark2SmallIcon,
   FastForwardIcon,
+  GaugeIcon,
   PauseIcon,
   PlayIcon,
   RewindIcon,
+  ShareArrowDownIcon,
   VoiceSettingsIcon,
-  VolumeFullIcon,
-  VolumeHalfIcon,
-  VolumeOffIcon,
 } from "@/icons";
 import { formatTime } from "./functions";
 import { useNarrationContext } from "./provider";
@@ -39,84 +39,8 @@ const ICON_TRANSITION = {
   transition: { duration: 0.15 },
 } as const;
 
-interface VolumeControlProps {
-  volume: number;
-  isMuted: boolean;
-  onVolumeChange: (volume: number) => void;
-  onMuteToggle: () => void;
-}
-
-function VolumeControl({
-  volume,
-  isMuted,
-  onVolumeChange,
-  onMuteToggle,
-}: VolumeControlProps) {
-  const VolumeIcon = isMuted
-    ? VolumeOffIcon
-    : volume > 0.5
-      ? VolumeFullIcon
-      : VolumeHalfIcon;
-
-  return (
-    <Menu.Root>
-      <Shortcut shortcut={{ label: "Volume", command: "M" }}>
-        <Menu.Trigger
-          render={
-            <Button
-              variant="ghost"
-              className={styles.button}
-              aria-label="Volume"
-            >
-              <VolumeIcon size={ICON_SIZE.small} />
-            </Button>
-          }
-        />
-      </Shortcut>
-      <Menu.Portal>
-        <Menu.Positioner
-          className={styles.positioner}
-          sideOffset={8}
-          align="center"
-          side="top"
-        >
-          <Menu.Popup className={styles.volume}>
-            <Slider.Root
-              value={isMuted ? 0 : volume * 100}
-              onValueChange={(value) => {
-                const v = Array.isArray(value) ? value[0] : value;
-                if (v !== undefined) onVolumeChange(v / 100);
-              }}
-              orientation="vertical"
-              aria-label="Volume"
-              className={styles["volume-slider"]}
-            >
-              <Slider.Control className={styles["volume-control"]}>
-                <Slider.Track className={styles["volume-track"]}>
-                  <Slider.Indicator className={styles["volume-indicator"]} />
-                  <Slider.Thumb className={styles["volume-thumb"]} />
-                </Slider.Track>
-              </Slider.Control>
-            </Slider.Root>
-            <Button
-              variant="ghost"
-              className={styles.button}
-              onClick={onMuteToggle}
-              aria-label={isMuted ? "Unmute" : "Mute"}
-            >
-              <VolumeFullIcon size={ICON_SIZE.small} />
-            </Button>
-          </Menu.Popup>
-        </Menu.Positioner>
-      </Menu.Portal>
-    </Menu.Root>
-  );
-}
-
 interface SettingsMenuProps {
-  canDownload: boolean;
   playbackRate: PlaybackRate;
-  onDownload: () => void;
   onPlaybackRateChange: (rate: PlaybackRate) => void;
 }
 
@@ -126,8 +50,8 @@ function SettingsMenu(props: SettingsMenuProps) {
       <Shortcut shortcut={{ label: "Settings" }}>
         <Menu.Trigger
           render={
-            <Button variant="ghost" className={styles.button}>
-              <VoiceSettingsIcon size={ICON_SIZE.large} />
+            <Button variant="ghost" aspect="square" className={styles.button}>
+              <GaugeIcon size={ICON_SIZE.large} />
             </Button>
           }
         />
@@ -165,10 +89,6 @@ function SettingsMenu(props: SettingsMenuProps) {
                 ))}
               </Menu.RadioGroup>
             </Menu.Group>
-            <Menu.Separator />
-            <Menu.Item onClick={props.onDownload} disabled={!props.canDownload}>
-              Download Audio
-            </Menu.Item>
           </Menu.Popup>
         </Menu.Positioner>
       </Menu.Portal>
@@ -198,10 +118,6 @@ export function Player({ className }: PlayerProps) {
     skipBackward,
     playbackRate,
     setPlaybackRate,
-    volume,
-    setVolume,
-    isMuted,
-    toggleMute,
     download,
     audioUrl,
   } = useNarrationContext("Player");
@@ -283,16 +199,23 @@ export function Player({ className }: PlayerProps) {
             <span className={styles.time}>{formatTime(duration)}</span>
           </div>
           <div className={styles.controls}>
-            <VolumeControl
-              volume={volume}
-              isMuted={isMuted}
-              onVolumeChange={setVolume}
-              onMuteToggle={toggleMute}
-            />
+            <Shortcut shortcut={{ label: "Download" }}>
+              <Button
+                variant="ghost"
+                className={styles.button}
+                aspect="square"
+                onClick={download}
+                disabled={!audioUrl}
+                aria-label="Download audio"
+              >
+                <ArrowInboxIcon size={ICON_SIZE.small} />
+              </Button>
+            </Shortcut>
             <div className={styles.options}>
               <Shortcut shortcut={{ label: "Rewind", command: "-15s" }}>
                 <Button
                   variant="ghost"
+                  aspect="square"
                   className={styles.button}
                   onClick={() => skipBackward()}
                   aria-label="Rewind 15 seconds"
@@ -309,6 +232,7 @@ export function Player({ className }: PlayerProps) {
                 <Button
                   variant="ghost"
                   className={styles.button}
+                  aspect="square"
                   onClick={toggle}
                   aria-label={isPlaying ? "Pause" : "Play"}
                 >
@@ -328,6 +252,7 @@ export function Player({ className }: PlayerProps) {
               <Shortcut shortcut={{ label: "Fast Forward", command: "+15s" }}>
                 <Button
                   variant="ghost"
+                  aspect="square"
                   className={styles.button}
                   onClick={() => skipForward()}
                   aria-label="Fast forward 15 seconds"
@@ -337,9 +262,7 @@ export function Player({ className }: PlayerProps) {
               </Shortcut>
             </div>
             <SettingsMenu
-              canDownload={!!audioUrl}
               playbackRate={playbackRate}
-              onDownload={download}
               onPlaybackRateChange={setPlaybackRate}
             />
           </div>

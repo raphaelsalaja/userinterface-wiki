@@ -104,9 +104,9 @@ export function Provider({
     reset();
   }, [reset]);
 
-  const { preferencesLoaded } = usePersistedPreferences();
+  usePersistedPreferences();
 
-  useNarrationFetch({ slug, preferencesLoaded });
+  useNarrationFetch({ slug });
 
   const { audioRef, play, pause, toggle, seek, skipForward, skipBackward } =
     useAudio({});

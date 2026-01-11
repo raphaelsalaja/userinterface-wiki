@@ -51,7 +51,6 @@ function PostLink({ children, className }: LinkProps) {
 
   function handleClick() {
     const audio = new Audio("/sounds/clicks/1.wav");
-    // Randomize playback rate (0.9–1.1) and volume (0.4–0.6) for variation
     audio.playbackRate = 0.9 + Math.random() * 0.2;
     audio.volume = 0.4 + Math.random() * 0.2;
     audio.play().catch(() => {});

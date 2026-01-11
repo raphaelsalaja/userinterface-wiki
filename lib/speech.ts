@@ -3,7 +3,7 @@ import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import type { PutBlobResult } from "@vercel/blob";
-import { head, put } from "@vercel/blob";
+import { head, list, put } from "@vercel/blob";
 import { toString as mdastToString } from "mdast-util-to-string";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkMdx from "remark-mdx";
@@ -266,14 +266,46 @@ function buildManifestCacheKey(
 }
 
 /**
+ * Find a blob by prefix (handles legacy blobs with random suffixes)
+ */
+async function findBlobByPrefix(
+  prefix: string,
+  extension: string,
+): Promise<{ url: string; pathname: string } | null> {
+  // First try exact path (new format without random suffix)
+  const exactPath = `${prefix}${extension}`;
+  const exactMeta = await safeHead(exactPath);
+  if (exactMeta) {
+    return { url: exactMeta.url, pathname: exactMeta.pathname };
+  }
+
+  // Fall back to prefix search (legacy format with random suffix)
+  try {
+    const result = await list({ prefix });
+    const matching = result.blobs.find((b) => b.pathname.endsWith(extension));
+    if (matching) {
+      return { url: matching.url, pathname: matching.pathname };
+    }
+  } catch {
+    // Ignore list errors
+  }
+
+  return null;
+}
+
+/**
  * Check if a paragraph is cached (both audio and alignment)
  */
 export async function isParagraphCached(
   key: ParagraphCacheKey,
 ): Promise<boolean> {
+  // Extract base path without extension
+  const audioBase = key.audioPath.replace(/\.mp3$/, "");
+  const alignmentBase = key.alignmentPath.replace(/\.json$/, "");
+
   const [audioMeta, alignmentMeta] = await Promise.all([
-    safeHead(key.audioPath),
-    safeHead(key.alignmentPath),
+    findBlobByPrefix(audioBase, ".mp3"),
+    findBlobByPrefix(alignmentBase, ".json"),
   ]);
   return !!audioMeta && !!alignmentMeta;
 }
@@ -284,9 +316,13 @@ export async function isParagraphCached(
 async function readParagraphFromCache(
   key: ParagraphCacheKey,
 ): Promise<{ audioBuffer: Buffer; alignment: Alignment } | null> {
+  // Extract base path without extension
+  const audioBase = key.audioPath.replace(/\.mp3$/, "");
+  const alignmentBase = key.alignmentPath.replace(/\.json$/, "");
+
   const [audioMeta, alignmentMeta] = await Promise.all([
-    safeHead(key.audioPath),
-    safeHead(key.alignmentPath),
+    findBlobByPrefix(audioBase, ".mp3"),
+    findBlobByPrefix(alignmentBase, ".json"),
   ]);
   if (!audioMeta || !alignmentMeta) return null;
 
@@ -312,8 +348,8 @@ export async function writeParagraphToCache(
   alignment: Alignment,
 ): Promise<void> {
   await Promise.all([
-    uploadBinary(key.audioPath, audioBuffer, "audio/mpeg"),
-    uploadJson(key.alignmentPath, alignment),
+    uploadBinary(key.audioPath, audioBuffer, "audio/mpeg", true),
+    uploadJson(key.alignmentPath, alignment, true),
   ]);
 }
 

@@ -224,7 +224,7 @@ function printAnalysis(docs: DocumentInfo[], quotaRemaining: number) {
   );
 
   console.log();
-  console.log(pc.bold("  Document Analysis (Paragraph-level)"));
+  console.log(pc.bold("  Document Analysis"));
   console.log(pc.dim("  ─────────────────────────────────────────────"));
 
   // Show each document with paragraph breakdown
