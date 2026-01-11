@@ -4,56 +4,18 @@
   gap: 12px;
   align-items: center;
   justify-content: center;
-  height: 384px;
-}
+  position: relative;
 
-.selection {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  align-items: center;
-}
-
-.success {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.prompt {
-  font-size: 14px;
-  font-weight: var(--font-weight-medium);
-  color: var(--gray-11);
-  letter-spacing: var(--font-letter-spacing-14px);
-}
-
-.icons {
-  display: flex;
-  gap: 16px;
-}
-
-.icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 64px;
-  height: 64px;
-  color: var(--gray-11);
-  cursor: pointer;
-  background: var(--gray-3);
-  border-radius: 100px;
-
-  transition:
-    background 0.3s ease-in-out,
-    color 0.3s ease-in-out;
-
-  &[data-state="error"] {
-    color: var(--red-9);
-    background: var(--red-3);
-  }
-
-  &[data-state="success"] {
-    color: var(--green-9);
-    background: color-mix(in srgb, var(--green) 10%, var(--gray-1));
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    background: linear-gradient(
+      to bottom,
+      black 20%,
+      transparent 50%,
+      black 90%
+    );
   }
 }

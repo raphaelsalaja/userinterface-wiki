@@ -12,8 +12,9 @@
   overflow: hidden;
   background: var(--gray-2);
   border-radius: 0px;
-  transform-origin: center center;
   transition: none;
+  box-shadow: var(--shadow-2);
+  transform-origin: center center;
 }
 
 .frame-content {

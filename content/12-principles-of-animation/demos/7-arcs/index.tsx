@@ -8,7 +8,7 @@ export function Arcs() {
       src="/media/library/12-principles-of-animation/arcs.mp4"
       style={{
         width: "100%",
-        height: "100%",
+        height: 384,
         objectFit: "cover",
       }}
     />
