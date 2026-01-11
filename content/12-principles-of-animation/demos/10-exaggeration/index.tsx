@@ -8,7 +8,7 @@ export function Exaggeration() {
         muted
         loop
         playsInline
-        src="/media/library/12-principles-of-animation/exaggeration.mp4"
+        src="/content/12-principles-of-animation/videos/exaggeration.mp4"
         style={{
           width: "100%",
           height: 540,

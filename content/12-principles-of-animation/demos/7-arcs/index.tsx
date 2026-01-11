@@ -5,7 +5,7 @@ export function Arcs() {
       muted
       loop
       playsInline
-      src="/media/library/12-principles-of-animation/arcs.mp4"
+      src="/content/12-principles-of-animation/videos/arcs.mp4"
       style={{
         width: "100%",
         height: 384,

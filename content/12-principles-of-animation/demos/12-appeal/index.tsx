@@ -126,8 +126,8 @@ export function Appeal() {
 }
 
 const folders = {
-  avatar: "/media/library/12-principles-of-animation/avatars/",
-  video: "/media/library/12-principles-of-animation/tweets/",
+  avatar: "/content/12-principles-of-animation/avatars/",
+  video: "/content/12-principles-of-animation/tweets/",
 };
 
 export const clips = [
