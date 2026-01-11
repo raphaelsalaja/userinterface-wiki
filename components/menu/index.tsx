@@ -2,14 +2,15 @@ import { Menu as BaseMenu } from "@base-ui/react/menu";
 import { sounds } from "@/lib/sounds";
 import styles from "./styles.module.css";
 
-interface MenuRootProps
-  extends React.ComponentPropsWithoutRef<typeof BaseMenu.Root> {}
-function MenuRoot({ onOpenChange, ...props }: MenuRootProps) {
-  function handleOpenChange(open: boolean) {
+function MenuRoot({ onOpenChange, ...props }: BaseMenu.Root.Props) {
+  function handleOpenChange(
+    open: boolean,
+    eventDetails: BaseMenu.Root.ChangeEventDetails,
+  ) {
     if (open) {
       sounds.pop();
     }
-    onOpenChange?.(open);
+    onOpenChange?.(open, eventDetails);
   }
 
   return <BaseMenu.Root onOpenChange={handleOpenChange} {...props} />;
