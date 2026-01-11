@@ -269,3 +269,73 @@
 .volume-thumb:active {
   cursor: grabbing;
 }
+
+/* -----------------------------------------------------------------------------
+ * Captions
+ * -------------------------------------------------------------------------- */
+
+.captions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25em;
+  font-family: var(--font-family-display);
+  font-size: 18px;
+  font-weight: var(--font-weight-normal);
+  line-height: 1.6;
+  color: var(--gray-a8);
+  letter-spacing: var(--font-letter-spacing-18px);
+  user-select: none;
+}
+
+.word {
+  position: relative;
+  padding: 0.05em 0.1em;
+  font: inherit;
+  color: var(--gray-a6);
+  cursor: pointer;
+  background: none;
+  border: none;
+  border-radius: 4px;
+  transition:
+    color 150ms ease-out,
+    background-color 150ms ease-out;
+}
+
+.word:hover {
+  background-color: var(--gray-a3);
+}
+
+.word:focus-visible {
+  outline: 2px solid var(--gray-a8);
+  outline-offset: 2px;
+}
+
+.word.past {
+  color: var(--gray-a10);
+}
+
+.word.active {
+  color: var(--gray-12);
+  background-color: var(--gray-a4);
+}
+
+/* -----------------------------------------------------------------------------
+ * Highlighted Text (inline MDX highlighting)
+ * -------------------------------------------------------------------------- */
+
+.highlight {
+  border-radius: 2px;
+  transition:
+    color 150ms ease-out,
+    background-color 150ms ease-out;
+}
+
+.highlight.past {
+  color: var(--gray-a10);
+}
+
+.highlight.active {
+  color: var(--gray-12);
+  background-color: var(--accent-a4);
+  box-shadow: 0 0 0 2px var(--accent-a3);
+}
