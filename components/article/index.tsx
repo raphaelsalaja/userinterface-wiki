@@ -6,6 +6,7 @@ import { createContext, useContext, useMemo } from "react";
 import { Button } from "@/components/button";
 import { Menu } from "@/components/menu";
 import { useNarrationContext } from "@/components/narration/provider";
+import { Spinner } from "@/components/spinner";
 import { DotGrid1X3HorizontalIcon, PauseIcon, PlayIcon } from "@/icons";
 import type { Author } from "@/lib/authors";
 import { getGradientColors } from "@/lib/colors";
@@ -100,15 +101,19 @@ interface HeaderProps {
 
 function Header({ className }: HeaderProps) {
   const { page, author, coauthors } = useArticleContext("Header");
-  const { status, isPlaying, toggle, showPlayer } =
+  const { status, isPlaying, pause, showPlayer } =
     useNarrationContext("Header");
 
   const hasCoauthors = coauthors.length > 0;
+  const isLoading = status === "loading";
   const isReady = status === "ready";
 
-  const handlePlayClick = () => {
-    toggle();
-    showPlayer();
+  const handleClick = () => {
+    if (isPlaying) {
+      pause();
+    } else {
+      showPlayer();
+    }
   };
 
   const props = {
@@ -127,12 +132,14 @@ function Header({ className }: HeaderProps) {
         <div className={styles.actions}>
           <Button
             {...props.button}
-            onClick={handlePlayClick}
+            onClick={handleClick}
             disabled={!isReady}
-            aria-label={isPlaying ? "Pause" : "Play"}
+            aria-label={isLoading ? "Loading" : isPlaying ? "Pause" : "Show player"}
           >
             <AnimatePresence mode="wait" initial={false}>
-              {isPlaying ? (
+              {isLoading ? (
+                <Spinner size={16} key="loading" />
+              ) : isPlaying ? (
                 <motion.div {...ICON_TRANSITION} key="pause">
                   <PauseIcon size={16} />
                 </motion.div>

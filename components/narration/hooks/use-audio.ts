@@ -13,6 +13,7 @@ interface UseAudioOptions {
 export function useAudio(options: UseAudioOptions = {}) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const rafRef = useRef<number | null>(null);
+  const playPromiseRef = useRef<Promise<void> | null>(null);
 
   const {
     audioUrl,
@@ -153,19 +154,38 @@ export function useAudio(options: UseAudioOptions = {}) {
     if (!audioRef.current || !audioUrl) return;
 
     try {
-      await audioRef.current.play();
+      const playPromise = audioRef.current.play();
+      playPromiseRef.current = playPromise;
+      await playPromise;
+      playPromiseRef.current = null;
       setIsPlaying(true);
       setAgentState("talking");
       startTicker();
     } catch (error) {
+      playPromiseRef.current = null;
+      // Ignore AbortError - this happens when pause() is called before play() resolves
+      if (error instanceof DOMException && error.name === "AbortError") {
+        return;
+      }
       console.error("[narration]", error);
       setError("Playback failed");
       setStatus("error");
     }
   }, [audioUrl, setAgentState, setError, setStatus, startTicker, setIsPlaying]);
 
-  const pause = useCallback(() => {
+  const pause = useCallback(async () => {
     if (!audioRef.current) return;
+
+    // Wait for any pending play() promise to settle before pausing
+    if (playPromiseRef.current) {
+      try {
+        await playPromiseRef.current;
+      } catch {
+        // Ignore errors from the play promise
+      }
+      playPromiseRef.current = null;
+    }
+
     audioRef.current.pause();
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
     setIsPlaying(false);
