@@ -81,6 +81,10 @@
       "ignoreMissing": [
         "@types/react"
       ]
-    }
+    },
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp"
+    ]
   }
 }
