@@ -1,8 +1,6 @@
 # A Living Manual for Better Interfaces
 
-Knowledge is best when shared. 
-
-This wiki is a collection of articles, patterns, and best practices for designing and building user interfaces. It's a wiki that evolves with the field, incorporating new insights and techniques as they emerge, all for free.
+Knowledge should be shared. This wiki is a collection of articles, patterns, and best practices for designing and building user interfaces. It's a wiki that evolves with the field, incorporating new insights and techniques as they emerge, all for free.
 
 ## Tech Stack
 
