@@ -30,6 +30,7 @@
 }
 
 html {
+  overflow-x: hidden;
   scrollbar-width: none;
 
   ::selection {
@@ -43,6 +44,7 @@ html {
 }
 
 body {
+  overflow-x: hidden;
   font-family: var(--font-family-display);
   font-size: 14px;
   font-weight: var(--font-weight-normal);
