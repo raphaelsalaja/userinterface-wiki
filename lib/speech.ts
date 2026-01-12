@@ -12,47 +12,28 @@ import { unified } from "unified";
 import { visit } from "unist-util-visit";
 import { ArticleNotFoundError, isEnoent, isNotFound } from "./errors";
 
-// -----------------------------------------------------------------------------
-// Types
-// -----------------------------------------------------------------------------
-
-/**
- * Character-level alignment data from ElevenLabs with-timestamps API
- */
+/** Character-level alignment data from ElevenLabs with-timestamps API */
 export interface Alignment {
   characters: string[];
   character_start_times_seconds: number[];
   character_end_times_seconds: number[];
 }
 
-/**
- * Result from speech synthesis with timestamps
- */
+/** Result from speech synthesis with timestamps */
 export interface SpeechResult {
   audioBuffer: Buffer;
   alignment: Alignment;
 }
 
-// -----------------------------------------------------------------------------
-// Constants
-// -----------------------------------------------------------------------------
-
 const CONTENT_DIR = path.join(process.cwd(), "content");
 const CACHE_PREFIX = "audio-transcripts";
-
-// Turbo model - check ElevenLabs pricing for current rates
 const MODEL_ID = "eleven_turbo_v2_5";
-const OUTPUT_FORMAT = "mp3_22050_32"; // Podcast-quality (smaller files, same API cost)
+const OUTPUT_FORMAT = "mp3_22050_32";
+const MIN_PARAGRAPH_LENGTH = 100;
+const MAX_PARAGRAPH_LENGTH = 2500;
+const TARGET_BATCH_LENGTH = 1000;
 
-// Paragraph batching settings
-const MIN_PARAGRAPH_LENGTH = 100; // Increased to reduce tiny API calls
-const MAX_PARAGRAPH_LENGTH = 2500; // ElevenLabs processes better in chunks
-const TARGET_BATCH_LENGTH = 1000; // Optimal batch size for API efficiency
-
-// -----------------------------------------------------------------------------
-// Article Text Extraction
-// -----------------------------------------------------------------------------
-
+/** Extracts plain speakable text from an article given its slug segments. */
 export async function getPlainArticleText(slugSegments: string[]) {
   const articlePath = resolveArticlePath(slugSegments);
   const raw = await readFile(articlePath, "utf8").catch((error) => {
@@ -63,7 +44,6 @@ export async function getPlainArticleText(slugSegments: string[]) {
   return mdxToSpeakableText(raw);
 }
 
-/** Node types to completely remove (not speakable) */
 const DROP_TYPES = new Set([
   "mdxjsEsm",
   "mdxJsxFlowElement",
@@ -82,9 +62,7 @@ const DROP_TYPES = new Set([
   "thematicBreak",
 ]);
 
-/**
- * Strip non-speakable nodes from tree using filter (safer than in-place splice).
- */
+/** Strips non-speakable nodes from an AST tree using filter. */
 // biome-ignore lint/suspicious/noExplicitAny: AST nodes have dynamic structure
 function stripNonSpeakable(tree: any): void {
   visit(tree, (node) => {
@@ -96,9 +74,7 @@ function stripNonSpeakable(tree: any): void {
   });
 }
 
-/**
- * Convert MDX to speakable plain text using proper AST parsing.
- */
+/** Converts MDX to speakable plain text using proper AST parsing. */
 function mdxToSpeakableText(mdx: string): string {
   const tree = unified()
     .use(remarkParse)
@@ -116,10 +92,7 @@ function mdxToSpeakableText(mdx: string): string {
     .trim();
 }
 
-/**
- * Split article text into paragraphs for incremental caching.
- * Merges small paragraphs to reduce API call overhead.
- */
+/** Splits article text into paragraphs for incremental caching, merging small paragraphs to reduce API call overhead. */
 function splitIntoParagraphs(text: string): string[] {
   const parts = text
     .split(/\n{2,}/)
@@ -164,9 +137,7 @@ function splitIntoParagraphs(text: string): string[] {
   return out;
 }
 
-/**
- * Get paragraphs with their hashes for cache checking
- */
+/** Returns paragraphs with their hashes for cache checking. */
 export interface ParagraphInfo {
   index: number;
   text: string;
@@ -196,35 +167,20 @@ function resolveArticlePath(slugSegments: string[]) {
   return absolute;
 }
 
-/**
- * Optimize text to reduce character count without changing speech output.
- * Removes characters that don't affect speech.
- */
+/** Optimizes text to reduce character count without changing speech output. */
 function optimizeTextForTTS(text: string): string {
-  return (
-    text
-      // Normalize whitespace
-      .replace(/[ \t]+/g, " ")
-      // Remove soft hyphens and zero-width characters
-      .replace(/[\u00AD\u200B-\u200D\uFEFF]/g, "")
-      // Normalize quotes
-      .replace(/[""]/g, '"')
-      .replace(/['']/g, "'")
-      // Normalize dashes
-      .replace(/[—–]/g, "-")
-      // Remove excessive punctuation
-      .replace(/\.{2,}/g, ".")
-      .replace(/!{2,}/g, "!")
-      .replace(/\?{2,}/g, "?")
-      // Remove short parenthetical asides
-      .replace(/\s*\([^)]{0,20}\)\s*/g, " ")
-      .trim()
-  );
+  return text
+    .replace(/[ \t]+/g, " ")
+    .replace(/[\u00AD\u200B-\u200D\uFEFF]/g, "")
+    .replace(/[""]/g, '"')
+    .replace(/['']/g, "'")
+    .replace(/[—–]/g, "-")
+    .replace(/\.{2,}/g, ".")
+    .replace(/!{2,}/g, "!")
+    .replace(/\?{2,}/g, "?")
+    .replace(/\s*\([^)]{0,20}\)\s*/g, " ")
+    .trim();
 }
-
-// -----------------------------------------------------------------------------
-// Cache (Vercel Blob) - Paragraph-level
-// -----------------------------------------------------------------------------
 
 export interface ParagraphCacheKey {
   slug: string;
@@ -233,9 +189,7 @@ export interface ParagraphCacheKey {
   alignmentPath: string;
 }
 
-/**
- * Build cache key for a single paragraph
- */
+/** Builds cache key for a single paragraph. */
 export function buildParagraphCacheKey(
   slugSegments: string[],
   paragraphHash: string,
@@ -250,9 +204,7 @@ export function buildParagraphCacheKey(
   };
 }
 
-/**
- * Build manifest cache key for a document (stores paragraph order)
- */
+/** Builds manifest cache key for a document (stores paragraph order). */
 function buildManifestCacheKey(
   slugSegments: string[],
   paragraphHashes: string[],
@@ -265,9 +217,7 @@ function buildManifestCacheKey(
   };
 }
 
-/**
- * Find a blob by prefix (handles legacy blobs with random suffixes)
- */
+/** Finds a blob by prefix (handles legacy blobs with random suffixes). */
 async function findBlobByPrefix(
   prefix: string,
   extension: string,
@@ -293,9 +243,7 @@ async function findBlobByPrefix(
   return null;
 }
 
-/**
- * Check if a paragraph is cached (both audio and alignment)
- */
+/** Checks if a paragraph is cached (both audio and alignment). */
 export async function isParagraphCached(
   key: ParagraphCacheKey,
 ): Promise<boolean> {
@@ -310,9 +258,7 @@ export async function isParagraphCached(
   return !!audioMeta && !!alignmentMeta;
 }
 
-/**
- * Read a single paragraph from cache (audio and alignment)
- */
+/** Reads a single paragraph from cache (audio and alignment). */
 async function readParagraphFromCache(
   key: ParagraphCacheKey,
 ): Promise<{ audioBuffer: Buffer; alignment: Alignment } | null> {
@@ -339,9 +285,7 @@ async function readParagraphFromCache(
   return { audioBuffer, alignment };
 }
 
-/**
- * Write a single paragraph to cache (audio and alignment)
- */
+/** Writes a single paragraph to cache (audio and alignment). */
 export async function writeParagraphToCache(
   key: ParagraphCacheKey,
   audioBuffer: Buffer,
@@ -353,9 +297,7 @@ export async function writeParagraphToCache(
   ]);
 }
 
-/**
- * Read full document from paragraph cache (combines all paragraphs)
- */
+/** Reads full document from paragraph cache (combines all paragraphs). */
 export async function readDocumentFromCache(
   slugSegments: string[],
   paragraphs: ParagraphInfo[],
@@ -403,9 +345,7 @@ export async function readDocumentFromCache(
   return { audioUrl, alignment: combinedAlignment };
 }
 
-/**
- * Combine multiple alignment objects, adjusting timestamps sequentially
- */
+/** Combines multiple alignment objects, adjusting timestamps sequentially. */
 function combineAlignments(alignments: Alignment[]): Alignment {
   const combined: Alignment = {
     characters: [],
@@ -483,28 +423,17 @@ async function uploadJson(
   return result.url;
 }
 
-// -----------------------------------------------------------------------------
-// ElevenLabs API
-// -----------------------------------------------------------------------------
-
-function getVoiceId(): string {
-  const voiceId = process.env.ELEVENLABS_VOICE_ID;
-  if (!voiceId) {
-    throw new Error("ELEVENLABS_VOICE_ID environment variable is not set");
-  }
-  return voiceId;
-}
-
-/**
- * Synthesize speech with character-level timestamps using ElevenLabs REST API
- */
+/** Synthesizes speech with character-level timestamps using ElevenLabs REST API. */
 export async function synthesizeSpeech(text: string): Promise<SpeechResult> {
   const apiKey = process.env.ELEVENLABS_API_KEY;
   if (!apiKey) {
     throw new Error("ELEVENLABS_API_KEY environment variable is not set");
   }
 
-  const voiceId = getVoiceId();
+  const voiceId = process.env.ELEVENLABS_VOICE_ID;
+  if (!voiceId) {
+    throw new Error("ELEVENLABS_VOICE_ID environment variable is not set");
+  }
 
   const response = await fetch(
     `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}/with-timestamps`,
@@ -546,9 +475,7 @@ export async function synthesizeSpeech(text: string): Promise<SpeechResult> {
   };
 }
 
-/**
- * Get available quota information
- */
+/** Gets available quota information from ElevenLabs. */
 export async function getQuotaInfo(): Promise<{
   characterCount: number;
   characterLimit: number;
