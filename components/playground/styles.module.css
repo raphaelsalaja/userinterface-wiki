@@ -1,0 +1,68 @@
+.root {
+  --sp-colors-surface1: var(--gray-2);
+  --sp-colors-surface2: var(--gray-3);
+  --sp-colors-surface3: var(--gray-4);
+  --sp-colors-accent: var(--gray-12);
+  --sp-font-mono: var(--font-mono);
+  --sp-font-size: 13px;
+  --sp-border-radius: 8px;
+
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--gray-1);
+  border: 1px solid var(--gray-4);
+  border-radius: 12px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: var(--gray-2);
+  border-bottom: 1px solid var(--gray-4);
+}
+
+.title {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--gray-11);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.refreshButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  color: var(--gray-11);
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  transition:
+    background 200ms ease,
+    color 200ms ease;
+}
+
+.refreshButton:hover {
+  color: var(--gray-12);
+  background: var(--gray-4);
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+}
+
+.previewWrapper {
+  border-bottom: 1px solid var(--gray-4);
+}
+
+.editorWrapper {
+  background: var(--gray-2);
+}

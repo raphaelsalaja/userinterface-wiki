@@ -10,11 +10,13 @@
     "lint": "biome check --fix --unsafe . --reporter=summary",
     "postinstall": "fumadocs-mdx",
     "generate:text-to-speech": "tsx scripts/generate-text-to-speech.ts",
+    "generate:playgrounds": "tsx scripts/generate-playgrounds.ts",
     "prepare": "husky"
   },
   "dependencies": {
     "@base-ui-components/react": "1.0.0-rc.0",
     "@base-ui/react": "1.0.0",
+    "@codesandbox/sandpack-react": "^2.20.0",
     "@elevenlabs/elevenlabs-js": "^2.30.0",
     "@floating-ui/react": "^0.27.16",
     "@radix-ui/colors": "^3.0.0",
@@ -75,6 +77,7 @@
     "dotenv": "^17.2.3",
     "husky": "^9.1.7",
     "picocolors": "^1.1.1",
+    "raw-loader": "^4.0.2",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   },

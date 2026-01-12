@@ -1,0 +1,40 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+  width: 100%;
+}
+
+.container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 200px;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 160px;
+  height: 100px;
+  background: var(--gray-3);
+  border: 1px solid var(--gray-6);
+  border-radius: 12px;
+}
+
+.status {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.status[data-present="true"] {
+  color: var(--gray-12);
+}
+
+.status[data-present="false"] {
+  color: var(--gray-9);
+}
