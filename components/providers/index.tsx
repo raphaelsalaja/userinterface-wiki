@@ -1,6 +1,7 @@
 "use client";
 
 import { Toast } from "@base-ui/react/toast";
+import { Theme } from "@radix-ui/themes";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -11,8 +12,8 @@ import type React from "react";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 60 * 5, // 5 minutes
-      gcTime: 1000 * 60 * 30, // 30 minutes
+      staleTime: 1000 * 60 * 5,
+      gcTime: 1000 * 60 * 30,
       retry: 1,
       refetchOnWindowFocus: false,
     },
@@ -26,7 +27,9 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
         <SpeedInsights />
         <Analytics />
         <ThemeProvider attribute="class" />
-        <Toast.Provider>{children}</Toast.Provider>
+        <Theme>
+          <Toast.Provider>{children}</Toast.Provider>
+        </Theme>
       </NuqsAdapter>
     </QueryClientProvider>
   );

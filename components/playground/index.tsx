@@ -1,96 +1,90 @@
 "use client";
 
-import type { SandpackPredefinedTemplate } from "@codesandbox/sandpack-react";
 import {
   SandpackCodeEditor,
   SandpackPreview,
   SandpackProvider,
   useSandpack,
 } from "@codesandbox/sandpack-react";
-import { ArrowIcon } from "@/icons";
+import React, { useState } from "react";
+import { Button } from "@/components/button";
+import { ArrowRotateClockwiseIcon } from "@/icons";
+import { prerequisites } from "./index.prerequisites";
 import styles from "./styles.module.css";
-
-const viteConfig = `import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-
-export default defineConfig({
-  plugins: [react()],
-  clearScreen: false,
-});
-`;
 
 interface PlaygroundProps {
   files: Record<string, string>;
-  template?: SandpackPredefinedTemplate;
-  dependencies?: Record<string, string>;
-  activeFile?: string;
-  showPreview?: boolean;
-  previewOnly?: boolean;
-  previewHeight?: number;
-  editorHeight?: number;
+  activeFile: string;
 }
 
-function RefreshButton() {
+function PlaygroundContent() {
   const { sandpack } = useSandpack();
 
+  const handleRefresh = () => {
+    sandpack.runSandpack();
+  };
+
+  const props = {
+    button: {
+      variant: "ghost",
+      size: "small",
+      aspect: "square",
+    } as const,
+  };
+
   return (
-    <button
-      type="button"
-      className={styles.refreshButton}
-      onClick={() => sandpack.runSandpack()}
-      aria-label="Refresh preview"
-    >
-      <ArrowIcon size={14} />
-    </button>
+    <React.Fragment>
+      <div className={styles.header}>
+        <span className={styles.title}>Code Playground</span>
+        <div className={styles.actions}>
+          <Button {...props.button} onClick={handleRefresh}>
+            <ArrowRotateClockwiseIcon size={14} />
+          </Button>
+        </div>
+      </div>
+      <div className={styles.layout}>
+        <SandpackCodeEditor
+          showTabs
+          showLineNumbers={true}
+          showRunButton={false}
+          closableTabs={false}
+          style={{ height: 384 }}
+          className={styles.editor}
+        />
+        <SandpackPreview
+          showNavigator={false}
+          showOpenNewtab={false}
+          showOpenInCodeSandbox={false}
+          showRefreshButton={false}
+          showRestartButton={false}
+          showSandpackErrorOverlay={false}
+          style={{ height: 384 }}
+          className={styles.preview}
+        />
+      </div>
+    </React.Fragment>
   );
 }
 
-export function Playground({
-  files,
-  dependencies,
-  activeFile,
-}: PlaygroundProps) {
+export function Playground({ files }: PlaygroundProps) {
   return (
     <div className={styles.root} data-prose-type="code-playground">
       <SandpackProvider
-        template="vite-react"
+        template="react-ts"
+        theme={"auto"}
         customSetup={{
           dependencies: {
             motion: "latest",
-            ...dependencies,
+            "@radix-ui/themes": "latest",
           },
         }}
         files={{
-          "/vite.config.ts": { code: viteConfig, hidden: true },
+          ...prerequisites,
           ...files,
         }}
-        options={{
-          activeFile,
-          visibleFiles: Object.keys(files),
-        }}
+        options={{ visibleFiles: Object.keys(files) }}
       >
-        <div className={styles.header}>
-          <span className={styles.title}>Playground</span>
-          <RefreshButton />
-        </div>
-        <div className={styles.layout}>
-          <div className={styles.previewWrapper}>
-            <SandpackPreview
-              showOpenInCodeSandbox={false}
-              showRefreshButton={false}
-              showSandpackErrorOverlay={false}
-              style={{ height: 384 }}
-            />
-          </div>
-          <div className={styles.editorWrapper}>
-            <SandpackCodeEditor
-              showTabs
-              showLineNumbers
-              closableTabs={false}
-              style={{ height: 384 }}
-            />
-          </div>
-        </div>
+        <PlaygroundContent />
       </SandpackProvider>
     </div>
   );

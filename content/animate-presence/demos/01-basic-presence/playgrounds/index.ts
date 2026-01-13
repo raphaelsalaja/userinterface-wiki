@@ -2,7 +2,7 @@
 
 export const BasicPresencePlayground = {
   files: {
-    "/index.tsx": `import { AnimatePresence, motion } from "motion/react";
+    "/App.tsx": `import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import styles from "./styles.module.css";
 
@@ -10,61 +10,102 @@ export default function App() {
   const [show, setShow] = useState(true);
 
   return (
-    <div className={styles.container}>
-      <AnimatePresence mode="wait">
-        {show && (
-          <motion.div
-            key="box"
-            className={styles.box}
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            transition={{
-              type: "spring",
-              stiffness: 500,
-              damping: 30,
-            }}
-          />
-        )}
-      </AnimatePresence>
-      <button type="button" className={styles.button} onClick={() => setShow(!show)}>
-        {show ? "Hide" : "Show"}
-      </button>
+    <div className={styles.root}>
+      <div className={styles.container}>
+        <AnimatePresence>
+          {show && (
+            <motion.div
+              key="box"
+              className={styles.box}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              transition={{
+                type: "spring",
+                stiffness: 500,
+                damping: 30,
+              }}
+            />
+          )}
+        </AnimatePresence>
+      </div>
+      <div className={styles.controls}>
+        <button
+          type="button"
+          className={styles.button}
+          onClick={() => setShow(!show)}
+        >
+          Toggle
+        </button>
+      </div>
     </div>
   );
 }
 `,
-    "/styles.module.css": `.container {
+    "/styles.module.css": `.root {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 1.5rem;
+  align-items: center;
+  width: 100%;
+  flex: 1;
+  height: 100%;
+}
+
+.container {
+  position: relative;
+  display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 300px;
-  padding: 24px;
+  width: 100%;
+  height: 100%;
+  flex: 1;
 }
 
 .box {
   width: 100px;
   height: 100px;
-  background: #171717;
+  background: var(--gray-12);
   border-radius: 16px;
 }
 
+.controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 16px 0;
+  background: var(--gray-2);
+  border-top: 1px solid var(--gray-4);
+}
+
 .button {
-  padding: 8px 16px;
+  position: relative;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  padding: 6px 12px;
   font-size: 14px;
-  font-weight: 500;
-  color: #171717;
-  cursor: pointer;
-  background: #f5f5f5;
-  border: 1px solid #e5e5e5;
-  border-radius: 8px;
-  transition: background 200ms ease;
+  font-weight: var(--font-weight-medium);
+  color: var(--gray-10);
+  letter-spacing: var(--font-letter-spacing-14px);
+  white-space: nowrap;
+  background: var(--gray-1);
+  border-radius: 6px;
+  box-shadow: var(--shadow-2);
+  transition: all 0.2s ease;
+}
+
+.button:active {
+  transform: scale(0.98);
 }
 
 .button:hover {
-  background: #e5e5e5;
+  color: var(--gray-12);
+  background: var(--gray-3);
 }
 `,
   },

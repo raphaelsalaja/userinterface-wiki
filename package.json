@@ -11,6 +11,7 @@
     "postinstall": "fumadocs-mdx",
     "generate:text-to-speech": "tsx scripts/generate-text-to-speech.ts",
     "generate:playgrounds": "tsx scripts/generate-playgrounds.ts",
+    "generate:playgrounds:watch": "tsx scripts/generate-playgrounds.ts --watch",
     "prepare": "husky"
   },
   "dependencies": {
@@ -20,6 +21,7 @@
     "@elevenlabs/elevenlabs-js": "^2.30.0",
     "@floating-ui/react": "^0.27.16",
     "@radix-ui/colors": "^3.0.0",
+    "@radix-ui/themes": "^3.2.1",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.4.2",
     "@tanstack/react-db": "^0.1.62",

@@ -3,6 +3,8 @@ import { Providers } from "@/components/providers";
 import { fonts } from "@/lib/fonts";
 import { METADATA, VIEWPORT } from "@/lib/site";
 
+import "@radix-ui/themes/styles.css";
+
 import "@/styles/styles.css";
 
 export const metadata = METADATA;

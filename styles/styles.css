@@ -1,7 +1,6 @@
 @import url(./styles.mdx.css);
 @import url(./styles.theme.css);
 @import url(./styles.reset.css);
-@import url(./styles.shadows.css);
 @import url(./styles.typography.css);
 
 :root {
@@ -90,4 +89,8 @@ body {
   &:focus {
     top: 16px;
   }
+}
+
+.radix-themes {
+  --default-font-family: var(--font-family-display);
 }

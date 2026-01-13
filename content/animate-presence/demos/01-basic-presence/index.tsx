@@ -2,18 +2,16 @@
 
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
-import { Button } from "@/components/button";
-import { Controls } from "@/components/controls";
 import styles from "./styles.module.css";
 
 export function BasicPresence() {
-  const [isVisible, setIsVisible] = useState(true);
+  const [show, setShow] = useState(true);
 
   return (
     <div className={styles.root}>
       <div className={styles.container}>
-        <AnimatePresence mode="wait">
-          {isVisible && (
+        <AnimatePresence>
+          {show && (
             <motion.div
               key="box"
               className={styles.box}
@@ -29,11 +27,15 @@ export function BasicPresence() {
           )}
         </AnimatePresence>
       </div>
-      <Controls>
-        <Button onClick={() => setIsVisible(!isVisible)}>
-          {isVisible ? "Hide" : "Show"}
-        </Button>
-      </Controls>
+      <div className={styles.controls}>
+        <button
+          type="button"
+          className={styles.button}
+          onClick={() => setShow(!show)}
+        >
+          Toggle
+        </button>
+      </div>
     </div>
   );
 }
