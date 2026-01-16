@@ -44,22 +44,22 @@ export default function App() {
 `,
     "/styles.module.css": `.root {
   display: flex;
+  flex: 1;
   flex-direction: column;
   gap: 1.5rem;
   align-items: center;
   width: 100%;
-  flex: 1;
   height: 100%;
 }
 
 .container {
   position: relative;
   display: flex;
+  flex: 1;
   align-items: center;
   justify-content: center;
   width: 100%;
   height: 100%;
-  flex: 1;
 }
 
 .box {

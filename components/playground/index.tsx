@@ -6,7 +6,7 @@ import {
   SandpackProvider,
   useSandpack,
 } from "@codesandbox/sandpack-react";
-import React, { useState } from "react";
+import React from "react";
 import { Button } from "@/components/button";
 import { ArrowRotateClockwiseIcon } from "@/icons";
 import { prerequisites } from "./index.prerequisites";
