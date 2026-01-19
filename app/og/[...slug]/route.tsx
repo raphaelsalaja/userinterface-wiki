@@ -1,26 +1,20 @@
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
 import { notFound } from "next/navigation";
 import { ImageResponse } from "next/og";
-import type { NextRequest } from "next/server";
-import { source } from "@/lib/source";
+import { getPageImage, source } from "@/lib/source";
 
-export const runtime = "nodejs";
+export const revalidate = false;
 
-export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url);
-  const slugParam = searchParams.get("slug");
-
-  if (!slugParam) notFound();
-
-  const slug = slugParam.split("/");
-  const page = source.getPage(slug);
+export async function GET(
+  req: Request,
+  props: { params: Promise<{ slug: string[] }> },
+) {
+  const { slug } = await props.params;
+  const page = source.getPage(slug.slice(0, -1));
 
   if (!page) notFound();
 
-  const inter = readFileSync(
-    join(process.cwd(), "public/fonts/inter/semi-bold.ttf"),
-  );
+  const fontUrl = new URL("/fonts/inter/semi-bold.ttf", req.url);
+  const inter = await fetch(fontUrl).then((res) => res.arrayBuffer());
 
   return new ImageResponse(
     <div
@@ -87,4 +81,10 @@ export async function GET(request: NextRequest) {
       ],
     },
   );
+}
+
+export function generateStaticParams() {
+  return source.getPages().map((page) => ({
+    slug: getPageImage(page).segments,
+  }));
 }

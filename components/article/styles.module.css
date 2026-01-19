@@ -13,6 +13,13 @@
   align-items: flex-start;
   justify-content: space-between;
   width: 100%;
+
+  @media (max-width: 480px) {
+    display: flex;
+    flex-direction: column;
+    flex-direction: column-reverse;
+    min-height: 84px;
+  }
 }
 
 .title {
@@ -32,6 +39,11 @@
   display: flex;
   gap: 8px;
   transform: translateY(-50%);
+
+  @media (max-width: 480px) {
+    position: relative;
+    transform: none;
+  }
 }
 
 .button {
@@ -59,6 +71,5 @@
   font-weight: var(--font-weight-normal);
   line-height: 24px;
   color: var(--gray-11);
-  text-align: center;
   letter-spacing: -0.09px;
 }

@@ -3,13 +3,21 @@
  */
 
 import { docs } from "fumadocs/server";
-import { loader } from "fumadocs-core/source";
+import { type InferPageType, loader } from "fumadocs-core/source";
 import { type Author, getAuthorById } from "./authors";
 
 export const source = loader({
   baseUrl: "/",
   source: docs.toFumadocsSource(),
 });
+
+export function getPageImage(page: InferPageType<typeof source>) {
+  const segments = [...page.slugs, "image.png"];
+  return {
+    segments,
+    url: `/og/${segments.join("/")}`,
+  };
+}
 
 /**
  * A full page object from Fumadocs source.

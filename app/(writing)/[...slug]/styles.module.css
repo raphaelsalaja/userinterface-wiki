@@ -95,9 +95,9 @@
 .article {
   display: flex;
   flex-direction: column;
+  width: 100%;
   max-width: 640px;
   padding-block-start: 128px;
   padding-block-end: 256px;
-
   margin: 0 auto;
 }
