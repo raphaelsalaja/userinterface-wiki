@@ -94,3 +94,12 @@ body {
 .radix-themes {
   --default-font-family: var(--font-family-display);
 }
+
+.radix-themes:where([data-has-background="true"]) {
+  background-color: var(--gray-1);
+}
+
+.radix-themes ::selection {
+  color: var(--gray-1);
+  background: var(--gray-12);
+}
