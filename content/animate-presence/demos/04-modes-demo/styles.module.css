@@ -28,12 +28,12 @@
 }
 
 .pillsContainer {
+  position: relative;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
-  position: relative;
-  white-space: nowrap;
   width: fit-content;
+  white-space: nowrap;
 }
 
 .pill {
