@@ -7,9 +7,33 @@ import { Controls } from "@/components/controls";
 import styles from "./styles.module.css";
 
 const slides = [
-  { id: 1, color: "var(--gray-12)" },
-  { id: 2, color: "var(--gray-10)" },
-  { id: 3, color: "var(--gray-8)" },
+  {
+    id: 1,
+    color: "var(--gray-9)",
+    content: {
+      author: "Steve Jobs",
+      quote:
+        "Let's go invent tomorrow instead of worrying about what happened yesterday.",
+    },
+  },
+  {
+    id: 2,
+    color: "var(--orange-9)",
+    content: {
+      author: "Norman McLaren",
+      quote:
+        "Animation is not the art of drawings that move but the art of movements that are drawn.",
+    },
+  },
+  {
+    id: 3,
+    color: "var(--yellow-9)",
+    content: {
+      author: "Rakim Mayers",
+      quote:
+        "How you gonna knock somebody for trying? Since when has it not been cool to try?",
+    },
+  },
 ];
 
 export function SlideshowDemo() {
@@ -30,14 +54,18 @@ export function SlideshowDemo() {
     enter: (dir: number) => ({
       x: dir > 0 ? 200 : -200,
       opacity: 0,
+      filter: "blur(10px)",
     }),
     center: {
       x: 0,
       opacity: 1,
+      scale: 1,
+      filter: "blur(0px)",
     },
     exit: (dir: number) => ({
       x: dir > 0 ? -200 : 200,
       opacity: 0,
+      filter: "blur(10px)",
     }),
   };
 
@@ -48,7 +76,6 @@ export function SlideshowDemo() {
           <motion.div
             key={slides[index].id}
             className={styles.slide}
-            style={{ background: slides[index].color }}
             custom={direction}
             variants={variants}
             initial="enter"
@@ -60,12 +87,15 @@ export function SlideshowDemo() {
               damping: 30,
             }}
           >
-            {index + 1}
+            <span className={styles.quote}>{slides[index].content.quote}</span>
+            <span className={styles.author}>
+              {slides[index].content.author}
+            </span>
           </motion.div>
         </AnimatePresence>
       </div>
       <Controls>
-        <Button onClick={() => paginate(-1)}>Previous</Button>
+        <Button onClick={() => paginate(-1)}>Back</Button>
         <Button onClick={() => paginate(1)}>Next</Button>
       </Controls>
     </div>

@@ -30,32 +30,32 @@ This requires unique `key` props. Without them, there is no way to know which ch
 
 `initial` defines where the element starts. `animate` defines where it settles. `exit` defines how it leaves. Each accepts an object or variant label.
 
+A common mistake is using array indices as keys. This breaks exit animations because removing an item shifts all subsequent indices. Use something stable like an ID instead.
 
-# The Mode Prop
+# Animate Presence Modes
 
 The mode prop controls timing. Three options: `sync`, `wait`, and `popLayout`.
 
 ## sync
 
-Entrance and exit happen simultaneously. You handle layout conflicts, usually with `position: absolute`. Use this when elements occupy different space.
+## sync 
+
+Both entering and exiting elements animate at the same time. There is no sequencing, no waiting. As soon as an element is added or removed, its animation begins.
 
 ## wait
 
-Entrance waits for exit to finish. No overlap.
+The entering element waits until the exiting element has fully animated out. This creates sequential animations.
 
 ## popLayout
 
-Exiting elements leave the document flow immediately. Surrounding content reflows while the exit animation plays. This works well with layout animations.
+Exiting elements are "popped" out of the document flow, allowing surrounding elements to reflow immediately. This pairs exceptionally well with the `layout` prop.
 
-<Callout type="info" title="Note">
-When using `popLayout`, custom components that are direct children of Animate Presence must forward their ref. This is how Motion knows which DOM node to pop out of flow.
-</Callout>
 
 # Accessing Presence State
 
 Sometimes a component needs to know if it's exiting. Motion provides hooks for this.
 
-<Figure>
+<Figure>  
   <PresenceState />
   <Caption>Components can read and react to their presence state.</Caption>
 </Figure>
@@ -194,6 +194,63 @@ Pass `initial={false}` to skip first-render animations:
 ```
 
 Subsequent changes still animate. Only the first render is affected.
+
+# Common Patterns
+
+Most uses of Animate Presence fall into a few categories. Understanding these patterns helps you reach for the right approach faster.
+
+## Conditional Rendering
+
+The simplest case. A component is either shown or hidden, and you want both transitions to feel intentional.
+
+```tsx
+<AnimatePresence>
+  {isVisible && (
+    <motion.div
+      key="panel"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    />
+  )}
+</AnimatePresence>
+```
+
+This works for modals, popovers, alerts, and any UI that toggles on and off. The key remains constant because the same logical element is appearing and disappearing.
+
+## Slideshows and Carousels
+
+When you want to swap between items, changing the `key` is what triggers the transition. React sees a different key and treats it as an entirely new component, prompting Animate Presence to animate the old one out and the new one in.
+
+<Figure>
+  <SlideshowDemo />
+</Figure>
+
+The entering image slides in from the right while the exiting image slides out to the left. Because both animations run simultaneously by default, you get a seamless crossfade effect.
+
+## Dynamic Lists
+
+Lists introduce more complexity because multiple items can enter and exit at once. Each item needs a stable key that persists across renders.
+
+<Figure>
+  <ListDemo />
+  <Caption>Items animate in and out of a dynamic list.</Caption>
+</Figure>
+
+```tsx
+<AnimatePresence>
+  {items.map((item) => (
+    <motion.li
+      key={item.id}
+      initial={{ opacity: 0, height: 0 }}
+      animate={{ opacity: 1, height: "auto" }}
+      exit={{ opacity: 0, height: 0 }}
+      layout
+    />
+  ))}
+</AnimatePresence>
+```
+
 
 # Practical Considerations
 

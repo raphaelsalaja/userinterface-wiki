@@ -8,7 +8,7 @@ import {
 import { NarrationPlayer, NarrationProvider } from "@/components/narration";
 import { PageTransition } from "@/components/page-transition";
 import { toSerializablePageData } from "@/lib/page-data";
-import { formatPageData, source } from "@/lib/source";
+import { formatPageData, getPageImage, source } from "@/lib/source";
 import { getMDXComponents } from "@/mdx-components";
 import styles from "./styles.module.css";
 
@@ -24,8 +24,7 @@ export async function generateMetadata(props: {
 
   if (!page) notFound();
 
-  const slugPath = params.slug.join("/");
-  const ogImageUrl = `/api/og?slug=${encodeURIComponent(slugPath)}`;
+  const ogImageUrl = getPageImage(page).url;
 
   return {
     title: page.data.title,
