@@ -25,8 +25,16 @@
 }
 
 .callout[data-variant="info"] {
-  background: var(--gray-2);
-  border-color: var(--gray-6);
+  background: var(--blue-2);
+  border-color: var(--blue-6);
+
+  .title {
+    color: var(--blue-10);
+  }
+
+  .body {
+    color: var(--blue-8);
+  }
 }
 
 .callout[data-variant="warn"] {

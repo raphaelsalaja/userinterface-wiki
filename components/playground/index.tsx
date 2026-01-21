@@ -6,10 +6,11 @@ import {
   SandpackProvider,
   useSandpack,
 } from "@codesandbox/sandpack-react";
+import { useTheme } from "next-themes";
 import React from "react";
 import { Button } from "@/components/button";
 import { ArrowRotateClockwiseIcon } from "@/icons";
-import { prerequisites } from "./index.prerequisites";
+import { getPrerequisites } from "./index.prerequisites";
 import styles from "./styles.module.css";
 
 interface PlaygroundProps {
@@ -67,15 +68,36 @@ function PlaygroundContent() {
 }
 
 export function Playground({ files }: PlaygroundProps) {
+  const { resolvedTheme } = useTheme();
+  const prerequisites = getPrerequisites(resolvedTheme);
+
   return (
     <div className={styles.root} data-prose-type="code-playground">
       <SandpackProvider
         template="react-ts"
-        theme={"auto"}
+        theme={{
+          colors: {
+            surface1: "var(--gray-1)",
+            surface2: "var(--gray-4)",
+            accent: "var(--gray-12)",
+          },
+          syntax: {
+            plain: "var(--gray-11)",
+            comment: { color: "var(--green-11)", fontStyle: "italic" },
+            keyword: "var(--purple-11)",
+            definition: "var(--amber-11)",
+            punctuation: "var(--gray-10)",
+            property: "var(--sky-11)",
+            tag: "var(--blue-11)",
+            static: "var(--cyan-11)",
+            string: "var(--orange-11)",
+          },
+        }}
         customSetup={{
           dependencies: {
             motion: "latest",
             "@radix-ui/themes": "latest",
+            "next-themes": "latest",
           },
         }}
         files={{

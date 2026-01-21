@@ -26,7 +26,7 @@ export function HomeLayout({ pages }: { pages: FormattedPage[] }) {
   const fuse = useMemo(
     () =>
       new Fuse(pages, {
-        keys: ["title", "description", "author.name", "tags"],
+        keys: ["title", "description", "author.name"],
         threshold: 0.3,
         includeScore: true,
       }),

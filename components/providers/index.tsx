@@ -26,10 +26,11 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
       <NuqsAdapter>
         <SpeedInsights />
         <Analytics />
-        <ThemeProvider attribute="class" />
-        <Theme>
-          <Toast.Provider>{children}</Toast.Provider>
-        </Theme>
+        <ThemeProvider attribute="class">
+          <Theme>
+            <Toast.Provider>{children}</Toast.Provider>
+          </Theme>
+        </ThemeProvider>
       </NuqsAdapter>
     </QueryClientProvider>
   );

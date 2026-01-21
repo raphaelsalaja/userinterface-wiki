@@ -1,7 +1,8 @@
-const index = `
+const getIndex = (theme: string | undefined) => `
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { Theme } from "@radix-ui/themes";
+import { ThemeProvider } from "next-themes";
 
 import "@radix-ui/themes/styles.css";
 import "./styles.css";
@@ -10,9 +11,11 @@ import App from "./App";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <Theme>
-      <App />
-    </Theme>
+    <ThemeProvider attribute="class" forcedTheme="${theme ?? "light"}">
+      <Theme appearance="${theme ?? "light"}">
+        <App />
+      </Theme>
+    </ThemeProvider>
   </StrictMode>
 );
 `;
@@ -118,7 +121,7 @@ input {
 }
 `;
 
-export const prerequisites = {
-  "/index.tsx": { code: index, hidden: true },
+export const getPrerequisites = (theme: string | undefined) => ({
+  "/index.tsx": { code: getIndex(theme), hidden: true },
   "/styles.css": { code: styles, hidden: true },
-};
+});

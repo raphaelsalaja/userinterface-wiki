@@ -27,7 +27,7 @@ export default function Navigation() {
         <Link
           href="/"
           className={styles.logo}
-          aria-label="userinterface.wiki home"
+          aria-label="Home"
           onClick={sounds.click}
         >
           U

@@ -1,6 +1,6 @@
 ---
 title: "Animate Presence"
-description: "A deep dive into Motion's AnimatePresence component, the secret to creating seamless entry and exit animations in React."
+description: "Motion's AnimatePresence keeps departing elements mounted long enough to animate out. How it works, when to use it, and what breaks."
 date: "2026-01-12"
 author: "raphael-salaja"
 icon: "motion"
@@ -16,136 +16,44 @@ import {
 
 import { BasicPresencePlayground } from "./demos/01-basic-presence/playgrounds";
 
-Animating something in and out of the DOM can be pretty arduous. When an element is added, you need to coordinate its initial state with its animated state. When it's removed, it's gone before you have a chance to animate it out.
+When an element leaves the DOM, it vanishes. No warning, no transition. You cannot animate something that no longer exists.
 
-Motion's Animate Presence solves this problem. It tracks when children enter and leave the React tree, allowing you to define states that run automatically at the right moments. The result is polished entrances and exits with minimal effort.
-
-There are many ways to use Animate Presence. In this article, I'll cover the core concepts, common patterns, and practical tips for mastering it.
+Motion's Animate Presence fixes this. It keeps departing elements mounted long enough to animate out, then removes them. Entrances and exits become declarative. You describe the states, the component handles the timing.
 
 # Mechanics
 
-Animate Presence works by detecting when its direct children enter or leave the React tree. When a child appears, it can animate from its `initial` state to its `animate` state. When a child disappears, instead of immediately removing it from the DOM, Animate Presence keeps it mounted and fires any animations defined on its `exit` prop. Only after those animations complete does the element actually unmount.
+Animate Presence watches its direct children. When one appears, it animates from `initial` to `animate`. When one disappears, it stays mounted, runs the `exit` animation, then unmounts.
 
-This detection relies on `key` props. Every direct child of Animate Presence must have a unique key so the component can track what enters and what leaves. Without keys, there is no way to distinguish one child from another.
+This requires unique `key` props. Without them, there is no way to know which child left.
 
 <Playground {...BasicPresencePlayground} />
 
-The `initial`, `animate`, and `exit` props work together. `initial` defines where the element starts, `animate` defines where it settles, and `exit` defines how it leaves. Each can be an object of values or a variant label.
+`initial` defines where the element starts. `animate` defines where it settles. `exit` defines how it leaves. Each accepts an object or variant label.
 
-# Common Patterns
-
-Most uses of Animate Presence fall into a few categories. Understanding these patterns helps you reach for the right approach faster.
-
-## Conditional Rendering
-
-The simplest case. A component is either shown or hidden, and you want both transitions to feel intentional.
-
-```tsx
-<AnimatePresence>
-  {isVisible && (
-    <motion.div
-      key="panel"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-    />
-  )}
-</AnimatePresence>
-```
-
-This works for modals, popovers, alerts, and any UI that toggles on and off. The key remains constant because the same logical element is appearing and disappearing.
-
-## Slideshows and Carousels
-
-When you want to swap between items, changing the `key` is what triggers the transition. React sees a different key and treats it as an entirely new component, prompting Animate Presence to animate the old one out and the new one in.
-
-<Figure>
-  <SlideshowDemo />
-</Figure>
-
-```tsx
-<AnimatePresence>
-  <motion.img
-    key={image.src}
-    src={image.src}
-    initial={{ x: 300, opacity: 0 }}
-    animate={{ x: 0, opacity: 1 }}
-    exit={{ x: -300, opacity: 0 }}
-  />
-</AnimatePresence>
-```
-
-The entering image slides in from the right while the exiting image slides out to the left. Because both animations run simultaneously by default, you get a seamless crossfade effect.
-
-## Dynamic Lists
-
-Lists introduce more complexity because multiple items can enter and exit at once. Each item needs a stable key that persists across renders.
-
-<Figure>
-  <ListDemo />
-  <Caption>Items animate in and out of a dynamic list.</Caption>
-</Figure>
-
-```tsx
-<AnimatePresence>
-  {items.map((item) => (
-    <motion.li
-      key={item.id}
-      initial={{ opacity: 0, height: 0 }}
-      animate={{ opacity: 1, height: "auto" }}
-      exit={{ opacity: 0, height: 0 }}
-      layout
-    />
-  ))}
-</AnimatePresence>
-```
-
-A common mistake is using array indices as keys. This breaks exit animations because removing an item shifts all subsequent indices. Use something stable like an ID instead.
 
 # The Mode Prop
 
-By default, Animate Presence runs entrance and exit animations simultaneously. This is `mode="sync"`, and it works well when elements do not share the same space.
+The mode prop controls timing. Three options: `sync`, `wait`, and `popLayout`.
 
-But when they do share space, simultaneous animations can cause layout conflicts. That is where the other modes come in.
+## sync
 
-<Figure>
-  <ModesDemo />
-  <Caption>Compare sync, wait, and popLayout modes.</Caption>
-</Figure>
-
-## sync (default)
-
-Both entering and exiting elements animate at the same time. You are responsible for handling any layout conflicts, typically with `position: absolute` or similar techniques.
+Entrance and exit happen simultaneously. You handle layout conflicts, usually with `position: absolute`. Use this when elements occupy different space.
 
 ## wait
 
-The entering element waits until the exiting element has fully animated out. This creates sequential animations, perfect for when you want users to focus on one piece of information at a time.
-
-```tsx
-<AnimatePresence mode="wait">
-  <motion.div key={currentStep} exit={{ opacity: 0 }} />
-</AnimatePresence>
-```
-
-A tip: try `ease: "easeIn"` on the exit and `ease: "easeOut"` on the entrance. Together they create an overall `easeInOut` feel across the transition.
+Entrance waits for exit to finish. No overlap.
 
 ## popLayout
 
-Exiting elements are "popped" out of the document flow, allowing surrounding elements to reflow immediately. This pairs exceptionally well with the `layout` prop for smooth list reordering.
+Exiting elements leave the document flow immediately. Surrounding content reflows while the exit animation plays. This works well with layout animations.
 
-```tsx
-<AnimatePresence mode="popLayout">
-  {items.map((item) => (
-    <motion.li layout exit={{ opacity: 0 }} key={item.id} />
-  ))}
-</AnimatePresence>
-```
-
+<Callout type="info" title="Note">
 When using `popLayout`, custom components that are direct children of Animate Presence must forward their ref. This is how Motion knows which DOM node to pop out of flow.
+</Callout>
 
 # Accessing Presence State
 
-Sometimes you need to know whether a component is entering or exiting. Motion provides hooks for this.
+Sometimes a component needs to know if it's exiting. Motion provides hooks for this.
 
 <Figure>
   <PresenceState />
@@ -154,7 +62,7 @@ Sometimes you need to know whether a component is entering or exiting. Motion pr
 
 ## useIsPresent
 
-Returns a boolean indicating whether the component is still part of the React tree. Once false, the component is animating out.
+Returns a boolean. True while mounted, false while exiting.
 
 ```tsx
 import { useIsPresent } from "motion/react";
@@ -167,7 +75,7 @@ function Component() {
 
 ## usePresence
 
-Returns both the presence state and a `safeToRemove` callback. Call this when you want manual control over when the component is removed from the DOM.
+Returns the presence state and a `safeToRemove` callback. Use this for manual control over removal timing.
 
 ```tsx
 import { usePresence } from "motion/react";
@@ -186,11 +94,11 @@ function Component() {
 }
 ```
 
-This is useful for complex exit sequences that involve external animations, cleanup, or asynchronous operations.
+Useful for complex exits with external animations or async cleanup.
 
 ## usePresenceData
 
-When a component is exiting, its props can no longer update. But Animate Presence accepts a `custom` prop that passes data down to all children, even exiting ones.
+Exiting components cannot receive new props. But Animate Presence accepts a `custom` prop that reaches all children, including those exiting.
 
 ```tsx
 <AnimatePresence custom={direction}>
@@ -209,13 +117,13 @@ function Slide() {
 }
 ```
 
-This is how you achieve directional slideshows where the exit direction depends on which way the user navigated.
+This enables directional slideshows where exit direction matches navigation direction.
 
 # Nested AnimatePresence
 
-By default, when an outer Animate Presence removes its children, nested Animate Presence components do not fire their exit animations. The parent's exit takes precedence.
+When a parent Animate Presence removes its children, nested exit animations do not fire. The parent wins.
 
-If you want nested exit animations to run, set `propagate` to true on the inner Animate Presence:
+To enable nested exits, set `propagate` to true:
 
 ```tsx
 <AnimatePresence>
@@ -229,15 +137,15 @@ If you want nested exit animations to run, set `propagate` to true on the inner 
 </AnimatePresence>
 ```
 
-Now when `show` becomes false, both the section's exit animation and any exit animations within the propagating Animate Presence will fire.
+When `show` becomes false, both exits fire.
 
 # Common Pitfalls
 
-A few patterns cause silent failures. Knowing them saves debugging time.
+Three patterns break silently.
 
 ## Missing or Non-Unique Keys
 
-Exit animations require stable, unique keys. Without them, Animate Presence cannot detect that a specific element has left. Using array indices breaks this because indices shift when items are removed.
+Exit animations need stable keys. Array indices fail because they shift on removal.
 
 ```tsx
 // Bad - indices shift on removal
@@ -253,7 +161,7 @@ Exit animations require stable, unique keys. Without them, Animate Presence cann
 
 ## AnimatePresence Outside the Conditional
 
-If Animate Presence itself unmounts, it cannot animate anything. The component must remain mounted while its children come and go.
+If Animate Presence unmounts, it cannot animate anything. Keep it mounted, change its children.
 
 ```tsx
 // Bad - AnimatePresence unmounts too
@@ -271,13 +179,13 @@ If Animate Presence itself unmounts, it cannot animate anything. The component m
 
 ## Layout Issues with popLayout
 
-When using `popLayout`, exiting elements become absolutely positioned. If the parent has an active `transform`, it becomes the offset parent, which can cause positioning issues. Set `position: relative` on the animating parent to ensure consistent positioning.
+`popLayout` makes exiting elements absolutely positioned. If their parent has a `transform`, positioning breaks. Set `position: relative` on the parent.
 
 # The initial Prop
 
-By default, children present when Animate Presence first mounts will run their `initial` animations. Sometimes this is not what you want, like when mounting a page that should appear already settled.
+Children present at mount run their `initial` animations by default. Sometimes you want the page to appear settled.
 
-Pass `initial={false}` to disable entrance animations on first render:
+Pass `initial={false}` to skip first-render animations:
 
 ```tsx
 <AnimatePresence initial={false}>
@@ -285,29 +193,29 @@ Pass `initial={false}` to disable entrance animations on first render:
 </AnimatePresence>
 ```
 
-Subsequent changes will still animate normally. Only the very first render is affected.
+Subsequent changes still animate. Only the first render is affected.
 
 # Practical Considerations
 
-Exit animations add polish, but they also add time. Every animation is a small delay before the user sees what they expect. Used thoughtfully, this creates a sense of continuity and care. Overused, it creates friction.
+Exit animations add polish. They also add delay. Every animation is time before the user sees what they expect.
 
-A few guidelines I follow:
+Used thoughtfully, this creates continuity. Overused, it creates friction.
 
-- Keep exit animations short. 150–250ms is usually enough. Longer and the interface feels sluggish.
-- Match the exit energy to the entrance. If something fades in gently, it should fade out gently too.
-- Skip exits for high-frequency interactions. Context menus, tooltips, and dropdowns often feel better with instant removal. [^1]
-- Use `mode="wait"` sparingly. Sequential animations double the time a user waits to see content.
+Keep exit animations short. 150 to 250ms is enough. Longer feels sluggish.
 
-The goal is motion that serves the experience without calling attention to itself. Exit animations should feel inevitable, like of course it left that way, without the user ever consciously noticing.
+Match exit energy to entrance. If something fades in gently, fade it out gently.
 
-# Conclusion
+Skip entrances for high-frequency interactions. Context menus, tooltips, and dropdowns often feel better appearing instantly. [^1]
 
-Animate Presence solves a problem that should not exist. Elements should be able to enter and leave the DOM gracefully. Until CSS or React provides a native solution, Motion fills that gap elegantly.
+The goal is motion that serves the experience without calling attention to itself. Exit animations should feel inevitable, not noticed.
 
-The component itself is simple—wrap your conditional content, define your `initial`, `animate`, and `exit` states, and watch elements come and go with intention. The deeper skill is knowing when those transitions should be animated at all, and how to make them feel like a natural part of the interaction rather than a flourish added on top.
+# Closing Thoughts
 
-If you are building interfaces with Motion, Animate Presence belongs in your toolkit. Not because every transition needs animation, but because when one does, the alternative is painful.
+Animate Presence solves a problem that should not exist. Elements should enter and leave the DOM gracefully without library intervention.
+
+Until CSS or React provides a native solution, this is what we have. The component itself is simple. Wrap conditional content, define states, watch elements come and go.
+
+The harder question is when. Not every transition needs animation. Most do not. But when one does, the alternative is either instant or broken. Animate Presence makes the third option possible.
 
 [^1]: For more on when to skip animation entirely, see [To Spring or Not to Spring](/to-spring-or-not-to-spring).
 
-[^2]: MDN's [`@starting-style` documentation](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@starting-style) covers the emerging CSS approach to entry and exit animations.

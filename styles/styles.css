@@ -1,3 +1,5 @@
+@import "@radix-ui/themes/styles.css";
+
 @import url(./styles.mdx.css);
 @import url(./styles.theme.css);
 @import url(./styles.reset.css);
@@ -31,11 +33,6 @@
 html {
   overflow-x: hidden;
   scrollbar-width: none;
-
-  ::selection {
-    color: var(--gray-1);
-    background: var(--gray-12);
-  }
 
   &::-webkit-scrollbar {
     display: none;
@@ -93,4 +90,9 @@ body {
 
 .radix-themes {
   --default-font-family: var(--font-family-display);
+
+  ::selection {
+    color: var(--gray-1);
+    background: var(--gray-12);
+  }
 }

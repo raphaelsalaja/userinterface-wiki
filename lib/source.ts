@@ -23,7 +23,6 @@ export interface FormattedPage {
   url: string;
   title: string;
   description: string;
-  tags: string[];
   author: Author;
   coauthors: Author[];
   icon?: "motion" | "code" | "writing";
@@ -38,7 +37,6 @@ function formatData(data: Page["data"]) {
   return {
     title: data.title,
     description: data.description,
-    tags: data.tags ?? [],
     author: getAuthorById(data.author),
     coauthors: (data.coauthors ?? []).map(getAuthorById),
     icon: data.icon,
