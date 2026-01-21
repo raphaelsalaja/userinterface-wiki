@@ -58,6 +58,53 @@ function MenuItem({ ...props }: MenuItemProps) {
   return <BaseMenu.Item className={styles.item} {...props} />;
 }
 
+interface MenuRichItemProps
+  extends React.ComponentPropsWithoutRef<typeof BaseMenu.Item> {
+  icon?: React.ReactNode;
+  title: string;
+  description?: string;
+  external?: boolean;
+}
+function MenuRichItem({
+  icon,
+  title,
+  description,
+  external,
+  ...props
+}: MenuRichItemProps) {
+  return (
+    <BaseMenu.Item className={styles.itemRich} {...props}>
+      {icon && <span className={styles.itemIcon}>{icon}</span>}
+      <span className={styles.itemContent}>
+        <span className={styles.itemTitle}>
+          {title}
+          {external && (
+            <svg
+              className={styles.itemExternal}
+              viewBox="0 0 12 12"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <title>External link</title>
+              <path
+                d="M3.5 2.5H9.5V8.5M9 3L3 9"
+                stroke="currentColor"
+                strokeWidth="1.25"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          )}
+        </span>
+        {description && (
+          <span className={styles.itemDescription}>{description}</span>
+        )}
+      </span>
+    </BaseMenu.Item>
+  );
+}
+
 interface MenuSeparatorProps
   extends React.ComponentPropsWithoutRef<typeof BaseMenu.Separator> {}
 function MenuSeparator({ ...props }: MenuSeparatorProps) {
@@ -135,6 +182,7 @@ export const Menu = {
   Popup: MenuPopup,
   Arrow: MenuArrow,
   Item: MenuItem,
+  RichItem: MenuRichItem,
   Separator: MenuSeparator,
   Group: MenuGroup,
   GroupLabel: MenuGroupLabel,

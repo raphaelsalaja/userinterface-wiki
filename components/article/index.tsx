@@ -16,6 +16,7 @@ import {
 import type { Author } from "@/lib/authors";
 import { getGradientColors } from "@/lib/colors";
 import type { SerializablePageData } from "@/lib/page-data";
+import { SITE_MANIFEST } from "@/lib/site";
 import styles from "./styles.module.css";
 
 export type { SerializablePageData } from "@/lib/page-data";
@@ -183,8 +184,80 @@ function Header({ className }: HeaderProps) {
             <Menu.Portal>
               <Menu.Positioner sideOffset={8} align="end" side="bottom">
                 <Menu.Popup>
-                  <Menu.Item>Copy Link</Menu.Item>
-                  <Menu.Item>Share</Menu.Item>
+                  <Menu.RichItem
+                    title="Copy Link"
+                    description="Copy URL to clipboard"
+                    onClick={() => {
+                      navigator.clipboard.writeText(window.location.href);
+                    }}
+                  />
+                  <Menu.RichItem
+                    title="Copy page"
+                    description="Copy page as Markdown for LLMs"
+                    onClick={() => {
+                      const content = document.querySelector(
+                        "[data-article-content]",
+                      );
+                      if (content) {
+                        navigator.clipboard.writeText(
+                          content.textContent || "",
+                        );
+                      }
+                    }}
+                  />
+                  <Menu.Separator />
+                  <Menu.RichItem
+                    title="View as Markdown"
+                    description="View this page as plain text"
+                    external
+                    onClick={() => {
+                      window.open(
+                        `${SITE_MANIFEST.github}/blob/main/content/${page.slugs?.join("/")}/index.mdx`,
+                        "_blank",
+                      );
+                    }}
+                  />
+                  <Menu.Separator />
+                  <Menu.RichItem
+                    title="Open in ChatGPT"
+                    description="Ask ChatGPT about this page"
+                    external
+                    onClick={() => {
+                      window.open(
+                        `https://chatgpt.com/?q=${encodeURIComponent(`Read and summarize: ${SITE_MANIFEST.url}${page.url}`)}`,
+                        "_blank",
+                      );
+                    }}
+                  />
+                  <Menu.RichItem
+                    title="Open in Claude"
+                    description="Ask Claude about this page"
+                    external
+                    onClick={() => {
+                      window.open(
+                        `https://claude.ai/new?q=${encodeURIComponent(`Read and summarize: ${SITE_MANIFEST.url}${page.url}`)}`,
+                        "_blank",
+                      );
+                    }}
+                  />
+                  <Menu.Separator />
+                  <Menu.RichItem
+                    title="Report an issue"
+                    description="Suggest feedback or report a problem"
+                    external
+                    onClick={() => {
+                      const title = encodeURIComponent(
+                        `Feedback: ${page.data.title}`,
+                      );
+                      const body = encodeURIComponent(
+                        `## Page\n[${page.data.title}](${SITE_MANIFEST.url}${page.url})\n\n## Feedback\n\n`,
+                      );
+                      window.open(
+                        `${SITE_MANIFEST.github}/issues/new?title=${title}&body=${body}`,
+                        "_blank",
+                      );
+                    }}
+                  />
                 </Menu.Popup>
               </Menu.Positioner>
             </Menu.Portal>
