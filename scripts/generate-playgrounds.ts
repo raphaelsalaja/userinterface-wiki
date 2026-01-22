@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
+const WATCH_MODE = process.argv.includes("--watch");
 
 interface PlaygroundConfig {
   files: Record<string, string>;
@@ -9,17 +10,15 @@ interface PlaygroundConfig {
 }
 
 /**
- * Scans for demo folders containing playgrounds/app.tsx and playgrounds/app.module.css,
+ * Scans for demo folders containing index.tsx and styles.module.css with a playgrounds folder,
  * then generates playground files.
  *
  * Expected structure:
  *   demos/
  *     01-demo-name/
- *       index.tsx           (the real demo component)
- *       styles.module.css   (the real styles)
+ *       index.tsx           (the demo component)
+ *       styles.module.css   (the demo styles)
  *       playgrounds/
- *         app.tsx           (playground code with CSS Modules)
- *         app.module.css    (playground styles)
  *         index.ts          (auto-generated)
  */
 function findDemoFolders(dir: string): string[] {
@@ -40,10 +39,10 @@ function findDemoFolders(dir: string): string[] {
             if (demoEntry.isDirectory()) {
               const demoPath = path.join(fullPath, demoEntry.name);
               const playgroundsPath = path.join(demoPath, "playgrounds");
-              const appPath = path.join(playgroundsPath, "app.tsx");
-              const stylesPath = path.join(playgroundsPath, "app.module.css");
+              const indexPath = path.join(demoPath, "index.tsx");
+              const stylesPath = path.join(demoPath, "styles.module.css");
 
-              if (fs.existsSync(appPath) && fs.existsSync(stylesPath)) {
+              if (fs.existsSync(playgroundsPath) && fs.existsSync(indexPath) && fs.existsSync(stylesPath)) {
                 demos.push(demoPath);
               }
             }
@@ -92,6 +91,32 @@ function escapeTemplateString(str: string): string {
 }
 
 /**
+ * Transforms demo code to playground code by:
+ * - Converting named export functions to default export as "App"
+ * - Removing "use client" directive
+ */
+function transformToPlaygroundCode(code: string): string {
+  let transformed = code;
+  
+  // Remove "use client" directive
+  transformed = transformed.replace(/^["']use client["'];?\s*\n/m, "");
+  
+  // Convert named export function to default export App
+  // Matches: export function ComponentName() { or export function ComponentName({...}) {
+  const namedExportRegex = /export function \w+(\([^)]*\))\s*\{/;
+  const match = transformed.match(namedExportRegex);
+  
+  if (match) {
+    transformed = transformed.replace(
+      namedExportRegex,
+      `export default function App${match[1]} {`
+    );
+  }
+  
+  return transformed;
+}
+
+/**
  * Converts a folder name like "01-basic-presence" to "BasicPresencePlayground"
  */
 function toPascalCase(folderName: string): string {
@@ -106,21 +131,22 @@ function toPascalCase(folderName: string): string {
 
 function generatePlayground(demoPath: string): void {
   const playgroundsDir = path.join(demoPath, "playgrounds");
-  const appPath = path.join(playgroundsDir, "app.tsx");
-  const stylesPath = path.join(playgroundsDir, "app.module.css");
+  const indexPath = path.join(demoPath, "index.tsx");
+  const stylesPath = path.join(demoPath, "styles.module.css");
   const outputPath = path.join(playgroundsDir, "index.ts");
 
   const demoName = path.basename(demoPath);
   const exportName = toPascalCase(demoName);
 
-  const appCode = fs.readFileSync(appPath, "utf-8");
+  const rawAppCode = fs.readFileSync(indexPath, "utf-8");
+  const appCode = transformToPlaygroundCode(rawAppCode);
   const stylesCode = fs.readFileSync(stylesPath, "utf-8");
 
   const dependencies = extractDependencies(appCode);
 
   const _config: PlaygroundConfig = {
     files: {
-      "/App.jsx": appCode,
+      "/App.tsx": appCode,
       "/styles.module.css": stylesCode,
     },
     dependencies,
@@ -130,7 +156,7 @@ function generatePlayground(demoPath: string): void {
 
 export const ${exportName} = {
   files: {
-    "/App.jsx": \`${escapeTemplateString(appCode)}\`,
+    "/App.tsx": \`${escapeTemplateString(appCode)}\`,
     "/styles.module.css": \`${escapeTemplateString(stylesCode)}\`,
   },
 };
@@ -140,16 +166,17 @@ export const ${exportName} = {
   console.log(`Generated: ${path.relative(process.cwd(), outputPath)}`);
 }
 
-function main() {
+function generateAll() {
   console.log("Scanning for playground demos...\n");
 
   const demos = findDemoFolders(CONTENT_DIR);
 
   if (demos.length === 0) {
-    console.log("No demos found with app.tsx and app.module.css files.");
+    console.log("No demos found with index.tsx and styles.module.css files.");
     console.log("\nExpected structure:");
-    console.log("  content/*/demos/*/app.tsx");
-    console.log("  content/*/demos/*/app.module.css");
+    console.log("  content/*/demos/*/index.tsx");
+    console.log("  content/*/demos/*/styles.module.css");
+    console.log("  content/*/demos/*/playgrounds/");
     return;
   }
 
@@ -160,6 +187,47 @@ function main() {
   }
 
   console.log("\nDone!");
+}
+
+function watchPlaygrounds() {
+  console.log("Watching for playground changes...\n");
+  generateAll();
+
+  const demos = findDemoFolders(CONTENT_DIR);
+  const watchedDirs = demos.map((demo) => path.join(demo, "playgrounds"));
+
+  // Watch both the playgrounds dir and parent demo dir for changes
+  for (const demoPath of demos) {
+    const playgroundsDir = path.join(demoPath, "playgrounds");
+    
+    // Watch the demo folder for index.tsx and styles.module.css changes
+    fs.watch(demoPath, { recursive: false }, (_eventType, filename) => {
+      if (filename === "index.tsx" || filename === "styles.module.css") {
+        console.log(`\nFile changed: ${filename}`);
+        generatePlayground(demoPath);
+      }
+    });
+    
+    // Also watch playgrounds folder in case files are added there
+    if (fs.existsSync(playgroundsDir)) {
+      fs.watch(playgroundsDir, { recursive: false }, (_eventType, filename) => {
+        if (filename && (filename.endsWith(".tsx") || filename.endsWith(".css"))) {
+          console.log(`\nPlaygrounds file changed: ${filename}`);
+          generatePlayground(demoPath);
+        }
+      });
+    }
+  }
+
+  console.log(`\nWatching ${watchedDirs.length} playground directories for changes...`);
+}
+
+function main() {
+  if (WATCH_MODE) {
+    watchPlaygrounds();
+  } else {
+    generateAll();
+  }
 }
 
 main();

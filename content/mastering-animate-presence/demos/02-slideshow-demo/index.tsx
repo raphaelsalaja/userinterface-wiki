@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion, usePresenceData } from "motion/react";
 import { useState } from "react";
 import { Button } from "@/components/button";
 import { Controls } from "@/components/controls";
@@ -9,7 +9,6 @@ import styles from "./styles.module.css";
 const slides = [
   {
     id: 1,
-    color: "var(--gray-9)",
     content: {
       author: "Steve Jobs",
       quote:
@@ -18,7 +17,6 @@ const slides = [
   },
   {
     id: 2,
-    color: "var(--orange-9)",
     content: {
       author: "Norman McLaren",
       quote:
@@ -27,7 +25,6 @@ const slides = [
   },
   {
     id: 3,
-    color: "var(--yellow-9)",
     content: {
       author: "Rakim Mayers",
       quote:
@@ -35,6 +32,27 @@ const slides = [
     },
   },
 ];
+
+function Slide({ quote, author }: { quote: string; author: string }) {
+  const direction = usePresenceData() as number;
+
+  return (
+    <motion.div
+      className={styles.slide}
+      initial={{ x: direction > 0 ? 200 : -200, opacity: 0, filter: "blur(10px)" }}
+      animate={{ x: 0, opacity: 1, filter: "blur(0px)" }}
+      exit={{ x: direction > 0 ? -200 : 200, opacity: 0, filter: "blur(10px)" }}
+      transition={{
+        type: "spring",
+        stiffness: 400,
+        damping: 30,
+      }}
+    >
+      <span className={styles.quote}>{quote}</span>
+      <span className={styles.author}>{author}</span>
+    </motion.div>
+  );
+}
 
 export function SlideshowDemo() {
   const [index, setIndex] = useState(0);
@@ -50,48 +68,15 @@ export function SlideshowDemo() {
     });
   };
 
-  const variants = {
-    enter: (dir: number) => ({
-      x: dir > 0 ? 200 : -200,
-      opacity: 0,
-      filter: "blur(10px)",
-    }),
-    center: {
-      x: 0,
-      opacity: 1,
-      scale: 1,
-      filter: "blur(0px)",
-    },
-    exit: (dir: number) => ({
-      x: dir > 0 ? -200 : 200,
-      opacity: 0,
-      filter: "blur(10px)",
-    }),
-  };
-
   return (
     <div className={styles.root}>
       <div className={styles.container}>
         <AnimatePresence mode="wait" custom={direction}>
-          <motion.div
+          <Slide
             key={slides[index].id}
-            className={styles.slide}
-            custom={direction}
-            variants={variants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={{
-              type: "spring",
-              stiffness: 400,
-              damping: 30,
-            }}
-          >
-            <span className={styles.quote}>{slides[index].content.quote}</span>
-            <span className={styles.author}>
-              {slides[index].content.author}
-            </span>
-          </motion.div>
+            quote={slides[index].content.quote}
+            author={slides[index].content.author}
+          />
         </AnimatePresence>
       </div>
       <Controls>
