@@ -3,17 +3,14 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"next dev\" \"pnpm generate:playgrounds:watch\" --names \"next,playgrounds\" --prefix-colors \"cyan,magenta\"",
-    "build": "pnpm generate:icons && pnpm generate:og-images && next build",
+    "dev": "concurrently \"next dev\" \"pnpm generate playgrounds --watch\" --names \"next,playgrounds\" --prefix-colors \"cyan,magenta\"",
+    "build": "pnpm generate icons opengraph && next build",
     "build:next": "next build",
     "start": "next start",
     "lint": "biome check --fix --unsafe . --reporter=summary",
     "postinstall": "fumadocs-mdx",
+    "generate": "tsx scripts/generate.ts",
     "generate:text-to-speech": "tsx scripts/generate-text-to-speech.ts",
-    "generate:icons": "tsx scripts/generate-icons.mts",
-    "generate:og-images": "tsx scripts/generate-og-images.mts",
-    "generate:playgrounds": "tsx scripts/generate-playgrounds.ts",
-    "generate:playgrounds:watch": "tsx scripts/generate-playgrounds.ts --watch",
     "prepare": "husky"
   },
   "dependencies": {
