@@ -41,7 +41,11 @@ function Slide({ quote, author }: { quote: string; author: string }) {
   return (
     <motion.div
       className={styles.slide}
-      initial={{ x: direction > 0 ? 200 : -200, opacity: 0, filter: "blur(10px)" }}
+      initial={{
+        x: direction > 0 ? 200 : -200,
+        opacity: 0,
+        filter: "blur(10px)",
+      }}
       animate={{ x: 0, opacity: 1, filter: "blur(0px)" }}
       exit={{ x: direction > 0 ? -200 : 200, opacity: 0, filter: "blur(10px)" }}
       transition={{
