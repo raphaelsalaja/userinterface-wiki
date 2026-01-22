@@ -1,5 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
+import { intro, outro, log } from "@clack/prompts";
+import pc from "picocolors";
 import satori from "satori";
 import sharp from "sharp";
 
@@ -67,7 +69,9 @@ function findMDXFiles(dir: string): Page[] {
  * Saves them as static PNG files in public/open-graph/
  */
 async function generateOGImages() {
-  console.log("Generating Open Graph images...\n");
+  const startTime = performance.now();
+
+  intro(pc.bgCyan(pc.black(" open graph ")));
 
   // Ensure open-graph directory exists
   if (!fs.existsSync(OPEN_GRAPH_DIR)) {
@@ -80,9 +84,7 @@ async function generateOGImages() {
   // Get all pages by scanning content directory
   const pages = findMDXFiles(CONTENT_DIR);
 
-  console.log(`Found ${pages.length} page(s)\n`);
-
-  let successCount = 0;
+  const images: Array<{ name: string; path: string }> = [];
   let errorCount = 0;
 
   for (const page of pages) {
@@ -180,11 +182,13 @@ async function generateOGImages() {
       // Convert SVG to PNG using sharp
       await sharp(Buffer.from(svg)).png().toFile(outputPath);
 
-      console.log(`✓ Generated: ${path.relative(process.cwd(), outputPath)}`);
-      successCount++;
+      images.push({
+        name: slugPath,
+        path: outputPath,
+      });
     } catch (error) {
       console.error(
-        `✗ Failed to generate OG image for ${page.slug.join("/")}:`,
+        pc.red(`  ✗ Failed to generate OG image for ${page.slug.join("/")}):`),
         error,
       );
       errorCount++;
@@ -239,16 +243,34 @@ async function generateOGImages() {
     );
 
     await sharp(Buffer.from(svg)).png().toFile(defaultOutputPath);
-    console.log(
-      `✓ Generated: ${path.relative(process.cwd(), defaultOutputPath)}`,
-    );
-    successCount++;
+    images.push({
+      name: "default",
+      path: defaultOutputPath,
+    });
   } catch (error) {
-    console.error("✗ Failed to generate default OG image:", error);
+    console.error(pc.red("  ✗ Failed to generate default OG image:"), error);
     errorCount++;
   }
 
-  console.log(`\nDone! ${successCount} successful, ${errorCount} failed`);
+  // Print results
+  for (const image of images) {
+    const stats = fs.statSync(image.path);
+    const sizeKb = (stats.size / 1024).toFixed(1);
+    const displayName = image.name === "default" ? "default" : image.name;
+    log.success(`${pc.dim(displayName)} ${pc.gray(`(${sizeKb} kB)`)}`);
+  }
+
+  const duration = ((performance.now() - startTime) / 1000).toFixed(2);
+
+  if (errorCount > 0) {
+    outro(
+      pc.yellow(
+        `${images.length} images generated with ${errorCount} errors in ${duration}s`,
+      ),
+    );
+  } else {
+    outro(pc.green(`${images.length} images in ${duration}s`));
+  }
 }
 
 generateOGImages().catch((error) => {

@@ -1,5 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
+import { intro, outro, log } from "@clack/prompts";
+import pc from "picocolors";
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
 const WATCH_MODE = process.argv.includes("--watch");
@@ -133,7 +135,7 @@ function toPascalCase(folderName: string): string {
     .join("")}Playground`;
 }
 
-function generatePlayground(demoPath: string): void {
+function generatePlayground(demoPath: string): string {
   const playgroundsDir = path.join(demoPath, "playgrounds");
   const indexPath = path.join(demoPath, "index.tsx");
   const stylesPath = path.join(demoPath, "styles.module.css");
@@ -167,34 +169,49 @@ export const ${exportName} = {
 `;
 
   fs.writeFileSync(outputPath, output);
-  console.log(`Generated: ${path.relative(process.cwd(), outputPath)}`);
+  const relativePath = path.relative(process.cwd(), outputPath);
+  return relativePath;
 }
 
 function generateAll() {
-  console.log("Scanning for playground demos...\n");
+  const startTime = performance.now();
+
+  intro(pc.bgCyan(pc.black(" playgrounds ")));
 
   const demos = findDemoFolders(CONTENT_DIR);
 
   if (demos.length === 0) {
-    console.log("No demos found with index.tsx and styles.module.css files.");
-    console.log("\nExpected structure:");
-    console.log("  content/*/demos/*/index.tsx");
-    console.log("  content/*/demos/*/styles.module.css");
-    console.log("  content/*/demos/*/playgrounds/");
+    log.warning("No demos found");
+    log.info("Expected structure:");
+    log.message(pc.gray("  content/*/demos/*/index.tsx"));
+    log.message(pc.gray("  content/*/demos/*/styles.module.css"));
+    log.message(pc.gray("  content/*/demos/*/playgrounds/"));
+    outro("");
     return;
   }
 
-  console.log(`Found ${demos.length} demo(s):\n`);
+  const generated: string[] = [];
 
   for (const demoPath of demos) {
-    generatePlayground(demoPath);
+    const relativePath = generatePlayground(demoPath);
+    generated.push(relativePath);
   }
 
-  console.log("\nDone!");
+  // Print results
+  for (const filePath of generated) {
+    const stats = fs.statSync(filePath);
+    const sizeKb = (stats.size / 1024).toFixed(1);
+    const displayName = filePath
+      .replace(/^content\//, "")
+      .replace(/\/playgrounds\/index\.ts$/, "");
+    log.success(`${pc.dim(displayName)} ${pc.gray(`(${sizeKb} kB)`)}`);
+  }
+
+  const duration = ((performance.now() - startTime) / 1000).toFixed(2);
+  outro(pc.green(`${generated.length} playgrounds in ${duration}s`));
 }
 
 function watchPlaygrounds() {
-  console.log("Watching for playground changes...\n");
   generateAll();
 
   const demos = findDemoFolders(CONTENT_DIR);
@@ -207,8 +224,13 @@ function watchPlaygrounds() {
     // Watch the demo folder for index.tsx and styles.module.css changes
     fs.watch(demoPath, { recursive: false }, (_eventType, filename) => {
       if (filename === "index.tsx" || filename === "styles.module.css") {
-        console.log(`\nFile changed: ${filename}`);
-        generatePlayground(demoPath);
+        const relativePath = generatePlayground(demoPath);
+        const stats = fs.statSync(relativePath);
+        const sizeKb = (stats.size / 1024).toFixed(1);
+        const displayName = relativePath
+          .replace(/^content\//, "")
+          .replace(/\/playgrounds\/index\.ts$/, "");
+        log.success(`${pc.dim(displayName)} ${pc.gray(`(${sizeKb} kB)`)}`);
       }
     });
 
@@ -219,16 +241,19 @@ function watchPlaygrounds() {
           filename &&
           (filename.endsWith(".tsx") || filename.endsWith(".css"))
         ) {
-          console.log(`\nPlaygrounds file changed: ${filename}`);
-          generatePlayground(demoPath);
+          const relativePath = generatePlayground(demoPath);
+          const stats = fs.statSync(relativePath);
+          const sizeKb = (stats.size / 1024).toFixed(1);
+          const displayName = relativePath
+            .replace(/^content\//, "")
+            .replace(/\/playgrounds\/index\.ts$/, "");
+          log.success(`${pc.dim(displayName)} ${pc.gray(`(${sizeKb} kB)`)}`);
         }
       });
     }
   }
 
-  console.log(
-    `\nWatching ${watchedDirs.length} playground directories for changes...`,
-  );
+  log.info(pc.dim(`Watching ${watchedDirs.length} directories...`));
 }
 
 function main() {

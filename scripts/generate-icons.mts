@@ -1,5 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
+import { intro, outro, log } from "@clack/prompts";
+import pc from "picocolors";
 import satori from "satori";
 import sharp from "sharp";
 
@@ -12,7 +14,9 @@ const FONT_PATH = path.join(PUBLIC_DIR, "fonts/inter/bold.ttf");
  * Saves them as static PNG files in public/open-graph/
  */
 async function generateIcons() {
-  console.log("Generating icons...\n");
+  const startTime = performance.now();
+
+  intro(pc.bgCyan(pc.black(" icons ")));
 
   // Ensure open-graph directory exists
   if (!fs.existsSync(OPEN_GRAPH_DIR)) {
@@ -22,7 +26,7 @@ async function generateIcons() {
   // Load font
   const fontData = fs.readFileSync(FONT_PATH);
 
-  let successCount = 0;
+  const icons: Array<{ name: string; size: string; path: string }> = [];
   let errorCount = 0;
 
   // Generate standard favicon (32×32)
@@ -61,13 +65,11 @@ async function generateIcons() {
       },
     );
 
-    await sharp(Buffer.from(svg))
-      .png()
-      .toFile(path.join(OPEN_GRAPH_DIR, "icon.png"));
-    console.log("✓ Generated: public/open-graph/icon.png (32×32)");
-    successCount++;
+    const iconPath = path.join(OPEN_GRAPH_DIR, "icon.png");
+    await sharp(Buffer.from(svg)).png().toFile(iconPath);
+    icons.push({ name: "icon.png", size: "32×32", path: iconPath });
   } catch (error) {
-    console.error("✗ Failed to generate icon.png:", error);
+    console.error(pc.red("  ✗ Failed to generate icon.png:"), error);
     errorCount++;
   }
 
@@ -107,13 +109,11 @@ async function generateIcons() {
       },
     );
 
-    await sharp(Buffer.from(svg))
-      .png()
-      .toFile(path.join(OPEN_GRAPH_DIR, "apple-icon.png"));
-    console.log("✓ Generated: public/open-graph/apple-icon.png (180×180)");
-    successCount++;
+    const iconPath = path.join(OPEN_GRAPH_DIR, "apple-icon.png");
+    await sharp(Buffer.from(svg)).png().toFile(iconPath);
+    icons.push({ name: "apple-icon.png", size: "180×180", path: iconPath });
   } catch (error) {
-    console.error("✗ Failed to generate apple-icon.png:", error);
+    console.error(pc.red("  ✗ Failed to generate apple-icon.png:"), error);
     errorCount++;
   }
 
@@ -153,13 +153,11 @@ async function generateIcons() {
       },
     );
 
-    await sharp(Buffer.from(svg))
-      .png()
-      .toFile(path.join(OPEN_GRAPH_DIR, "icon-192.png"));
-    console.log("✓ Generated: public/open-graph/icon-192.png (192×192)");
-    successCount++;
+    const iconPath = path.join(OPEN_GRAPH_DIR, "icon-192.png");
+    await sharp(Buffer.from(svg)).png().toFile(iconPath);
+    icons.push({ name: "icon-192.png", size: "192×192", path: iconPath });
   } catch (error) {
-    console.error("✗ Failed to generate icon-192.png:", error);
+    console.error(pc.red("  ✗ Failed to generate icon-192.png:"), error);
     errorCount++;
   }
 
@@ -199,17 +197,34 @@ async function generateIcons() {
       },
     );
 
-    await sharp(Buffer.from(svg))
-      .png()
-      .toFile(path.join(OPEN_GRAPH_DIR, "icon-512.png"));
-    console.log("✓ Generated: public/open-graph/icon-512.png (512×512)");
-    successCount++;
+    const iconPath = path.join(OPEN_GRAPH_DIR, "icon-512.png");
+    await sharp(Buffer.from(svg)).png().toFile(iconPath);
+    icons.push({ name: "icon-512.png", size: "512×512", path: iconPath });
   } catch (error) {
-    console.error("✗ Failed to generate icon-512.png:", error);
+    console.error(pc.red("  ✗ Failed to generate icon-512.png:"), error);
     errorCount++;
   }
 
-  console.log(`\nDone! ${successCount} successful, ${errorCount} failed`);
+  // Print results
+  for (const icon of icons) {
+    const stats = fs.statSync(icon.path);
+    const sizeKb = (stats.size / 1024).toFixed(1);
+    log.success(
+      `${pc.dim(icon.name)} ${pc.gray(`(${icon.size}, ${sizeKb} kB)`)}`,
+    );
+  }
+
+  const duration = ((performance.now() - startTime) / 1000).toFixed(2);
+
+  if (errorCount > 0) {
+    outro(
+      pc.yellow(
+        `${icons.length} icons generated with ${errorCount} errors in ${duration}s`,
+      ),
+    );
+  } else {
+    outro(pc.green(`${icons.length} icons in ${duration}s`));
+  }
 }
 
 generateIcons().catch((error) => {

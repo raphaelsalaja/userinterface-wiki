@@ -168,6 +168,9 @@ importers:
       '@biomejs/biome':
         specifier: 2.3.10
         version: 2.3.10
+      '@clack/prompts':
+        specifier: ^0.8.2
+        version: 0.8.2
       '@types/hast':
         specifier: ^3.0.4
         version: 3.0.4
@@ -343,6 +346,12 @@ packages:
     engines: {node: '>=14.21.3'}
     cpu: [x64]
     os: [win32]
+
+  '@clack/core@0.3.5':
+    resolution: {integrity: sha512-5cfhQNH+1VQ2xLQlmzXMqUoiaH0lRBq9/CLW9lTyMbuKLC3+xEK01tHVvyut++mLOn5urSHmkm6I0Lg9MaJSTQ==}
+
+  '@clack/prompts@0.8.2':
+    resolution: {integrity: sha512-6b9Ab2UiZwJYA9iMyboYyW9yJvAO9V753ZhS+DHKEjZRKAxPPOb7MXXu84lsPFG+vZt6FRFniZ8rXi+zCIw4yQ==}
 
   '@codemirror/autocomplete@6.20.0':
     resolution: {integrity: sha512-bOwvTOIJcG5FVo5gUUupiwYh8MioPLQ4UcqbcRf7UQ98X90tCa9E1kZ3Z7tqwpZxYyOvh1YTYbmZE9RTfTp5hg==}
@@ -3249,6 +3258,9 @@ packages:
     resolution: {integrity: sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw==}
     engines: {node: '>=14'}
 
+  sisteransi@1.0.5:
+    resolution: {integrity: sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==}
+
   snd-lib@1.2.4:
     resolution: {integrity: sha512-Q8DnFVFGGb+buivj5aE4UIyJ3BI4j0qyARwxbkWsJPCEt1jMbBDD3nCTttZl1R0HcWFh5adDR3SHy/dSciwLvw==}
 
@@ -3761,6 +3773,17 @@ snapshots:
 
   '@biomejs/cli-win32-x64@2.3.10':
     optional: true
+
+  '@clack/core@0.3.5':
+    dependencies:
+      picocolors: 1.1.1
+      sisteransi: 1.0.5
+
+  '@clack/prompts@0.8.2':
+    dependencies:
+      '@clack/core': 0.3.5
+      picocolors: 1.1.1
+      sisteransi: 1.0.5
 
   '@codemirror/autocomplete@6.20.0':
     dependencies:
@@ -7058,6 +7081,8 @@ snapshots:
       '@types/hast': 3.0.4
 
   signal-exit@4.1.0: {}
+
+  sisteransi@1.0.5: {}
 
   snd-lib@1.2.4:
     dependencies:
