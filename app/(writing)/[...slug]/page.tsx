@@ -8,6 +8,7 @@ import {
 import { NarrationPlayer, NarrationProvider } from "@/components/narration";
 import { PageTransition } from "@/components/page-transition";
 import { toSerializablePageData } from "@/lib/page-data";
+import { SITE_MANIFEST } from "@/lib/site";
 import { formatPageData, getPageImage, source } from "@/lib/source";
 import { getMDXComponents } from "@/mdx-components";
 import styles from "./styles.module.css";
@@ -25,13 +26,17 @@ export async function generateMetadata(props: {
   if (!page) notFound();
 
   const ogImageUrl = getPageImage(page).url;
+  const pageUrl = `${SITE_MANIFEST.url}/${params.slug.join("/")}`;
 
   return {
     title: page.data.title,
     description: page.data.description,
     openGraph: {
+      type: "article",
       title: page.data.title,
       description: page.data.description,
+      url: pageUrl,
+      siteName: SITE_MANIFEST.name,
       images: [
         {
           url: ogImageUrl,
