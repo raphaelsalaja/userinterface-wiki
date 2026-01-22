@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { log } from "@clack/prompts";
 import pc from "picocolors";
-import { Generator, type GeneratedFile } from "../../lib/generator-base";
+import { type GeneratedFile, Generator } from "../../lib/generator-base";
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
 
@@ -167,21 +167,25 @@ export class PlaygroundsGenerator extends Generator {
 
       // Watch playgrounds folder
       if (fs.existsSync(playgroundsDir)) {
-        fs.watch(playgroundsDir, { recursive: false }, (_eventType, filename) => {
-          if (
-            filename &&
-            (filename.endsWith(".tsx") || filename.endsWith(".css"))
-          ) {
-            const relativePath = generatePlayground(demoPath);
-            const stats = fs.statSync(relativePath);
-            const displayName = relativePath
-              .replace(/^content\//, "")
-              .replace(/\/playgrounds\/index\.ts$/, "");
-            log.success(
-              `${pc.dim(displayName)} ${pc.gray(`(${(stats.size / 1024).toFixed(1)} kB)`)}`,
-            );
-          }
-        });
+        fs.watch(
+          playgroundsDir,
+          { recursive: false },
+          (_eventType, filename) => {
+            if (
+              filename &&
+              (filename.endsWith(".tsx") || filename.endsWith(".css"))
+            ) {
+              const relativePath = generatePlayground(demoPath);
+              const stats = fs.statSync(relativePath);
+              const displayName = relativePath
+                .replace(/^content\//, "")
+                .replace(/\/playgrounds\/index\.ts$/, "");
+              log.success(
+                `${pc.dim(displayName)} ${pc.gray(`(${(stats.size / 1024).toFixed(1)} kB)`)}`,
+              );
+            }
+          },
+        );
       }
     }
 

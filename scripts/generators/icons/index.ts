@@ -3,7 +3,7 @@ import path from "node:path";
 import type { ReactNode } from "react";
 import satori from "satori";
 import sharp from "sharp";
-import { Generator, type GeneratedFile } from "../../lib/generator-base";
+import { type GeneratedFile, Generator } from "../../lib/generator-base";
 
 const PUBLIC_DIR = path.join(process.cwd(), "public");
 const OPEN_GRAPH_DIR = path.join(PUBLIC_DIR, "open-graph");
@@ -66,7 +66,7 @@ export class IconsGenerator extends Generator {
 
     for (const icon of ICONS) {
       const svg = await satori(
-        ({
+        {
           type: "div",
           props: {
             style: {
@@ -84,7 +84,7 @@ export class IconsGenerator extends Generator {
             },
             children: "U",
           },
-        }) as ReactNode,
+        } as ReactNode,
         {
           width: icon.size,
           height: icon.size,

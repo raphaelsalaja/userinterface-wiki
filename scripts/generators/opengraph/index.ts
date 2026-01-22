@@ -3,7 +3,7 @@ import path from "node:path";
 import type { ReactNode } from "react";
 import satori from "satori";
 import sharp from "sharp";
-import { Generator, type GeneratedFile } from "../../lib/generator-base";
+import { type GeneratedFile, Generator } from "../../lib/generator-base";
 
 const PUBLIC_DIR = path.join(process.cwd(), "public");
 const OPEN_GRAPH_DIR = path.join(PUBLIC_DIR, "open-graph");
@@ -94,7 +94,7 @@ export class OpenGraphGenerator extends Generator {
       }
 
       const svg = await satori(
-        ({
+        {
           type: "div",
           props: {
             style: {
@@ -157,7 +157,7 @@ export class OpenGraphGenerator extends Generator {
               },
             },
           },
-        }) as ReactNode,
+        } as ReactNode,
         {
           width: 1200,
           height: 630,
@@ -186,7 +186,7 @@ export class OpenGraphGenerator extends Generator {
     const defaultOutputPath = path.join(OPEN_GRAPH_DIR, "default.png");
 
     const svg = await satori(
-      ({
+      {
         type: "div",
         props: {
           style: {
@@ -213,7 +213,7 @@ export class OpenGraphGenerator extends Generator {
             },
           },
         },
-      }) as ReactNode,
+      } as ReactNode,
       {
         width: 1200,
         height: 630,

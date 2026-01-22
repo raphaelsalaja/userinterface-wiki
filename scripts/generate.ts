@@ -13,10 +13,15 @@ type GeneratorName = keyof typeof generators;
 async function main() {
   const args = process.argv.slice(2);
   const isWatch = args.includes("--watch");
-  const generatorNames = args.filter((arg) => !arg.startsWith("--")) as GeneratorName[];
+  const generatorNames = args.filter(
+    (arg) => !arg.startsWith("--"),
+  ) as GeneratorName[];
 
   // Default to all generators if none specified
-  const toRun = generatorNames.length > 0 ? generatorNames : (Object.keys(generators) as GeneratorName[]);
+  const toRun =
+    generatorNames.length > 0
+      ? generatorNames
+      : (Object.keys(generators) as GeneratorName[]);
 
   // Validate generator names
   for (const name of toRun) {
