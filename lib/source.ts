@@ -15,7 +15,7 @@ export function getPageImage(page: InferPageType<typeof source>) {
   const segments = [...page.slugs, "image.png"];
   return {
     segments,
-    url: `/og/${page.slugs.join("/")}/image.png`,
+    url: `/open-graph/${page.slugs.join("/")}/image.png`,
   };
 }
 

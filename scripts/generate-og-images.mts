@@ -4,7 +4,7 @@ import satori from "satori";
 import sharp from "sharp";
 
 const PUBLIC_DIR = path.join(process.cwd(), "public");
-const OG_DIR = path.join(PUBLIC_DIR, "og");
+const OPEN_GRAPH_DIR = path.join(PUBLIC_DIR, "open-graph");
 const FONT_PATH = path.join(PUBLIC_DIR, "fonts/inter/semi-bold.ttf");
 const CONTENT_DIR = path.join(process.cwd(), "content");
 
@@ -64,14 +64,14 @@ function findMDXFiles(dir: string): Page[] {
 
 /**
  * Generates Open Graph images for all pages in the content source.
- * Saves them as static PNG files in public/og/
+ * Saves them as static PNG files in public/open-graph/
  */
 async function generateOGImages() {
   console.log("Generating Open Graph images...\n");
 
-  // Ensure OG directory exists
-  if (!fs.existsSync(OG_DIR)) {
-    fs.mkdirSync(OG_DIR, { recursive: true });
+  // Ensure open-graph directory exists
+  if (!fs.existsSync(OPEN_GRAPH_DIR)) {
+    fs.mkdirSync(OPEN_GRAPH_DIR, { recursive: true });
   }
 
   // Load font
@@ -89,7 +89,7 @@ async function generateOGImages() {
     try {
       const title = page.title;
       const slugPath = page.slug.join("/");
-      const outputDir = path.join(OG_DIR, slugPath);
+      const outputDir = path.join(OPEN_GRAPH_DIR, slugPath);
       const outputPath = path.join(outputDir, "image.png");
 
       // Create nested directories if needed
@@ -193,7 +193,7 @@ async function generateOGImages() {
 
   // Generate default OG image
   try {
-    const defaultOutputPath = path.join(OG_DIR, "default.png");
+    const defaultOutputPath = path.join(OPEN_GRAPH_DIR, "default.png");
 
     const svg = await satori(
       {
