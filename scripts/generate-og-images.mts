@@ -183,7 +183,10 @@ async function generateOGImages() {
       console.log(`✓ Generated: ${path.relative(process.cwd(), outputPath)}`);
       successCount++;
     } catch (error) {
-      console.error(`✗ Failed to generate OG image for ${page.slug.join("/")}:`, error);
+      console.error(
+        `✗ Failed to generate OG image for ${page.slug.join("/")}:`,
+        error,
+      );
       errorCount++;
     }
   }
@@ -236,7 +239,9 @@ async function generateOGImages() {
     );
 
     await sharp(Buffer.from(svg)).png().toFile(defaultOutputPath);
-    console.log(`✓ Generated: ${path.relative(process.cwd(), defaultOutputPath)}`);
+    console.log(
+      `✓ Generated: ${path.relative(process.cwd(), defaultOutputPath)}`,
+    );
     successCount++;
   } catch (error) {
     console.error("✗ Failed to generate default OG image:", error);

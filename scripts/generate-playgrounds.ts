@@ -42,7 +42,11 @@ function findDemoFolders(dir: string): string[] {
               const indexPath = path.join(demoPath, "index.tsx");
               const stylesPath = path.join(demoPath, "styles.module.css");
 
-              if (fs.existsSync(playgroundsPath) && fs.existsSync(indexPath) && fs.existsSync(stylesPath)) {
+              if (
+                fs.existsSync(playgroundsPath) &&
+                fs.existsSync(indexPath) &&
+                fs.existsSync(stylesPath)
+              ) {
                 demos.push(demoPath);
               }
             }
@@ -97,22 +101,22 @@ function escapeTemplateString(str: string): string {
  */
 function transformToPlaygroundCode(code: string): string {
   let transformed = code;
-  
+
   // Remove "use client" directive
   transformed = transformed.replace(/^["']use client["'];?\s*\n/m, "");
-  
+
   // Convert named export function to default export App
   // Matches: export function ComponentName() { or export function ComponentName({...}) {
   const namedExportRegex = /export function \w+(\([^)]*\))\s*\{/;
   const match = transformed.match(namedExportRegex);
-  
+
   if (match) {
     transformed = transformed.replace(
       namedExportRegex,
-      `export default function App${match[1]} {`
+      `export default function App${match[1]} {`,
     );
   }
-  
+
   return transformed;
 }
 
@@ -199,7 +203,7 @@ function watchPlaygrounds() {
   // Watch both the playgrounds dir and parent demo dir for changes
   for (const demoPath of demos) {
     const playgroundsDir = path.join(demoPath, "playgrounds");
-    
+
     // Watch the demo folder for index.tsx and styles.module.css changes
     fs.watch(demoPath, { recursive: false }, (_eventType, filename) => {
       if (filename === "index.tsx" || filename === "styles.module.css") {
@@ -207,11 +211,14 @@ function watchPlaygrounds() {
         generatePlayground(demoPath);
       }
     });
-    
+
     // Also watch playgrounds folder in case files are added there
     if (fs.existsSync(playgroundsDir)) {
       fs.watch(playgroundsDir, { recursive: false }, (_eventType, filename) => {
-        if (filename && (filename.endsWith(".tsx") || filename.endsWith(".css"))) {
+        if (
+          filename &&
+          (filename.endsWith(".tsx") || filename.endsWith(".css"))
+        ) {
           console.log(`\nPlaygrounds file changed: ${filename}`);
           generatePlayground(demoPath);
         }
@@ -219,7 +226,9 @@ function watchPlaygrounds() {
     }
   }
 
-  console.log(`\nWatching ${watchedDirs.length} playground directories for changes...`);
+  console.log(
+    `\nWatching ${watchedDirs.length} playground directories for changes...`,
+  );
 }
 
 function main() {
