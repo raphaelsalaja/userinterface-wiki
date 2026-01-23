@@ -10,7 +10,6 @@
     "lint": "biome check --fix --unsafe . --reporter=summary",
     "postinstall": "fumadocs-mdx",
     "generate": "tsx scripts/generate.ts",
-    "generate:text-to-speech": "tsx scripts/generate-text-to-speech.ts",
     "prepare": "husky"
   },
   "dependencies": {
