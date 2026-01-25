@@ -1,0 +1,30 @@
+.button,
+.placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  color: var(--gray-8);
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.button:hover {
+  color: var(--gray-12);
+  background: var(--gray-a3);
+}
+
+.button:active {
+  transform: scale(0.95);
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--gray-8);
+  outline-offset: 2px;
+}

@@ -1,0 +1,107 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: var(--shadow-2);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  padding-right: 12px;
+  border-bottom: 1px solid var(--gray-a4);
+}
+
+.title {
+  font-size: 14px;
+  font-weight: var(--font-weight-normal);
+  color: var(--gray-10);
+  letter-spacing: var(--font-letter-spacing-14px);
+}
+
+.actions {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.actionButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  color: var(--gray-10);
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  transition:
+    background 150ms ease,
+    color 150ms ease;
+}
+
+.actionButton:hover {
+  color: var(--gray-12);
+  background: var(--gray-3);
+}
+
+.actionButton[data-active="true"] {
+  color: var(--gray-12);
+}
+
+.layout {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.editor {
+  overflow: hidden;
+  border-top: 1px solid var(--gray-a4);
+}
+
+.preview {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Thin scrollbar with solid track */
+.root * {
+  scrollbar-width: none;
+}
+
+.root *::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.root *::-webkit-scrollbar-track {
+  background: var(--gray-3);
+}
+
+.root *::-webkit-scrollbar-thumb {
+  background: var(--gray-6);
+  border-radius: 4px;
+}
+
+.root *::-webkit-scrollbar-thumb:hover {
+  background: var(--gray-7);
+}
+
+.root {
+  --sp-colors-accent: var(--gray-8);
+}
+
+.root :has(button:focus) {
+  outline: none;
+}
+
+.root :has(button:focus-visible) {
+  outline: 2px solid var(--gray-8);
+  outline-offset: 2px;
+  border-radius: 4px;
+}

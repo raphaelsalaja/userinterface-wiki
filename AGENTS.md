@@ -377,6 +377,42 @@ Wrap demos in `<Figure>` with optional `<Caption>`:
 </Figure>
 ```
 
+### Playground Demos
+
+Playground demos use Sandpack and must be self-contained (no `@/components` imports).
+
+**Button Labels for Boolean Toggles:**
+
+For buttons that toggle boolean state, use "Toggle" as the label instead of swapping between two words.
+
+**Incorrect:**
+
+```tsx
+<Button onClick={() => setIsVisible(!isVisible)}>
+  {isVisible ? "Hide" : "Show"}
+</Button>
+```
+
+**Correct:**
+
+```tsx
+<Button onClick={() => setIsVisible(!isVisible)}>Toggle</Button>
+```
+
+**Inline Components:**
+
+Playground demos must define `Button` and `Controls` inline since they can't import from the main codebase:
+
+```tsx
+function Button({ children, onClick }: { children: React.ReactNode; onClick: () => void }) {
+  return <button className={styles.button} onClick={onClick}>{children}</button>;
+}
+
+function Controls({ children }: { children: React.ReactNode }) {
+  return <div className={styles.controls}>{children}</div>;
+}
+```
+
 ### Skills Files
 
 Create SKILL.md files in `/skills/` for reusable guidelines:

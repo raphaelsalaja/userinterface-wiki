@@ -1,7 +1,6 @@
 @import url(./styles.mdx.css);
 @import url(./styles.theme.css);
 @import url(./styles.reset.css);
-@import url(./styles.shadows.css);
 @import url(./styles.typography.css);
 
 :root {
@@ -32,14 +31,15 @@
 html {
   overflow-x: hidden;
   scrollbar-width: none;
-
-  ::selection {
-    color: var(--gray-1);
-    background: var(--gray-12);
-  }
+  background-color: var(--gray-2);
 
   &::-webkit-scrollbar {
     display: none;
+  }
+
+  &::selection {
+    color: var(--gray-1);
+    background: var(--gray-12);
   }
 }
 
@@ -52,7 +52,6 @@ body {
   color: var(--gray-12);
   letter-spacing: var(--font-letter-spacing-14px);
   text-wrap: pretty;
-  background: var(--gray-2);
 }
 
 #__next-main {
