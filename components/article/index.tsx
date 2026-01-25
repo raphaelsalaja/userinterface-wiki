@@ -192,7 +192,7 @@ function Header({ className }: HeaderProps) {
                     }}
                   />
                   <Menu.RichItem
-                    title="Copy page"
+                    title="Copy Page"
                     description="Copy page as Markdown for LLMs"
                     onClick={() => {
                       const content = document.querySelector(

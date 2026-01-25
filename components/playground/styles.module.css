@@ -63,13 +63,19 @@
   overflow: hidden;
   border-top: 1px solid var(--gray-a4);
 }
+.editor :where(.cm-scroller) {
+  scrollbar-width: none;
+}
+
+.editor :where(.cm-scroller)::-webkit-scrollbar {
+  display: none;
+}
 
 .preview {
   display: flex;
   flex-direction: column;
 }
 
-/* Override Sandpack focus states */
 .root {
   --sp-colors-accent: var(--gray-8);
 }
