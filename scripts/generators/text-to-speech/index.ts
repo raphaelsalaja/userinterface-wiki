@@ -133,9 +133,9 @@ async function generateTTSForDocument(
     let totalChars = 0;
 
     for (const paragraph of uncachedParagraphs) {
-      const audioBuffer = await synthesizeSpeech(paragraph.text);
+      const { audioBuffer, alignment } = await synthesizeSpeech(paragraph.text);
       const cacheKey = buildParagraphCacheKey(doc.slugSegments, paragraph.hash);
-      await writeParagraphToCache(cacheKey, audioBuffer);
+      await writeParagraphToCache(cacheKey, audioBuffer, alignment);
       totalChars += paragraph.characters;
     }
 
