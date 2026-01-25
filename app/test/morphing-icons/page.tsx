@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import {
-  MorphingIcon,
-  iconNames,
   type IconName,
+  iconNames,
+  MorphingIcon,
   type SpringPreset,
 } from "@/components/morphing-icon";
 import styles from "./styles.module.css";
@@ -63,7 +63,12 @@ export default function MorphingIconsTestPage() {
 
       <section className={styles.preview}>
         <div className={styles["preview-icon"]}>
-          <MorphingIcon icon={currentIcon} size={64} strokeWidth={2} spring={spring} />
+          <MorphingIcon
+            icon={currentIcon}
+            size={64}
+            strokeWidth={2}
+            spring={spring}
+          />
         </div>
         <span className={styles["preview-label"]}>{currentIcon}</span>
         <div className={styles["spring-controls"]}>

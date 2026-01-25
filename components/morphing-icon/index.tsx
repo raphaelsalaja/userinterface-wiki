@@ -112,11 +112,7 @@ const icons: Record<IconName, IconDefinition> = {
     group: "plus-cross",
   },
   minus: {
-    lines: [
-      { x1: 2, y1: 7, x2: 12, y2: 7 },
-      collapsed,
-      collapsed,
-    ],
+    lines: [{ x1: 2, y1: 7, x2: 12, y2: 7 }, collapsed, collapsed],
   },
   equals: {
     lines: [
@@ -273,7 +269,11 @@ interface AnimatedLineProps {
   reducedMotion: boolean;
 }
 
-function AnimatedLine({ line, springConfig, reducedMotion }: AnimatedLineProps) {
+function AnimatedLine({
+  line,
+  springConfig,
+  reducedMotion,
+}: AnimatedLineProps) {
   const transition = reducedMotion ? instantTransition : springConfig;
 
   return (
@@ -328,7 +328,7 @@ function MorphingIcon({
   // Track rotation for smooth transitions within rotation groups
   const rotation = useSpring(
     definition.rotation ?? 0,
-    reducedMotion ? instantTransition : springConfig
+    reducedMotion ? instantTransition : springConfig,
   );
 
   // Determine if we should rotate or morph

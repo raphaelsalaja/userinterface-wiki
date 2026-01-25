@@ -1,5 +1,5 @@
 .icon {
   display: block;
-  overflow: visible;
   flex-shrink: 0;
+  overflow: visible;
 }
