@@ -63,17 +63,33 @@
   overflow: hidden;
   border-top: 1px solid var(--gray-a4);
 }
-.editor :where(.cm-scroller) {
-  scrollbar-width: none;
-}
-
-.editor :where(.cm-scroller)::-webkit-scrollbar {
-  display: none;
-}
 
 .preview {
   display: flex;
   flex-direction: column;
+}
+
+/* Thin scrollbar with solid track */
+.root * {
+  scrollbar-width: none;
+}
+
+.root *::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.root *::-webkit-scrollbar-track {
+  background: var(--gray-3);
+}
+
+.root *::-webkit-scrollbar-thumb {
+  background: var(--gray-6);
+  border-radius: 4px;
+}
+
+.root *::-webkit-scrollbar-thumb:hover {
+  background: var(--gray-7);
 }
 
 .root {

@@ -6,8 +6,26 @@ export const PresenceStatePlayground = {
 import { useState } from "react";
 import styles from "./styles.module.css";
 
+const definitions = {
+  present: {
+    word: "present",
+    pronunciation: "/ˈprez.ənt/",
+    type: "adjective",
+    definition:
+      "In a particular place; being in view or at hand. Existing or occurring now, at this time.",
+  },
+  exiting: {
+    word: "exit",
+    pronunciation: "/ˈek.sɪt/",
+    type: "verb",
+    definition:
+      "To go out of or leave a place; to depart from a scene, stage, or situation.",
+  },
+};
+
 function Card() {
   const isPresent = useIsPresent();
+  const entry = definitions[isPresent ? "present" : "exiting"];
 
   return (
     <motion.div
@@ -15,15 +33,12 @@ function Card() {
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.9 }}
-      transition={{
-        type: "spring",
-        stiffness: 500,
-        damping: 30,
-      }}
+      transition={{ duration: 0.4, ease: [0.19, 1, 0.22, 1] }}
     >
-      <span className={styles.status} data-present={isPresent}>
-        {isPresent ? "Present" : "Exiting..."}
-      </span>
+      <span className={styles.word}>{entry.word}</span>
+      <span className={styles.pronunciation}>{entry.pronunciation}</span>
+      <span className={styles.type}>{entry.type}</span>
+      <p className={styles.definition}>{entry.definition}</p>
     </motion.div>
   );
 }
@@ -52,8 +67,6 @@ export default function App() {
     "/styles.module.css": `.root {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
   width: 100%;
   height: 100%;
 }
@@ -63,31 +76,45 @@ export default function App() {
   flex: 1;
   align-items: center;
   justify-content: center;
-  width: 100%;
 }
 
 .card {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 160px;
-  height: 100px;
+  flex-direction: column;
+  gap: 2px;
+  width: 320px;
+  padding: 24px;
   background: var(--gray-1);
   border-radius: 12px;
   box-shadow: var(--shadow-2);
 }
 
-.status {
-  font-size: 0.875rem;
-  font-weight: 500;
-}
-
-.status[data-present="true"] {
+.word {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.5;
   color: var(--gray-12);
 }
 
-.status[data-present="false"] {
-  color: var(--gray-9);
+.pronunciation {
+  font-size: 12px;
+  color: var(--gray-10);
+}
+
+.type {
+  margin-top: 12px;
+  font-size: 14px;
+  font-style: italic;
+  color: var(--gray-10);
+}
+
+.definition {
+  margin-top: 8px;
+  font-family: var(--font-family-serif, Georgia, serif);
+  font-size: 16px;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--gray-12);
 }
 
 .controls {
@@ -97,7 +124,7 @@ export default function App() {
   justify-content: center;
   width: 100%;
   padding: 16px 0;
-  background: var(--gray-1);
+  background: var(--gray-2);
   border-top: 1px solid var(--gray-4);
 }
 

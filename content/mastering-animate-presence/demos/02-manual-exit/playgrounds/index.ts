@@ -53,7 +53,7 @@ export default function App() {
           className={styles.button}
           onClick={() => setIsVisible(!isVisible)}
         >
-          {isVisible ? "Dismiss" : "Show"}
+          Toggle
         </button>
       </div>
     </div>
@@ -106,18 +106,20 @@ export default function App() {
 }
 
 .button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: 32px;
   padding: 6px 12px;
   font-size: 14px;
-  font-weight: var(--font-weight-medium);
-  color: var(--gray-12);
+  font-weight: 500;
+  color: var(--gray-10);
   cursor: pointer;
   background: var(--gray-1);
   border: none;
   border-radius: 6px;
   box-shadow: var(--shadow-2);
 }
-
 .button:hover {
   background: var(--gray-3);
 }

@@ -51,7 +51,7 @@ export function ManualExitDemo() {
           className={styles.button}
           onClick={() => setIsVisible(!isVisible)}
         >
-          {isVisible ? "Dismiss" : "Show"}
+          Toggle
         </button>
       </div>
     </div>
