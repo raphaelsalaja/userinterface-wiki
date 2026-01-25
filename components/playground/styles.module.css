@@ -68,3 +68,18 @@
   display: flex;
   flex-direction: column;
 }
+
+/* Override Sandpack focus states */
+.root {
+  --sp-colors-accent: var(--gray-8);
+}
+
+.root :has(button:focus) {
+  outline: none;
+}
+
+.root :has(button:focus-visible) {
+  outline: 2px solid var(--gray-8);
+  outline-offset: 2px;
+  border-radius: 4px;
+}

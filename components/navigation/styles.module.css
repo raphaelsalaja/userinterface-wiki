@@ -10,8 +10,8 @@
   height: var(--page-navigation-height);
   background: linear-gradient(
     to bottom,
-    color-mix(in srgb, var(--gray-1) 100%, transparent) 25%,
-    color-mix(in srgb, var(--gray-1) 0%, transparent) 100%
+    color-mix(in srgb, var(--gray-2) 100%, transparent) 25%,
+    color-mix(in srgb, var(--gray-2) 0%, transparent) 100%
   );
   transform: translateX(-50%);
 

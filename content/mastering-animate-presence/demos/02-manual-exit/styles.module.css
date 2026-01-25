@@ -1,65 +1,65 @@
 .root {
   display: flex;
-  flex: 1;
   flex-direction: column;
-  gap: 1.5rem;
-  align-items: center;
   width: 100%;
   height: 100%;
 }
 
 .container {
-  position: relative;
   display: flex;
   flex: 1;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 100%;
 }
 
-.box {
-  width: 100px;
-  height: 100px;
-  background: var(--gray-12);
-  border-radius: 16px;
+.notification {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 256px;
+  padding: 16px;
+  background: var(--gray-1);
+  border-radius: 8px;
+  box-shadow: var(--shadow-2);
+}
+
+.title {
+  font-size: 14px;
+  font-weight: var(--font-weight-medium);
+  color: var(--gray-12);
+}
+
+.message {
+  font-size: 13px;
+  color: var(--gray-11);
 }
 
 .controls {
   display: flex;
-  gap: 8px;
   align-items: center;
   justify-content: center;
-  width: 100%;
   padding: 16px 0;
   background: var(--gray-2);
   border-top: 1px solid var(--gray-4);
 }
 
 .button {
-  position: relative;
-  display: flex;
-  gap: 4px;
-  align-items: center;
-  justify-content: center;
   height: 32px;
   padding: 6px 12px;
   font-size: 14px;
   font-weight: var(--font-weight-medium);
-  color: var(--gray-10);
-  letter-spacing: var(--font-letter-spacing-14px);
-  white-space: nowrap;
+  color: var(--gray-12);
+  cursor: pointer;
   background: var(--gray-1);
+  border: none;
   border-radius: 6px;
   box-shadow: var(--shadow-2);
-  transition: all 0.2s ease;
+}
+
+.button:hover {
+  background: var(--gray-3);
 }
 
 .button:active {
   transform: scale(0.98);
-}
-
-.button:hover {
-  color: var(--gray-12);
-  background: var(--gray-3);
 }

@@ -2,6 +2,7 @@
 
 import { NavigationMenu } from "@base-ui/react/navigation-menu";
 import Link from "next/link";
+import { ThemeSwitcher } from "@/components/theme-switcher";
 import { sounds } from "@/lib/sounds";
 import styles from "./styles.module.css";
 
@@ -46,6 +47,9 @@ export default function Navigation() {
               </NavigationMenu.Link>
             </NavigationMenu.Item>
           ))}
+          <li>
+            <ThemeSwitcher />
+          </li>
         </NavigationMenu.List>
       </div>
     </NavigationMenu.Root>

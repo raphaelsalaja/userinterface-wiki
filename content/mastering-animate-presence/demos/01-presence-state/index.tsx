@@ -2,8 +2,6 @@
 
 import { AnimatePresence, motion, useIsPresent } from "motion/react";
 import { useState } from "react";
-import { Button } from "@/components/button";
-import { Controls } from "@/components/controls";
 import styles from "./styles.module.css";
 
 function Card() {
@@ -36,11 +34,15 @@ export function PresenceState() {
       <div className={styles.container}>
         <AnimatePresence>{isVisible && <Card key="card" />}</AnimatePresence>
       </div>
-      <Controls>
-        <Button onClick={() => setIsVisible(!isVisible)}>
-          {isVisible ? "Remove" : "Add"}
-        </Button>
-      </Controls>
+      <div className={styles.controls}>
+        <button
+          type="button"
+          className={styles.button}
+          onClick={() => setIsVisible(!isVisible)}
+        >
+          Toggle
+        </button>
+      </div>
     </div>
   );
 }

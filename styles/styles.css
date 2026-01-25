@@ -1,5 +1,3 @@
-@import "@radix-ui/themes/styles.css";
-
 @import url(./styles.mdx.css);
 @import url(./styles.theme.css);
 @import url(./styles.reset.css);
@@ -33,9 +31,15 @@
 html {
   overflow-x: hidden;
   scrollbar-width: none;
+  background-color: var(--gray-2);
 
   &::-webkit-scrollbar {
     display: none;
+  }
+
+  &::selection {
+    color: var(--gray-1);
+    background: var(--gray-12);
   }
 }
 
@@ -48,7 +52,6 @@ body {
   color: var(--gray-12);
   letter-spacing: var(--font-letter-spacing-14px);
   text-wrap: pretty;
-  background: var(--gray-2);
 }
 
 #__next-main {
@@ -86,22 +89,4 @@ body {
   &:focus {
     top: 16px;
   }
-}
-
-.radix-themes {
-  --default-font-family: var(--font-family-display);
-
-  ::selection {
-    color: var(--gray-1);
-    background: var(--gray-12);
-  }
-}
-
-.radix-themes:where([data-has-background="true"]) {
-  background-color: var(--gray-1);
-}
-
-.radix-themes ::selection {
-  color: var(--gray-1);
-  background: var(--gray-12);
 }

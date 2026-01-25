@@ -1,7 +1,6 @@
 "use client";
 
 import { Toast } from "@base-ui/react/toast";
-import { Theme } from "@radix-ui/themes";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -27,9 +26,7 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
         <SpeedInsights />
         <Analytics />
         <ThemeProvider attribute="class">
-          <Theme>
-            <Toast.Provider>{children}</Toast.Provider>
-          </Theme>
+          <Toast.Provider>{children}</Toast.Provider>
         </ThemeProvider>
       </NuqsAdapter>
     </QueryClientProvider>

@@ -4,8 +4,6 @@ export const PresenceStatePlayground = {
   files: {
     "/App.tsx": `import { AnimatePresence, motion, useIsPresent } from "motion/react";
 import { useState } from "react";
-import { Button } from "@/components/button";
-import { Controls } from "@/components/controls";
 import styles from "./styles.module.css";
 
 function Card() {
@@ -38,11 +36,15 @@ export default function App() {
       <div className={styles.container}>
         <AnimatePresence>{isVisible && <Card key="card" />}</AnimatePresence>
       </div>
-      <Controls>
-        <Button onClick={() => setIsVisible(!isVisible)}>
-          {isVisible ? "Remove" : "Add"}
-        </Button>
-      </Controls>
+      <div className={styles.controls}>
+        <button
+          type="button"
+          className={styles.button}
+          onClick={() => setIsVisible(!isVisible)}
+        >
+          Toggle
+        </button>
+      </div>
     </div>
   );
 }
@@ -50,18 +52,18 @@ export default function App() {
     "/styles.module.css": `.root {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
+  height: 100%;
 }
 
 .container {
-  position: relative;
   display: flex;
+  flex: 1;
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 200px;
 }
 
 .card {
@@ -70,9 +72,9 @@ export default function App() {
   justify-content: center;
   width: 160px;
   height: 100px;
-  background: var(--gray-3);
-  border: 1px solid var(--gray-6);
+  background: var(--gray-1);
   border-radius: 12px;
+  box-shadow: var(--shadow-2);
 }
 
 .status {
@@ -86,6 +88,42 @@ export default function App() {
 
 .status[data-present="false"] {
   color: var(--gray-9);
+}
+
+.controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 16px 0;
+  background: var(--gray-1);
+  border-top: 1px solid var(--gray-4);
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--gray-10);
+  cursor: pointer;
+  background: var(--gray-1);
+  border: none;
+  border-radius: 6px;
+  box-shadow: var(--shadow-2);
+}
+
+.button:hover {
+  color: var(--gray-12);
+  background: var(--gray-3);
+}
+
+.button:active {
+  transform: scale(0.98);
 }
 `,
   },

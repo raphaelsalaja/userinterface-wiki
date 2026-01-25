@@ -22,26 +22,26 @@ interface Wallet {
 }
 
 const COLORS = [
-  "--family-redPink",
-  "--family-pink",
-  "--family-purple",
-  "--family-darkPurple",
-  "--family-bluePurple",
-  "--family-darkBlue",
-  "--family-seaBlue",
-  "--family-blue",
-  "--family-emerald",
-  "--family-grassGreen",
-  "--family-green",
-  "--family-lime",
-  "--family-offYellow",
-  "--family-orange",
-  "--family-burntOrange",
-  "--family-red",
-  "--family-yellowBrown",
-  "--family-copper",
-  "--family-navy",
-  "--family-black",
+  "#ee4562",
+  "#ec4899",
+  "#d946ef",
+  "#9553f9",
+  "#5647f0",
+  "#0680fa",
+  "#4dafff",
+  "#0ea5e9",
+  "#14bbc7",
+  "#10b981",
+  "#34c759",
+  "#84cc16",
+  "#eab308",
+  "#f59e0b",
+  "#f97316",
+  "#ef4444",
+  "#cdb35e",
+  "#c48c54",
+  "#023364",
+  "#1a1a1a",
 ] as const;
 
 const LAYOUT_ID = {
@@ -95,7 +95,7 @@ export default function App() {
   const [isEditingName, setIsEditingName] = useState(false);
   const [isPickingColor, setIsPickingColor] = useState(false);
 
-  const bg = \`var(\${wallet.color})\`;
+  const bg = wallet.color;
 
   const label = !isOpen
     ? ""
@@ -289,10 +289,10 @@ export default function App() {
                                   key={c}
                                   role="button"
                                   tabIndex={0}
-                                  aria-label={\`Select \${c.replace("--family-", "")} color\`}
+                                  aria-label={\`Select color \${c}\`}
                                   aria-pressed={wallet.color === c}
                                   className={styles.color}
-                                  style={{ background: \`var(\${c})\` }}
+                                  style={{ background: c }}
                                   onClick={() =>
                                     setWallet((w) => ({ ...w, color: c }))
                                   }

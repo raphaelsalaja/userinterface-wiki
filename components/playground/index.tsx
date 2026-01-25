@@ -8,6 +8,7 @@ import {
 } from "@codesandbox/sandpack-react";
 import { useTheme } from "next-themes";
 import React from "react";
+
 import { Button } from "@/components/button";
 import { ArrowRotateClockwiseIcon } from "@/icons";
 import { getPrerequisites } from "./index.prerequisites";
@@ -79,6 +80,7 @@ export function Playground({ files }: PlaygroundProps) {
           colors: {
             surface1: "var(--gray-1)",
             surface2: "var(--gray-4)",
+            surface3: "var(--gray-3)",
             accent: "var(--gray-12)",
           },
           syntax: {
@@ -96,7 +98,7 @@ export function Playground({ files }: PlaygroundProps) {
         customSetup={{
           dependencies: {
             motion: "latest",
-            "@radix-ui/themes": "latest",
+            "@radix-ui/colors": "latest",
             "next-themes": "latest",
           },
         }}
