@@ -1,0 +1,233 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  max-width: 720px;
+  padding: 64px 24px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: var(--font-weight-bold);
+  color: var(--gray-12);
+}
+
+.description {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--gray-11);
+}
+
+/* Preview */
+.preview {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  background: var(--gray-a2);
+  border-radius: 12px;
+}
+
+.preview-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 96px;
+  height: 96px;
+  color: var(--gray-12);
+}
+
+.preview-label {
+  font-size: 13px;
+  font-weight: var(--font-weight-medium);
+  color: var(--gray-10);
+  letter-spacing: var(--font-letter-spacing-13px);
+}
+
+.spring-controls {
+  display: flex;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.spring-button {
+  height: 28px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: var(--font-weight-medium);
+  color: var(--gray-10);
+  text-transform: capitalize;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid var(--gray-a4);
+  border-radius: 6px;
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.spring-button:hover {
+  color: var(--gray-12);
+  background: var(--gray-a3);
+  border-color: var(--gray-a6);
+}
+
+.spring-button[data-active="true"] {
+  color: var(--gray-12);
+  background: var(--gray-a4);
+  border-color: var(--gray-a8);
+}
+
+/* Icon Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 8px;
+}
+
+.icon-button {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 8px;
+  color: var(--gray-11);
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid var(--gray-a4);
+  border-radius: 8px;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.icon-button:hover {
+  color: var(--gray-12);
+  background: var(--gray-a3);
+  border-color: var(--gray-a6);
+}
+
+.icon-button[data-active="true"] {
+  color: var(--gray-12);
+  background: var(--gray-a4);
+  border-color: var(--gray-a8);
+}
+
+.icon-button:active {
+  transform: scale(0.98);
+}
+
+.icon-label {
+  font-size: 11px;
+  color: var(--gray-10);
+}
+
+/* Sequencer */
+.sequencer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+  background: var(--gray-a2);
+  border-radius: 12px;
+}
+
+.sequencer-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sequencer-title {
+  font-size: 14px;
+  font-weight: var(--font-weight-medium);
+  color: var(--gray-12);
+}
+
+.sequencer-hint {
+  font-size: 12px;
+  color: var(--gray-10);
+}
+
+.sequence-track {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-height: 40px;
+  padding: 12px;
+  background: var(--gray-a3);
+  border-radius: 8px;
+}
+
+.sequence-empty {
+  font-size: 12px;
+  color: var(--gray-9);
+}
+
+.sequence-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  color: var(--gray-11);
+  background: var(--gray-1);
+  border-radius: 6px;
+  box-shadow: var(--shadow-1);
+}
+
+.sequencer-controls {
+  display: flex;
+  gap: 8px;
+}
+
+/* Buttons */
+.button {
+  height: 32px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: var(--font-weight-medium);
+  color: var(--gray-1);
+  cursor: pointer;
+  background: var(--gray-12);
+  border: none;
+  border-radius: 6px;
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
+}
+
+.button:hover {
+  opacity: 0.9;
+}
+
+.button:active {
+  transform: scale(0.98);
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.button[data-variant="secondary"] {
+  color: var(--gray-11);
+  background: var(--gray-a4);
+}
+
+.button[data-variant="secondary"]:hover {
+  color: var(--gray-12);
+  background: var(--gray-a5);
+}
