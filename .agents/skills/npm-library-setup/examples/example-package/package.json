@@ -1,0 +1,39 @@
+{
+  "name": "example-esm-package",
+  "version": "1.0.0",
+  "description": "Example npm package configured for ES Modules",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "bunchee",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "prepublishOnly": "npm run build && npm run test:run"
+  },
+  "keywords": [
+    "esm",
+    "module",
+    "javascript",
+    "example"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "bunchee": "latest"
+  }
+}

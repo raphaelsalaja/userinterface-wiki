@@ -1,0 +1,50 @@
+{
+  "name": "hiraku",
+  "version": "0.1.0",
+  "description": "OpenGraph metadata analyzer for Next.js",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "hiraku": "./dist/cli.js"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup && pnpm build:ui",
+    "build:ui": "cd ui && pnpm build",
+    "dev": "tsup --watch",
+    "dev:ui": "cd ui && pnpm dev",
+    "lint": "biome check --fix --unsafe .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "boxen": "^8.0.1",
+    "cheerio": "^1.0.0",
+    "mri": "^1.2.0",
+    "open": "^10.0.0",
+    "picocolors": "^1.1.1"
+  },
+  "devDependencies": {
+    "@types/mri": "^1.1.0",
+    "@types/node": "^22.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0"
+  },
+  "peerDependencies": {
+    "next": ">=14.0.0"
+  },
+  "peerDependenciesMeta": {
+    "next": {
+      "optional": true
+    }
+  }
+}

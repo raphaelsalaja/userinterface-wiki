@@ -1,0 +1,43 @@
+{
+  "name": "example-ts-package",
+  "version": "1.0.0",
+  "description": "Example TypeScript npm package configured for ES Modules",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "bunchee",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "prepublishOnly": "npm run build && npm run test:run"
+  },
+  "keywords": [
+    "typescript",
+    "esm",
+    "module",
+    "example"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "bunchee": "latest",
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0",
+    "vitest": "^2.0.0"
+  }
+}

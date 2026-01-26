@@ -2,8 +2,14 @@
   "$schema": "https://turborepo.dev/schema.v2.json",
   "tasks": {
     "build": {
-      "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**"],
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**",
+        "dist/**"
+      ],
       "inputs": [
         "$TURBO_DEFAULT$",
         ".env",
@@ -13,7 +19,9 @@
       ]
     },
     "lint": {
-      "dependsOn": ["^lint"],
+      "dependsOn": [
+        "^lint"
+      ],
       "outputs": []
     },
     "dev": {
@@ -25,7 +33,11 @@
       "persistent": true
     },
     "generate": {
-      "outputs": ["icons/**/*.tsx", "public/content/**/*.png", "content/**/playground.json"]
+      "outputs": [
+        "icons/**/*.tsx",
+        "public/content/**/*.png",
+        "content/**/playground.json"
+      ]
     }
   }
 }

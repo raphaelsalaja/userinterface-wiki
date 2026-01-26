@@ -1,0 +1,65 @@
+.card {
+  overflow: hidden;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.platform {
+  padding: 8px 12px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--border);
+}
+
+.image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 1.91 / 1;
+  font-size: 13px;
+  color: var(--text-secondary);
+  background: var(--bg);
+}
+
+.image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.body {
+  padding: 12px;
+}
+
+.url {
+  margin-bottom: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 11px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  margin-bottom: 4px;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.description {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
