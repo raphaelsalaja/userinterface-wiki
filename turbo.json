@@ -1,0 +1,31 @@
+{
+  "$schema": "https://turborepo.dev/schema.v2.json",
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "!.next/cache/**"],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        ".env",
+        ".env.local",
+        ".env.production",
+        ".env.production.local"
+      ]
+    },
+    "lint": {
+      "dependsOn": ["^lint"],
+      "outputs": []
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "start": {
+      "cache": false,
+      "persistent": true
+    },
+    "generate": {
+      "outputs": ["icons/**/*.tsx", "public/content/**/*.png", "content/**/playground.json"]
+    }
+  }
+}

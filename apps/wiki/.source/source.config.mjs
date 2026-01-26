@@ -2,9 +2,10 @@
 import {
   defineConfig,
   defineDocs,
-  frontmatterSchema
+  frontmatterSchema,
 } from "fumadocs-mdx/config";
 import { z } from "zod";
+
 var docs = defineDocs({
   dir: "content",
   docs: {
@@ -13,10 +14,10 @@ var docs = defineDocs({
       description: z.string(),
       author: z.string(),
       coauthors: z.array(z.string()).optional(),
-      icon: z.enum(["writing", "code", "motion"]).optional().default("writing")
-    })
+      icon: z.enum(["writing", "code", "motion"]).optional().default("writing"),
+    }),
   },
-  meta: {}
+  meta: {},
 });
 var source_config_default = defineConfig({
   mdxOptions: {
@@ -26,12 +27,9 @@ var source_config_default = defineConfig({
     rehypeCodeOptions: {
       themes: {
         light: "github-light",
-        dark: "github-dark"
-      }
-    }
-  }
+        dark: "github-dark",
+      },
+    },
+  },
 });
-export {
-  source_config_default as default,
-  docs
-};
+export { source_config_default as default, docs };
