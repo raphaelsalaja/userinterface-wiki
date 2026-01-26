@@ -1,56 +1,48 @@
 .container {
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  padding: 24px;
+  gap: 16px;
 }
 
 .sounds {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
+  gap: 4px;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 480px) {
   .sounds {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
 .soundButton {
-  padding: 16px 12px;
-  font-size: 14px;
-  font-weight: var(--font-weight-medium);
-  color: var(--gray-12);
+  padding: 12px 8px;
+  font-size: 12px;
+  color: var(--gray-10);
   text-align: center;
   cursor: pointer;
-  background: var(--gray-a2);
+  background: transparent;
   border: 1px solid var(--gray-a4);
-  border-radius: 8px;
+  border-radius: 6px;
   transition:
-    background-color 0.15s ease,
-    border-color 0.15s ease,
-    transform 0.1s ease;
+    color 0.15s ease,
+    border-color 0.15s ease;
 }
 
 .soundButton:hover {
-  background: var(--gray-a3);
-  border-color: var(--gray-a5);
-}
-
-.soundButton:active {
-  transform: scale(0.98);
+  color: var(--gray-11);
+  border-color: var(--gray-a6);
 }
 
 .soundButton[data-playing="true"] {
-  background: var(--gray-a4);
-  border-color: var(--gray-a6);
+  color: var(--gray-12);
+  border-color: var(--gray-a8);
 }
 
 .feels {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  gap: 4px;
 }
 
 .feelButton {
@@ -59,35 +51,36 @@
   flex-direction: column;
   gap: 2px;
   align-items: center;
-  min-width: 80px;
-  padding: 10px 12px;
+  padding: 8px 6px;
   text-align: center;
   cursor: pointer;
-  background: var(--gray-a2);
+  background: transparent;
   border: 1px solid var(--gray-a4);
-  border-radius: 6px;
+  border-radius: 4px;
   transition:
-    background-color 0.15s ease,
+    background 0.15s ease,
     border-color 0.15s ease;
 }
 
 .feelButton:hover {
-  background: var(--gray-a3);
-  border-color: var(--gray-a5);
+  border-color: var(--gray-a6);
 }
 
 .feelButton[data-active="true"] {
-  background: var(--gray-a4);
+  background: var(--gray-a3);
   border-color: var(--gray-a6);
 }
 
 .feelLabel {
-  font-size: 13px;
-  font-weight: var(--font-weight-medium);
+  font-size: 11px;
+  color: var(--gray-11);
+}
+
+.feelButton[data-active="true"] .feelLabel {
   color: var(--gray-12);
 }
 
 .feelDesc {
-  font-size: 11px;
-  color: var(--gray-10);
+  font-size: 10px;
+  color: var(--gray-9);
 }

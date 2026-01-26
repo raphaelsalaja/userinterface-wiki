@@ -18,9 +18,12 @@ const PRESETS: { name: string; params: EnvelopeParams }[] = [
 export function EnvelopeDemo() {
   const [attack, setAttack] = useState(0.01);
   const [decay, setDecay] = useState(0.15);
+  const [activePreset, setActivePreset] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
   const playSound = () => {
+    if (isPlaying) return;
+
     const ctx = new AudioContext();
     const t = ctx.currentTime;
 
@@ -49,93 +52,100 @@ export function EnvelopeDemo() {
     );
   };
 
-  const applyPreset = (params: EnvelopeParams) => {
+  const applyPreset = (name: string, params: EnvelopeParams) => {
     setAttack(params.attack);
     setDecay(params.decay);
+    setActivePreset(name);
   };
 
-  // Calculate path for envelope visualization
+  const handleSliderChange = (type: "attack" | "decay", value: number) => {
+    if (type === "attack") {
+      setAttack(value);
+    } else {
+      setDecay(value);
+    }
+    setActivePreset(null);
+  };
+
   const getEnvelopePath = () => {
+    const width = 240;
+    const height = 80;
     const totalTime = attack + decay;
-    const attackX = (attack / totalTime) * 200;
-    return `M 0 80 L ${attackX} 10 Q ${attackX + 20} 15, ${attackX + 40} 30 Q ${100 + attackX} 60, 200 80`;
+    const attackX = (attack / totalTime) * width;
+
+    return `M 0 ${height} L ${attackX} 8 Q ${attackX + 15} 12, ${attackX + 30} 24 Q ${width * 0.7} ${height * 0.6}, ${width} ${height}`;
   };
 
   return (
     <div className={styles.container}>
-      <div className={styles.visualization}>
-        <svg
-          className={styles.envelopeSvg}
-          viewBox="0 0 200 90"
-          data-playing={isPlaying}
-          aria-label="Envelope visualization showing attack and decay"
-          role="img"
-        >
-          <path d={getEnvelopePath()} fill="none" strokeWidth="2" />
-          <text x="0" y="88" className={styles.label}>
-            0
-          </text>
-          <text x="190" y="88" className={styles.label}>
-            {(attack + decay).toFixed(2)}s
-          </text>
-        </svg>
-      </div>
-
-      <div className={styles.controls}>
-        <label className={styles.slider}>
-          <span className={styles.sliderLabel}>
-            Attack
-            <span className={styles.value}>{(attack * 1000).toFixed(0)}ms</span>
-          </span>
-          <input
-            type="range"
-            min="0.001"
-            max="0.3"
-            step="0.001"
-            value={attack}
-            onChange={(e) => setAttack(Number.parseFloat(e.target.value))}
-            className={styles.range}
-          />
-        </label>
-
-        <label className={styles.slider}>
-          <span className={styles.sliderLabel}>
-            Decay
-            <span className={styles.value}>{(decay * 1000).toFixed(0)}ms</span>
-          </span>
-          <input
-            type="range"
-            min="0.02"
-            max="0.8"
-            step="0.01"
-            value={decay}
-            onChange={(e) => setDecay(Number.parseFloat(e.target.value))}
-            className={styles.range}
-          />
-        </label>
-      </div>
-
-      <div className={styles.presets}>
-        {PRESETS.map(({ name, params }) => (
-          <button
-            key={name}
-            type="button"
-            className={styles.presetButton}
-            onClick={() => applyPreset(params)}
-          >
-            {name}
-          </button>
-        ))}
-      </div>
-
       <button
         type="button"
-        className={styles.playButton}
+        className={styles.visualization}
         onClick={playSound}
         data-playing={isPlaying}
       >
-        {isPlaying ? "Playing..." : "Play Sound"}
+        <svg
+          className={styles.svg}
+          viewBox="0 0 240 80"
+          aria-label="Envelope visualization"
+          role="img"
+        >
+          <path d={getEnvelopePath()} className={styles.path} />
+        </svg>
+        <span className={styles.hint}>
+          {isPlaying ? "playing" : "click to play"}
+        </span>
       </button>
+
+      <div className={styles.controls}>
+        <div className={styles.sliders}>
+          <label className={styles.slider}>
+            <span className={styles.label}>Attack</span>
+            <input
+              type="range"
+              min="0.001"
+              max="0.3"
+              step="0.001"
+              value={attack}
+              onChange={(e) =>
+                handleSliderChange("attack", Number.parseFloat(e.target.value))
+              }
+              className={styles.range}
+            />
+            <span className={styles.value}>{(attack * 1000).toFixed(0)}ms</span>
+          </label>
+
+          <label className={styles.slider}>
+            <span className={styles.label}>Decay</span>
+            <input
+              type="range"
+              min="0.02"
+              max="0.8"
+              step="0.01"
+              value={decay}
+              onChange={(e) =>
+                handleSliderChange("decay", Number.parseFloat(e.target.value))
+              }
+              className={styles.range}
+            />
+            <span className={styles.value}>{(decay * 1000).toFixed(0)}ms</span>
+          </label>
+        </div>
+
+        <div className={styles.presets}>
+          {PRESETS.map(({ name, params }) => (
+            <button
+              key={name}
+              type="button"
+              className={styles.preset}
+              data-active={activePreset === name}
+              onClick={() => applyPreset(name, params)}
+            >
+              {name}
+            </button>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

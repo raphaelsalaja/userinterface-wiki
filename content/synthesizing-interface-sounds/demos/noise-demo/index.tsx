@@ -5,8 +5,8 @@ import styles from "./styles.module.css";
 
 type FilterType = "none" | "lowpass" | "highpass" | "bandpass";
 
-const FILTER_TYPES: { type: FilterType; label: string; freq: number }[] = [
-  { type: "none", label: "Raw Noise", freq: 0 },
+const FILTERS: { type: FilterType; label: string; freq: number }[] = [
+  { type: "none", label: "Raw", freq: 0 },
   { type: "lowpass", label: "Lowpass", freq: 1000 },
   { type: "highpass", label: "Highpass", freq: 2000 },
   { type: "bandpass", label: "Bandpass", freq: 3000 },
@@ -19,7 +19,6 @@ export function NoiseDemo() {
     const ctx = new AudioContext();
     const t = ctx.currentTime;
 
-    // Create noise buffer
     const duration = 0.3;
     const buffer = ctx.createBuffer(
       1,
@@ -47,7 +46,7 @@ export function NoiseDemo() {
       const filter = ctx.createBiquadFilter();
       filter.type = filterType;
       filter.frequency.value =
-        FILTER_TYPES.find((f) => f.type === filterType)?.freq || 2000;
+        FILTERS.find((f) => f.type === filterType)?.freq || 2000;
       filter.Q.value = filterType === "bandpass" ? 4 : 1;
 
       noise.connect(filter);
@@ -66,21 +65,18 @@ export function NoiseDemo() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.filters}>
-        {FILTER_TYPES.map(({ type, label, freq }) => (
-          <button
-            key={type}
-            type="button"
-            className={styles.filterButton}
-            data-active={activeFilter === type}
-            onClick={() => playNoise(type)}
-          >
-            <FilterVisual type={type} isActive={activeFilter === type} />
-            <span className={styles.label}>{label}</span>
-            {freq > 0 && <span className={styles.freq}>{freq} Hz</span>}
-          </button>
-        ))}
-      </div>
+      {FILTERS.map(({ type, label }) => (
+        <button
+          key={type}
+          type="button"
+          className={styles.filter}
+          data-active={activeFilter === type}
+          onClick={() => playNoise(type)}
+        >
+          <FilterVisual type={type} isActive={activeFilter === type} />
+          <span className={styles.label}>{label}</span>
+        </button>
+      ))}
     </div>
   );
 }
@@ -95,29 +91,25 @@ function FilterVisual({
   const getPath = () => {
     switch (type) {
       case "none":
-        // Random noise pattern
-        return "M 0 20 L 5 12 L 10 28 L 15 8 L 20 32 L 25 15 L 30 25 L 35 10 L 40 30 L 45 18 L 50 22 L 55 14 L 60 26 L 65 16 L 70 24 L 75 12 L 80 20";
+        return "M 0 24 L 6 14 L 12 32 L 18 10 L 24 36 L 30 18 L 36 28 L 42 12 L 48 34 L 54 20 L 60 26 L 66 16 L 72 30 L 78 19 L 84 27 L 90 15 L 96 24";
       case "lowpass":
-        // Curve dropping off at high frequencies
-        return "M 0 20 C 20 20, 40 20, 50 22 C 60 25, 70 32, 80 38";
+        return "M 0 24 C 24 24, 48 24, 60 26 C 72 30, 84 38, 96 44";
       case "highpass":
-        // Curve rising from low frequencies
-        return "M 0 38 C 10 32, 20 25, 30 22 C 40 20, 60 20, 80 20";
+        return "M 0 44 C 12 38, 24 30, 36 26 C 48 24, 72 24, 96 24";
       case "bandpass":
-        // Bell curve
-        return "M 0 35 C 15 30, 25 20, 40 18 C 55 20, 65 30, 80 35";
+        return "M 0 40 C 18 36, 30 24, 48 22 C 66 24, 78 36, 96 40";
     }
   };
 
   return (
     <svg
-      className={styles.filterSvg}
-      viewBox="0 0 80 40"
-      data-active={isActive}
-      aria-label={`${type} filter visualization`}
+      className={styles.svg}
+      viewBox="0 0 96 48"
+      aria-label={`${type} filter`}
       role="img"
+      data-active={isActive}
     >
-      <path d={getPath()} fill="none" strokeWidth="2" strokeLinecap="round" />
+      <path d={getPath()} className={styles.path} />
     </svg>
   );
 }

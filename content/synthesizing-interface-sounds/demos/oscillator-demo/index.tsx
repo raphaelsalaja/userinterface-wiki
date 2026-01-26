@@ -5,20 +5,12 @@ import styles from "./styles.module.css";
 
 type WaveType = "sine" | "triangle" | "square" | "sawtooth";
 
-const WAVE_TYPES: { type: WaveType; label: string; description: string }[] = [
-  { type: "sine", label: "Sine", description: "Pure tone, no harmonics" },
-  {
-    type: "triangle",
-    label: "Triangle",
-    description: "Soft, mellow harmonics",
-  },
-  { type: "square", label: "Square", description: "Hollow, digital sound" },
-  { type: "sawtooth", label: "Sawtooth", description: "Bright and buzzy" },
+const WAVES: { type: WaveType; label: string }[] = [
+  { type: "sine", label: "Sine" },
+  { type: "triangle", label: "Triangle" },
+  { type: "square", label: "Square" },
+  { type: "sawtooth", label: "Sawtooth" },
 ];
-
-function getAudioContext(): AudioContext {
-  return new AudioContext();
-}
 
 export function OscillatorDemo() {
   const [activeWave, setActiveWave] = useState<WaveType | null>(null);
@@ -27,13 +19,12 @@ export function OscillatorDemo() {
   const contextRef = useRef<AudioContext | null>(null);
 
   const playWave = (type: WaveType) => {
-    // Stop any existing sound
     if (oscillatorRef.current) {
       oscillatorRef.current.stop();
       oscillatorRef.current = null;
     }
 
-    const ctx = getAudioContext();
+    const ctx = new AudioContext();
     contextRef.current = ctx;
 
     const osc = ctx.createOscillator();
@@ -43,7 +34,7 @@ export function OscillatorDemo() {
     osc.frequency.value = 440;
 
     gain.gain.setValueAtTime(0, ctx.currentTime);
-    gain.gain.linearRampToValueAtTime(0.3, ctx.currentTime + 0.02);
+    gain.gain.linearRampToValueAtTime(0.25, ctx.currentTime + 0.02);
 
     osc.connect(gain);
     gain.connect(ctx.destination);
@@ -54,10 +45,9 @@ export function OscillatorDemo() {
     osc.start();
     setActiveWave(type);
 
-    // Auto-stop after 2 seconds
     setTimeout(() => {
       stopWave();
-    }, 2000);
+    }, 1500);
   };
 
   const stopWave = () => {
@@ -81,21 +71,18 @@ export function OscillatorDemo() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.waveforms}>
-        {WAVE_TYPES.map(({ type, label, description }) => (
-          <button
-            key={type}
-            type="button"
-            className={styles.waveButton}
-            data-active={activeWave === type}
-            onClick={() => (activeWave === type ? stopWave() : playWave(type))}
-          >
-            <WaveformSVG type={type} isActive={activeWave === type} />
-            <span className={styles.label}>{label}</span>
-            <span className={styles.description}>{description}</span>
-          </button>
-        ))}
-      </div>
+      {WAVES.map(({ type, label }) => (
+        <button
+          key={type}
+          type="button"
+          className={styles.wave}
+          data-active={activeWave === type}
+          onClick={() => (activeWave === type ? stopWave() : playWave(type))}
+        >
+          <WaveformSVG type={type} isActive={activeWave === type} />
+          <span className={styles.label}>{label}</span>
+        </button>
+      ))}
     </div>
   );
 }
@@ -110,31 +97,25 @@ function WaveformSVG({
   const getPath = () => {
     switch (type) {
       case "sine":
-        return "M 0 20 Q 10 0, 20 20 Q 30 40, 40 20 Q 50 0, 60 20 Q 70 40, 80 20";
+        return "M 0 24 Q 12 4, 24 24 Q 36 44, 48 24 Q 60 4, 72 24 Q 84 44, 96 24";
       case "triangle":
-        return "M 0 20 L 10 0 L 30 40 L 50 0 L 70 40 L 80 20";
+        return "M 0 24 L 12 4 L 36 44 L 60 4 L 84 44 L 96 24";
       case "square":
-        return "M 0 20 L 0 0 L 20 0 L 20 40 L 40 40 L 40 0 L 60 0 L 60 40 L 80 40 L 80 20";
+        return "M 0 24 L 0 4 L 24 4 L 24 44 L 48 44 L 48 4 L 72 4 L 72 44 L 96 44 L 96 24";
       case "sawtooth":
-        return "M 0 40 L 20 0 L 20 40 L 40 0 L 40 40 L 60 0 L 60 40 L 80 0";
+        return "M 0 44 L 24 4 L 24 44 L 48 4 L 48 44 L 72 4 L 72 44 L 96 4";
     }
   };
 
   return (
     <svg
-      className={styles.waveformSvg}
-      viewBox="0 0 80 40"
+      className={styles.svg}
+      viewBox="0 0 96 48"
       data-active={isActive}
       aria-label={`${type} waveform`}
       role="img"
     >
-      <path
-        d={getPath()}
-        fill="none"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d={getPath()} className={styles.path} />
     </svg>
   );
 }

@@ -12,6 +12,8 @@ export function FilterDemo() {
   const [isPlaying, setIsPlaying] = useState(false);
 
   const playFilteredNoise = () => {
+    if (isPlaying) return;
+
     const ctx = new AudioContext();
     const t = ctx.currentTime;
 
@@ -53,140 +55,92 @@ export function FilterDemo() {
     }, duration * 1000);
   };
 
-  return (
-    <div className={styles.container}>
-      <div className={styles.filterTypes}>
-        {(["lowpass", "highpass", "bandpass"] as const).map((type) => (
-          <button
-            key={type}
-            type="button"
-            className={styles.typeButton}
-            data-active={filterType === type}
-            onClick={() => setFilterType(type)}
-          >
-            {type.charAt(0).toUpperCase() + type.slice(1)}
-          </button>
-        ))}
-      </div>
-
-      <div className={styles.controls}>
-        <label className={styles.slider}>
-          <span className={styles.sliderLabel}>
-            Frequency
-            <span className={styles.value}>{frequency} Hz</span>
-          </span>
-          <input
-            type="range"
-            min="200"
-            max="8000"
-            step="100"
-            value={frequency}
-            onChange={(e) => setFrequency(Number.parseInt(e.target.value, 10))}
-            className={styles.range}
-          />
-        </label>
-
-        <label className={styles.slider}>
-          <span className={styles.sliderLabel}>
-            Resonance (Q)
-            <span className={styles.value}>{q.toFixed(1)}</span>
-          </span>
-          <input
-            type="range"
-            min="0.5"
-            max="15"
-            step="0.5"
-            value={q}
-            onChange={(e) => setQ(Number.parseFloat(e.target.value))}
-            className={styles.range}
-          />
-        </label>
-      </div>
-
-      <div className={styles.visualization}>
-        <FrequencyResponse type={filterType} frequency={frequency} q={q} />
-      </div>
-
-      <button
-        type="button"
-        className={styles.playButton}
-        onClick={playFilteredNoise}
-        data-playing={isPlaying}
-      >
-        {isPlaying ? "Playing..." : "Play Filtered Noise"}
-      </button>
-    </div>
-  );
-}
-
-function FrequencyResponse({
-  type,
-  frequency,
-  q,
-}: {
-  type: FilterType;
-  frequency: number;
-  q: number;
-}) {
-  // Simplified frequency response visualization
-  const getPath = () => {
+  const getResponsePath = () => {
     const centerX =
       ((Math.log10(frequency) - Math.log10(200)) /
         (Math.log10(8000) - Math.log10(200))) *
-      200;
-    const width = 40 / q;
+      240;
+    const width = 50 / q;
 
-    switch (type) {
+    switch (filterType) {
       case "lowpass":
-        return `M 0 20 L ${centerX - width} 20 Q ${centerX} 20, ${centerX + width} 40 L 200 70`;
+        return `M 0 20 L ${Math.max(0, centerX - width)} 20 Q ${centerX} 24, ${centerX + width} 50 L 240 70`;
       case "highpass":
-        return `M 0 70 L ${centerX - width} 40 Q ${centerX} 20, ${centerX + width} 20 L 200 20`;
+        return `M 0 70 L ${centerX - width} 50 Q ${centerX} 24, ${Math.min(240, centerX + width)} 20 L 240 20`;
       case "bandpass":
-        return `M 0 70 Q ${centerX - width * 2} 50, ${centerX} 20 Q ${centerX + width * 2} 50, 200 70`;
+        return `M 0 65 Q ${centerX - width * 2} 50, ${centerX} 20 Q ${centerX + width * 2} 50, 240 65`;
     }
   };
 
-  const centerX =
-    ((Math.log10(frequency) - Math.log10(200)) /
-      (Math.log10(8000) - Math.log10(200))) *
-    200;
-
   return (
-    <svg
-      className={styles.responseSvg}
-      viewBox="0 0 200 80"
-      aria-label={`${type} filter frequency response`}
-      role="img"
-    >
-      {/* Frequency axis */}
-      <line
-        x1="0"
-        y1="75"
-        x2="200"
-        y2="75"
-        stroke="var(--gray-a4)"
-        strokeWidth="1"
-      />
-      <text x="5" y="78" className={styles.axisLabel}>
-        200Hz
-      </text>
-      <text x="170" y="78" className={styles.axisLabel}>
-        8kHz
-      </text>
+    <div className={styles.container}>
+      <button
+        type="button"
+        className={styles.visualization}
+        onClick={playFilteredNoise}
+        data-playing={isPlaying}
+      >
+        <svg
+          className={styles.svg}
+          viewBox="0 0 240 80"
+          aria-label={`${filterType} filter response`}
+          role="img"
+        >
+          <path d={getResponsePath()} className={styles.path} />
+          <line x1="0" y1="75" x2="240" y2="75" className={styles.axis} />
+        </svg>
+        <span className={styles.hint}>
+          {isPlaying ? "playing" : "click to play"}
+        </span>
+      </button>
 
-      {/* Cutoff marker */}
-      <line
-        x1={centerX}
-        y1="0"
-        x2={centerX}
-        y2="70"
-        stroke="var(--gray-a4)"
-        strokeWidth="1"
-        strokeDasharray="4,4"
-      />
+      <div className={styles.controls}>
+        <div className={styles.types}>
+          {(["lowpass", "highpass", "bandpass"] as const).map((type) => (
+            <button
+              key={type}
+              type="button"
+              className={styles.type}
+              data-active={filterType === type}
+              onClick={() => setFilterType(type)}
+            >
+              {type}
+            </button>
+          ))}
+        </div>
 
-      {/* Response curve */}
-      <path d={getPath()} fill="none" stroke="var(--gray-11)" strokeWidth="2" />
-    </svg>
+        <div className={styles.sliders}>
+          <label className={styles.slider}>
+            <span className={styles.label}>Freq</span>
+            <input
+              type="range"
+              min="200"
+              max="8000"
+              step="100"
+              value={frequency}
+              onChange={(e) =>
+                setFrequency(Number.parseInt(e.target.value, 10))
+              }
+              className={styles.range}
+            />
+            <span className={styles.value}>{frequency}Hz</span>
+          </label>
+
+          <label className={styles.slider}>
+            <span className={styles.label}>Q</span>
+            <input
+              type="range"
+              min="0.5"
+              max="15"
+              step="0.5"
+              value={q}
+              onChange={(e) => setQ(Number.parseFloat(e.target.value))}
+              className={styles.range}
+            />
+            <span className={styles.value}>{q.toFixed(1)}</span>
+          </label>
+        </div>
+      </div>
+    </div>
   );
 }
