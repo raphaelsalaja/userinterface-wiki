@@ -14,7 +14,17 @@ type SoundType =
   | "warning"
   | "startup";
 
-type FeelType = "mechanical" | "soft" | "aero" | "arcade" | "organic";
+type FeelType =
+  | "mechanical"
+  | "soft"
+  | "aero"
+  | "arcade"
+  | "organic"
+  | "glass"
+  | "industrial"
+  | "minimal"
+  | "retro"
+  | "crisp";
 
 const SOUND_LABELS: Record<SoundType, string> = {
   click: "Click",
@@ -34,6 +44,11 @@ const FEEL_LABELS: Record<FeelType, { label: string; description: string }> = {
   aero: { label: "Aero", description: "Clean, modern" },
   arcade: { label: "Arcade", description: "Retro, playful" },
   organic: { label: "Organic", description: "Warm, natural" },
+  glass: { label: "Glass", description: "Crystalline, bright" },
+  industrial: { label: "Industrial", description: "Harsh, metallic" },
+  minimal: { label: "Minimal", description: "Subtle, quiet" },
+  retro: { label: "Retro", description: "Lo-fi, muffled" },
+  crisp: { label: "Crisp", description: "Clean, precise" },
 };
 
 // Feel modifiers for each sound type
@@ -87,6 +102,46 @@ const FEEL_PARAMS: Record<
     decayMult: 1.3,
     gainMult: 0.85,
     pitchMult: 0.9,
+  },
+  glass: {
+    filterFreq: 6000,
+    q: 10,
+    oscType: "sine",
+    decayMult: 1.2,
+    gainMult: 0.75,
+    pitchMult: 1.8,
+  },
+  industrial: {
+    filterFreq: 3000,
+    q: 12,
+    oscType: "sawtooth",
+    decayMult: 0.6,
+    gainMult: 1.2,
+    pitchMult: 0.7,
+  },
+  minimal: {
+    filterFreq: 2000,
+    q: 1,
+    oscType: "sine",
+    decayMult: 0.8,
+    gainMult: 0.4,
+    pitchMult: 1.0,
+  },
+  retro: {
+    filterFreq: 1500,
+    q: 2,
+    oscType: "square",
+    decayMult: 1.1,
+    gainMult: 0.8,
+    pitchMult: 0.85,
+  },
+  crisp: {
+    filterFreq: 5500,
+    q: 4,
+    oscType: "triangle",
+    decayMult: 0.6,
+    gainMult: 1.0,
+    pitchMult: 1.1,
   },
 };
 
@@ -161,10 +216,7 @@ export function SoundLabDemo() {
             data-active={feel === f}
             onClick={() => setFeel(f)}
           >
-            <span className={styles.feelLabel}>{FEEL_LABELS[f].label}</span>
-            <span className={styles.feelDesc}>
-              {FEEL_LABELS[f].description}
-            </span>
+            {FEEL_LABELS[f].label}
           </button>
         ))}
       </div>

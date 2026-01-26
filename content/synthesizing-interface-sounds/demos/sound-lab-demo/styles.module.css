@@ -42,45 +42,31 @@
 
 .feels {
   display: flex;
+  flex-wrap: wrap;
   gap: 4px;
 }
 
 .feelButton {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  gap: 2px;
-  align-items: center;
-  padding: 8px 6px;
-  text-align: center;
+  padding: 6px 10px;
+  font-size: 11px;
+  color: var(--gray-10);
   cursor: pointer;
   background: transparent;
   border: 1px solid var(--gray-a4);
   border-radius: 4px;
   transition:
+    color 0.15s ease,
     background 0.15s ease,
     border-color 0.15s ease;
 }
 
 .feelButton:hover {
+  color: var(--gray-11);
   border-color: var(--gray-a6);
 }
 
 .feelButton[data-active="true"] {
+  color: var(--gray-12);
   background: var(--gray-a3);
   border-color: var(--gray-a6);
-}
-
-.feelLabel {
-  font-size: 11px;
-  color: var(--gray-11);
-}
-
-.feelButton[data-active="true"] .feelLabel {
-  color: var(--gray-12);
-}
-
-.feelDesc {
-  font-size: 10px;
-  color: var(--gray-9);
 }
