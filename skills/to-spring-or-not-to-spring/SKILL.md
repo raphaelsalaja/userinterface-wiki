@@ -1,16 +1,16 @@
 ---
 name: to-spring-or-not-to-spring
-description: Decision framework for choosing between easing curves and springs in interface motion. Use when implementing animations, reviewing motion feel, or debugging why an animation feels wrong. Triggers on tasks involving CSS transitions, animation libraries, or motion design decisions.
+description: Decision framework for choosing between easing curves and springs. Use when implementing animations, debugging motion that feels wrong, or choosing timing functions. Triggers on tasks involving CSS transitions, cubic-bezier, spring physics, gesture animations, or motion library configuration.
 license: MIT
 metadata:
   author: raphael-salaja
-  version: "1.0.0"
+  version: "1.1.0"
   source: /content/to-spring-or-not-to-spring/index.mdx
 ---
 
 # To Spring or Not To Spring
 
-A decision framework for choosing between easing curves and springs. They are not interchangeable tools—they come from different ways of thinking about motion and play different roles in an interface.
+Easing curves and springs are not interchangeable—they come from different ways of thinking about motion and play different roles in an interface.
 
 ## When to Apply
 
@@ -98,8 +98,7 @@ If animation feels slow, shorten duration before adjusting the curve.
 
 ## The Key Difference
 
-Easing curves have a predefined start and end in time.
-Springs do not.
+Easing curves have a predefined start and end in time. Springs do not.
 
 This explains why springs survive interruption while easing curves fall apart when the user changes their mind.
 
@@ -115,17 +114,16 @@ Choosing no motion is still a design decision—prioritizing immediacy over expr
 
 ## Key Guidelines
 
-- Start with the interaction, not the animation technique
-- Match the role: User-reactive vs system-announcement
-- Test interruption: Does it hold up when the user changes their mind?
-- Default to less: Animate with intent, not by default
+- **Start with the interaction**, not the animation technique
+- **Match the role**: User-reactive vs system-announcement
+- **Test interruption**: Does it hold up when the user changes their mind?
+- **Default to less**: Animate with intent, not by default
 
 ## References
 
 - [Apple WWDC23: Animate with Springs](https://developer.apple.com/videos/play/wwdc2023/10158/)
 - [The Beauty of Bézier Curves - Freya Holmér](https://www.youtube.com/watch?v=aVwxzDHniEw)
 - [Motion library](https://motion.dev/)
-- [MDN cubic-bezier() documentation](https://developer.mozilla.org/en-US/docs/Web/CSS/easing-function)
-- [Material Design Motion Guidelines](https://m3.material.io/styles/motion/overview)
-- [Apple Human Interface Guidelines: Motion](https://developer.apple.com/design/human-interface-guidelines/motion)
-- [NNGroup: Animation for Attention and Comprehension](https://www.nngroup.com/articles/animation-usability/)
+- [MDN cubic-bezier()](https://developer.mozilla.org/en-US/docs/Web/CSS/easing-function)
+- [Material Design Motion](https://m3.material.io/styles/motion/overview)
+- [Apple HIG: Motion](https://developer.apple.com/design/human-interface-guidelines/motion)

@@ -1,16 +1,16 @@
 ---
 name: 12-principles-of-animation
-description: Guidelines for applying Disney's 12 principles of animation to web interfaces. Use when implementing motion, reviewing animation quality, or designing micro-interactions. Triggers on tasks involving CSS animations, transitions, motion libraries, or UX feedback.
+description: Apply Disney's 12 animation principles to web interfaces. Use when implementing motion, reviewing animation quality, designing micro-interactions, or making UI feel alive. Triggers on tasks involving CSS animations, transitions, motion libraries, easing curves, springs, or UX feedback.
 license: MIT
 metadata:
   author: raphael-salaja
-  version: "1.0.0"
+  version: "1.1.0"
   source: /content/12-principles-of-animation/index.mdx
 ---
 
 # 12 Principles of Animation
 
-A guide to the foundational principles of animation and how they apply to web interfaces. These principles, originally codified by Disney animators in the 1930s, help create motion that feels intentional, human, and delightful.
+Disney animators codified these principles in the 1930s to make drawings feel real. We use them to make pixels feel human. The problems are surprisingly similar.
 
 ## When to Apply
 
@@ -18,10 +18,10 @@ Reference these guidelines when:
 - Adding motion to UI components
 - Reviewing animation quality and feel
 - Designing micro-interactions and feedback
-- Choosing between animation techniques
 - Making interfaces feel more alive and responsive
+- Deciding what should (and shouldn't) animate
 
-## Principles
+## Principles Overview
 
 | # | Principle | Web Application |
 |---|-----------|-----------------|
@@ -41,47 +41,49 @@ Reference these guidelines when:
 ## Quick Reference
 
 ### 1. Squash and Stretch
-Objects deform based on their mass and energy. Digital objects don't have physics, so we fake it. Use subtle deformation to convey weight—but don't overdo it or professional software becomes a cartoon.
+Digital objects don't have physics, so we fake it. Subtle deformation conveys weight—but don't overdo it or professional software becomes a cartoon.
 
 ### 2. Anticipation
-Give cues before major actions occur. A pull-to-refresh that reveals a hint, a button that compresses before sending. Reserve for moments that matter—if everything has a wind-up, the app feels sluggish.
+Give cues before major actions. Pull-to-refresh hints, buttons that compress before sending. Reserve for moments that matter—too many wind-ups make apps feel sluggish.
 
 ### 3. Staging
-When a complex panel opens, guide the eye through sequential animation. Manipulate attention like directing a film—dim backgrounds, focus on important elements.
+Guide the eye through sequential animation. Dim backgrounds, focus on important elements. Direct attention like a film.
 
 ### 4. Straight Ahead & Pose to Pose
-Focus on key poses: start state, end state, maybe a midpoint. Not every moment needs motion. Context menus animate on exit, not entry—entrance animation compounds into irritation.
+Focus on key poses: start state, end state, maybe a midpoint. Context menus animate on exit only—entrance animation compounds into irritation.
 
 ### 5. Follow Through & Overlapping
-Nothing moves as a single rigid unit. Use springs for that organic overshoot-and-settle that easing curves can't replicate. But too much stagger makes interfaces feel slow.
+Nothing moves as a single rigid unit. Springs add organic overshoot-and-settle that easing curves can't replicate. But too much stagger makes interfaces feel slow.
 
 ### 6. Slow In & Slow Out
-Use easing curves. `ease-out` for entrances (arrive fast, settle gently), `ease-in` for exits (build momentum before departure), `ease-in-out` for deliberate movements.
+- `ease-out`: Entrances (arrive fast, settle gently)
+- `ease-in`: Exits (build momentum before departure)
+- `ease-in-out`: Deliberate movements
 
 ### 7. Arcs
-Curved paths feel inevitable, like water finding its level. Most useful for hero moments and playful interactions. For utilitarian interfaces, straight lines are fine.
+Curved paths feel inevitable, like water finding its level. Best for hero moments and playful interactions. Utilitarian interfaces work fine with straight lines.
 
 ### 8. Secondary Action
-Little flourishes that support the main action—a checkmark that sparkles after success. Sound can also be secondary action. Think games: impact uses sound and visual effects together.
+Flourishes supporting the main action—sparkles after success, sound effects on impact. Think games: they combine sound and visual effects for impact.
 
 ### 9. Timing
-Keep interactions under 300ms. Anything longer needs a good reason. Be consistent—if buttons animate at 200ms, all buttons should animate at 200ms.
+Keep interactions under 300ms. Be consistent—if one button animates at 200ms, all buttons should. Define timing scales early, reuse everywhere.
 
 ### 10. Exaggeration
-Push past physical accuracy to make a point land harder. Use sparingly for onboarding, empty states, confirmations, or errors where you want users to feel something strongly.
+Push past physical accuracy to make points land harder. Use sparingly for onboarding, empty states, confirmations, or errors.
 
 ### 11. Solid Drawing
-Shadows suggest depth. Layering implies hierarchy. CSS `perspective` defines how far an object sits from the viewer, giving 3D transforms actual depth.
+Shadows suggest depth. Layering implies hierarchy. CSS `perspective` gives 3D transforms actual depth.
 
 ### 12. Appeal
 The difference between software you tolerate and software you love. Not one technique—the sum of all techniques applied with care and taste.
 
 ## Key Guidelines
 
-- Balance: Too much animation turns professional software into a cartoon
-- Consistency: Define timing scales early, reuse everywhere
-- Purpose: Great animation is invisible—users think "this feels good," not "nice ease-out curve"
-- Restraint: Not everything needs to be animated
+- **Balance**: Too much animation turns professional software into a cartoon
+- **Consistency**: Define timing scales early, reuse everywhere
+- **Purpose**: Great animation is invisible—users think "this feels good"
+- **Restraint**: Not everything needs to be animated
 
 ## References
 

@@ -1,16 +1,16 @@
 ---
 name: sounds-on-the-web
-description: Guidelines for implementing audio feedback in web interfaces. Use when adding sound to interactions, reviewing audio UX, or designing notification systems. Triggers on tasks involving user feedback, confirmations, error states, or multi-sensory design.
+description: Audio feedback guidelines for web interfaces. Use when adding sound to interactions, designing confirmations or error states, building notifications, or reviewing audio UX. Triggers on tasks involving user feedback sounds, Web Audio API, or multi-sensory design patterns.
 license: MIT
 metadata:
   author: raphael-salaja
-  version: "1.0.0"
+  version: "1.1.0"
   source: /content/sounds-on-the-web/index.mdx
 ---
 
 # Sounds on The Web
 
-Sound is the forgotten sense in web design. Used well, it adds feedback, personality, and presence that visuals alone cannot achieve. The auditory cortex processes sound in ~25ms—nearly 10x faster than visual processing.
+Sound is the forgotten sense in web design. The auditory cortex processes sound in ~25ms—nearly 10x faster than visual processing. A button that clicks feels faster than one that doesn't, even when visual feedback is identical.
 
 ## When to Apply
 
@@ -33,21 +33,20 @@ Reference these guidelines when:
 ## When to Use Sound
 
 ### Good Candidates
-- Confirmations: Major actions like payments, uploads, form submissions
-- Errors and warnings: States that can't be overlooked
-- State changes: Transitions that reinforce what happened
-- Notifications: Interruptions that don't require visual attention
+- **Confirmations**: Payments, uploads, form submissions
+- **Errors and warnings**: States that can't be overlooked
+- **State changes**: Transitions that reinforce what happened
+- **Notifications**: Interruptions that don't require visual attention
 
 ### Poor Candidates
 - High-frequency interactions (typing, keyboard navigation)
 - Decorative moments with no informational value
 - Any action where sound would feel punishing
 
-## Implementation Guidelines
+## Respecting User Preferences
 
-### Respect User Preferences
 ```css
-/* Use as proxy for audio preference */
+/* Use prefers-reduced-motion as proxy */
 @media (prefers-reduced-motion: reduce) {
   /* Disable or reduce audio */
 }
@@ -57,13 +56,14 @@ Reference these guidelines when:
 - Allow volume adjustment independent of system volume
 - Default to subtle, not loud
 
-### Technical Approach
+## Technical Implementation
+
 - Basic `Audio` objects cover most cases
 - Web Audio API for complex needs
 - Keep audio files small and preloaded
 - Match sound weight to action weight
 
-## Counter-Arguments Addressed
+## Counter-Arguments
 
 | Objection | Response |
 |-----------|----------|
@@ -82,13 +82,13 @@ Reference these guidelines when:
 
 ## Key Guidelines
 
-- Match weight: Sound should reflect the importance of the action
-- Be informative: Sound should communicate, not punish
-- Stay optional: Always provide a way to disable
-- Learn from games: They've perfected audio feedback for decades
+- **Match weight**: Sound should reflect the importance of the action
+- **Be informative**: Sound should communicate, not punish
+- **Stay optional**: Always provide a way to disable
+- **Learn from games**: They've perfected audio feedback for decades
 
 ## References
 
 - [Video Game Sound Design - Stryxo](https://www.youtube.com/watch?v=89_WG5PiTpo)
-- Web Audio API documentation
-- `prefers-reduced-motion` media query
+- [Web Audio API Documentation](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API)
+- [prefers-reduced-motion](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion)
