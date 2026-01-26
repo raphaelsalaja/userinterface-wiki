@@ -1,8 +1,8 @@
 import type { Metadata, Viewport } from "next";
 
 export const SITE_MANIFEST = {
-  name: "ui.wiki",
-  short_name: "ui.wiki",
+  name: "userinterface.wiki",
+  short_name: "userinterface.wiki",
   description:
     "A living manual for better interfaces. Learn design principles, motion, typography, and more.",
   start_url: "/",
