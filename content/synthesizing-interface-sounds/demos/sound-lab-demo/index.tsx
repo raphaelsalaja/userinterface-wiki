@@ -193,12 +193,12 @@ export function SoundLabDemo() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.sounds}>
+      <div className={styles.pads}>
         {(Object.keys(SOUND_LABELS) as SoundType[]).map((sound) => (
           <button
             key={sound}
             type="button"
-            className={styles.soundButton}
+            className={styles.pad}
             data-playing={playingSound === sound}
             onClick={() => playSound(sound)}
           >
