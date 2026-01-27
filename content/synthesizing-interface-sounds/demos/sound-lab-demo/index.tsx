@@ -63,15 +63,17 @@ const FEEL_PARAMS: Record<
     decayMult: number;
     gainMult: number;
     pitchMult: number;
+    isApple?: boolean;
   }
 > = {
   apple: {
-    filterFreq: 4500,
+    filterFreq: 3000,
     q: 1,
     oscType: "sine",
-    decayMult: 0.5,
-    gainMult: 0.55,
-    pitchMult: 1.15,
+    decayMult: 0.6,
+    gainMult: 0.4,
+    pitchMult: 1.0,
+    isApple: true,
   },
   mechanical: {
     filterFreq: 5000,
@@ -241,6 +243,26 @@ function playClick(
   t: number,
   params: typeof FEEL_PARAMS.mechanical,
 ) {
+  // Apple "Tock" style - pure sine with pitch drop
+  if (params.isApple) {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = "sine";
+    // Start at ~1046Hz (C6) drop to ~880Hz (A5) - like macOS Tock
+    osc.frequency.setValueAtTime(1046, t);
+    osc.frequency.exponentialRampToValueAtTime(880, t + 0.03);
+
+    gain.gain.setValueAtTime(0.3, t);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.05);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(t);
+    osc.stop(t + 0.05);
+    return;
+  }
+
   const duration = 0.008 * params.decayMult;
   const buffer = ctx.createBuffer(1, ctx.sampleRate * duration, ctx.sampleRate);
   const data = buffer.getChannelData(0);
@@ -271,6 +293,28 @@ function playPop(
   t: number,
   params: typeof FEEL_PARAMS.mechanical,
 ) {
+  // Apple "Pop" style - bubbly with specific pitch curve
+  if (params.isApple) {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = "sine";
+    // Bubbly pop - starts low, peaks, drops
+    osc.frequency.setValueAtTime(300, t);
+    osc.frequency.linearRampToValueAtTime(500, t + 0.015);
+    osc.frequency.exponentialRampToValueAtTime(200, t + 0.06);
+
+    gain.gain.setValueAtTime(0, t);
+    gain.gain.linearRampToValueAtTime(0.35, t + 0.005);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(t);
+    osc.stop(t + 0.08);
+    return;
+  }
+
   const osc = ctx.createOscillator();
   const gain = ctx.createGain();
 
@@ -292,6 +336,26 @@ function playToggle(
   t: number,
   params: typeof FEEL_PARAMS.mechanical,
 ) {
+  // Apple style - clean two-tone switch sound
+  if (params.isApple) {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = "sine";
+    // Clean switch - quick pitch drop like a light switch
+    osc.frequency.setValueAtTime(1200, t);
+    osc.frequency.exponentialRampToValueAtTime(800, t + 0.025);
+
+    gain.gain.setValueAtTime(0.25, t);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.04);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(t);
+    osc.stop(t + 0.04);
+    return;
+  }
+
   // Noise layer
   const duration = 0.012 * params.decayMult;
   const buffer = ctx.createBuffer(1, ctx.sampleRate * duration, ctx.sampleRate);
@@ -339,6 +403,26 @@ function playTick(
   t: number,
   params: typeof FEEL_PARAMS.mechanical,
 ) {
+  // Apple style - very short, pure "tink" sound
+  if (params.isApple) {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = "sine";
+    // High pitched tink
+    osc.frequency.setValueAtTime(2200, t);
+    osc.frequency.exponentialRampToValueAtTime(1800, t + 0.015);
+
+    gain.gain.setValueAtTime(0.2, t);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.025);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(t);
+    osc.stop(t + 0.025);
+    return;
+  }
+
   const duration = 0.004 * params.decayMult;
   const buffer = ctx.createBuffer(1, ctx.sampleRate * duration, ctx.sampleRate);
   const data = buffer.getChannelData(0);
@@ -400,6 +484,29 @@ function playSuccess(
   t: number,
   params: typeof FEEL_PARAMS.mechanical,
 ) {
+  // Apple style - clean ascending two-note chime (like iOS keyboard)
+  if (params.isApple) {
+    const notes = [880, 1318.5]; // A5, E6 - perfect fifth
+    notes.forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = "sine";
+      osc.frequency.value = freq;
+
+      const start = t + i * 0.06;
+      gain.gain.setValueAtTime(0, start);
+      gain.gain.linearRampToValueAtTime(0.2, start + 0.008);
+      gain.gain.exponentialRampToValueAtTime(0.001, start + 0.12);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(start);
+      osc.stop(start + 0.12);
+    });
+    return;
+  }
+
   const notes = [523.25, 659.25, 783.99].map((n) => n * params.pitchMult);
   const spacing = 0.08 * params.decayMult;
 
@@ -430,6 +537,26 @@ function playError(
   t: number,
   params: typeof FEEL_PARAMS.mechanical,
 ) {
+  // Apple style - subtle "bonk" like macOS Basso/Funk error
+  if (params.isApple) {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = "sine";
+    // Low bonk with slight pitch drop
+    osc.frequency.setValueAtTime(260, t);
+    osc.frequency.exponentialRampToValueAtTime(180, t + 0.08);
+
+    gain.gain.setValueAtTime(0.3, t);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(t);
+    osc.stop(t + 0.12);
+    return;
+  }
+
   const osc1 = ctx.createOscillator();
   const osc2 = ctx.createOscillator();
   const gain = ctx.createGain();
