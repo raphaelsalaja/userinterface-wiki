@@ -191,6 +191,19 @@ export function SoundLabDemo() {
     setTimeout(() => setPlayingSound(null), duration);
   };
 
+  const feels = Object.keys(FEEL_LABELS) as FeelType[];
+  const currentIndex = feels.indexOf(feel);
+
+  const prevFeel = () => {
+    const newIndex = currentIndex === 0 ? feels.length - 1 : currentIndex - 1;
+    setFeel(feels[newIndex]);
+  };
+
+  const nextFeel = () => {
+    const newIndex = currentIndex === feels.length - 1 ? 0 : currentIndex + 1;
+    setFeel(feels[newIndex]);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.pads}>
@@ -208,18 +221,52 @@ export function SoundLabDemo() {
         ))}
       </div>
 
-      <div className={styles.feels}>
-        {(Object.keys(FEEL_LABELS) as FeelType[]).map((f) => (
-          <button
-            key={f}
-            type="button"
-            className={styles.feelButton}
-            data-active={feel === f}
-            onClick={() => setFeel(f)}
+      <div className={styles.feelSelector}>
+        <button
+          type="button"
+          className={styles.feelArrow}
+          onClick={prevFeel}
+          aria-label="Previous feel"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            aria-hidden="true"
           >
-            {FEEL_LABELS[f].label}
-          </button>
-        ))}
+            <path
+              d="M10 12L6 8L10 4"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+        <span className={styles.feelLabel}>{FEEL_LABELS[feel].label}</span>
+        <button
+          type="button"
+          className={styles.feelArrow}
+          onClick={nextFeel}
+          aria-label="Next feel"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M6 4L10 8L6 12"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
       </div>
     </div>
   );

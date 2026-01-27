@@ -140,40 +140,37 @@
   box-shadow: 0 0 20px color-mix(in srgb, #eab308 50%, transparent);
 }
 
-.feels {
+.feelSelector {
   display: flex;
-  gap: 2px;
-  padding: 3px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  background: var(--gray-a2);
-  border-radius: 6px;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
 }
 
-.feels::-webkit-scrollbar {
-  display: none;
-}
-
-.feelButton {
-  padding: 5px 10px;
-  font-size: 12px;
-  color: var(--gray-10);
-  white-space: nowrap;
+.feelArrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  color: var(--gray-9);
   cursor: pointer;
   background: transparent;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   transition:
     color 0.15s ease,
     background 0.15s ease;
 }
 
-.feelButton:hover {
+.feelArrow:hover {
   color: var(--gray-11);
+  background: var(--gray-a3);
 }
 
-.feelButton[data-active="true"] {
-  color: var(--gray-12);
-  background: var(--gray-1);
-  box-shadow: 0 1px 2px var(--gray-a3);
+.feelLabel {
+  min-width: 80px;
+  font-size: 13px;
+  color: var(--gray-11);
+  text-align: center;
 }
