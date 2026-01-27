@@ -142,18 +142,23 @@
 
 .feels {
   display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  justify-content: center;
+  gap: 2px;
+  padding: 3px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  background: var(--gray-a2);
+  border-radius: 6px;
+}
+
+.feels::-webkit-scrollbar {
+  display: none;
 }
 
 .feelButton {
-  padding: 6px 12px;
-  font-size: 11px;
-  font-weight: var(--font-weight-medium);
-  color: var(--gray-9);
-  text-transform: uppercase;
-  letter-spacing: var(--font-letter-spacing-13px);
+  padding: 5px 10px;
+  font-size: 12px;
+  color: var(--gray-10);
+  white-space: nowrap;
   cursor: pointer;
   background: transparent;
   border: none;
@@ -169,5 +174,6 @@
 
 .feelButton[data-active="true"] {
   color: var(--gray-12);
-  background: var(--gray-a3);
+  background: var(--gray-1);
+  box-shadow: 0 1px 2px var(--gray-a3);
 }
