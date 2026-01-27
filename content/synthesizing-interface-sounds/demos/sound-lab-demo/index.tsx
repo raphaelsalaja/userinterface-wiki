@@ -66,12 +66,12 @@ const FEEL_PARAMS: Record<
   }
 > = {
   apple: {
-    filterFreq: 2800,
-    q: 2,
-    oscType: "triangle",
-    decayMult: 0.85,
-    gainMult: 0.75,
-    pitchMult: 0.95,
+    filterFreq: 4500,
+    q: 1,
+    oscType: "sine",
+    decayMult: 0.5,
+    gainMult: 0.55,
+    pitchMult: 1.15,
   },
   mechanical: {
     filterFreq: 5000,
