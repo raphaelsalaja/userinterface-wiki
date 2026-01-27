@@ -27,15 +27,15 @@ type FeelType =
   | "crisp";
 
 const SOUND_CONFIG: Record<SoundType, { label: string; color: string }> = {
-  click: { label: "Click", color: "purple" },
-  pop: { label: "Pop", color: "pink" },
-  toggle: { label: "Toggle", color: "blue" },
-  tick: { label: "Tick", color: "cyan" },
-  whoosh: { label: "Whoosh", color: "teal" },
-  success: { label: "Success", color: "green" },
-  error: { label: "Error", color: "red" },
-  warning: { label: "Warning", color: "orange" },
-  startup: { label: "Startup", color: "yellow" },
+  click: { label: "Click", color: "default" },
+  pop: { label: "Pop", color: "default" },
+  toggle: { label: "Toggle", color: "default" },
+  tick: { label: "Tick", color: "default" },
+  whoosh: { label: "Whoosh", color: "default" },
+  success: { label: "Success", color: "default" },
+  error: { label: "Error", color: "default" },
+  warning: { label: "Warning", color: "default" },
+  startup: { label: "Startup", color: "orange" },
 };
 
 const FEEL_LABELS: Record<FeelType, { label: string; description: string }> = {
@@ -205,7 +205,58 @@ export function SoundLabDemo() {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.device}>
+      <div className={styles.screen}>
+        <span className={styles.screenLabel}>Mode</span>
+        <span className={styles.screenValue}>{FEEL_LABELS[feel].label}</span>
+        <div className={styles.feelNav}>
+          <button
+            type="button"
+            className={styles.feelArrow}
+            onClick={prevFeel}
+            aria-label="Previous feel"
+          >
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 16 16"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M10 12L6 8L10 4"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
+          <button
+            type="button"
+            className={styles.feelArrow}
+            onClick={nextFeel}
+            aria-label="Next feel"
+          >
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 16 16"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M6 4L10 8L6 12"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+
       <div className={styles.pads}>
         {(Object.keys(SOUND_CONFIG) as SoundType[]).map((sound) => (
           <button
@@ -217,56 +268,9 @@ export function SoundLabDemo() {
             onClick={() => playSound(sound)}
           >
             {SOUND_CONFIG[sound].label}
+            <span className={styles.padLabel}>{sound}</span>
           </button>
         ))}
-      </div>
-
-      <div className={styles.feelSelector}>
-        <button
-          type="button"
-          className={styles.feelArrow}
-          onClick={prevFeel}
-          aria-label="Previous feel"
-        >
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            aria-hidden="true"
-          >
-            <path
-              d="M10 12L6 8L10 4"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </button>
-        <span className={styles.feelLabel}>{FEEL_LABELS[feel].label}</span>
-        <button
-          type="button"
-          className={styles.feelArrow}
-          onClick={nextFeel}
-          aria-label="Next feel"
-        >
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            aria-hidden="true"
-          >
-            <path
-              d="M6 4L10 8L6 12"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </button>
       </div>
     </div>
   );
