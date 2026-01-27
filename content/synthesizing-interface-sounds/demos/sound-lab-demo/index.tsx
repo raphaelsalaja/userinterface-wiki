@@ -26,16 +26,16 @@ type FeelType =
   | "retro"
   | "crisp";
 
-const SOUND_LABELS: Record<SoundType, string> = {
-  click: "Click",
-  pop: "Pop",
-  toggle: "Toggle",
-  tick: "Tick",
-  whoosh: "Whoosh",
-  success: "Success",
-  error: "Error",
-  warning: "Warning",
-  startup: "Startup",
+const SOUND_CONFIG: Record<SoundType, { label: string; color: string }> = {
+  click: { label: "Click", color: "purple" },
+  pop: { label: "Pop", color: "pink" },
+  toggle: { label: "Toggle", color: "blue" },
+  tick: { label: "Tick", color: "cyan" },
+  whoosh: { label: "Whoosh", color: "teal" },
+  success: { label: "Success", color: "green" },
+  error: { label: "Error", color: "red" },
+  warning: { label: "Warning", color: "orange" },
+  startup: { label: "Startup", color: "yellow" },
 };
 
 const FEEL_LABELS: Record<FeelType, { label: string; description: string }> = {
@@ -194,15 +194,16 @@ export function SoundLabDemo() {
   return (
     <div className={styles.container}>
       <div className={styles.pads}>
-        {(Object.keys(SOUND_LABELS) as SoundType[]).map((sound) => (
+        {(Object.keys(SOUND_CONFIG) as SoundType[]).map((sound) => (
           <button
             key={sound}
             type="button"
             className={styles.pad}
+            data-color={SOUND_CONFIG[sound].color}
             data-playing={playingSound === sound}
             onClick={() => playSound(sound)}
           >
-            {SOUND_LABELS[sound]}
+            {SOUND_CONFIG[sound].label}
           </button>
         ))}
       </div>
