@@ -15,6 +15,7 @@ type SoundType =
   | "startup";
 
 type FeelType =
+  | "apple"
   | "mechanical"
   | "soft"
   | "aero"
@@ -27,18 +28,19 @@ type FeelType =
   | "crisp";
 
 const SOUND_CONFIG: Record<SoundType, { label: string; color: string }> = {
-  click: { label: "Click", color: "default" },
-  pop: { label: "Pop", color: "default" },
-  toggle: { label: "Toggle", color: "default" },
-  tick: { label: "Tick", color: "default" },
-  whoosh: { label: "Whoosh", color: "default" },
-  success: { label: "Success", color: "default" },
-  error: { label: "Error", color: "default" },
-  warning: { label: "Warning", color: "default" },
-  startup: { label: "Startup", color: "orange" },
+  click: { label: "Click", color: "purple" },
+  pop: { label: "Pop", color: "pink" },
+  toggle: { label: "Toggle", color: "blue" },
+  tick: { label: "Tick", color: "cyan" },
+  whoosh: { label: "Whoosh", color: "teal" },
+  success: { label: "Success", color: "green" },
+  error: { label: "Error", color: "red" },
+  warning: { label: "Warning", color: "orange" },
+  startup: { label: "Startup", color: "yellow" },
 };
 
 const FEEL_LABELS: Record<FeelType, { label: string; description: string }> = {
+  apple: { label: "Apple", description: "Refined, warm" },
   mechanical: { label: "Mechanical", description: "Sharp, precise" },
   soft: { label: "Soft", description: "Gentle, muted" },
   aero: { label: "Aero", description: "Clean, modern" },
@@ -63,6 +65,14 @@ const FEEL_PARAMS: Record<
     pitchMult: number;
   }
 > = {
+  apple: {
+    filterFreq: 2800,
+    q: 2,
+    oscType: "triangle",
+    decayMult: 0.85,
+    gainMult: 0.75,
+    pitchMult: 0.95,
+  },
   mechanical: {
     filterFreq: 5000,
     q: 6,
@@ -146,7 +156,7 @@ const FEEL_PARAMS: Record<
 };
 
 export function SoundLabDemo() {
-  const [feel, setFeel] = useState<FeelType>("aero");
+  const [feel, setFeel] = useState<FeelType>("apple");
   const [playingSound, setPlayingSound] = useState<SoundType | null>(null);
 
   const playSound = (sound: SoundType) => {
@@ -191,72 +201,8 @@ export function SoundLabDemo() {
     setTimeout(() => setPlayingSound(null), duration);
   };
 
-  const feels = Object.keys(FEEL_LABELS) as FeelType[];
-  const currentIndex = feels.indexOf(feel);
-
-  const prevFeel = () => {
-    const newIndex = currentIndex === 0 ? feels.length - 1 : currentIndex - 1;
-    setFeel(feels[newIndex]);
-  };
-
-  const nextFeel = () => {
-    const newIndex = currentIndex === feels.length - 1 ? 0 : currentIndex + 1;
-    setFeel(feels[newIndex]);
-  };
-
   return (
-    <div className={styles.device}>
-      <div className={styles.screen}>
-        <span className={styles.screenLabel}>Mode</span>
-        <span className={styles.screenValue}>{FEEL_LABELS[feel].label}</span>
-        <div className={styles.feelNav}>
-          <button
-            type="button"
-            className={styles.feelArrow}
-            onClick={prevFeel}
-            aria-label="Previous feel"
-          >
-            <svg
-              width="12"
-              height="12"
-              viewBox="0 0 16 16"
-              fill="none"
-              aria-hidden="true"
-            >
-              <path
-                d="M10 12L6 8L10 4"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </button>
-          <button
-            type="button"
-            className={styles.feelArrow}
-            onClick={nextFeel}
-            aria-label="Next feel"
-          >
-            <svg
-              width="12"
-              height="12"
-              viewBox="0 0 16 16"
-              fill="none"
-              aria-hidden="true"
-            >
-              <path
-                d="M6 4L10 8L6 12"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </button>
-        </div>
-      </div>
-
+    <div className={styles.container}>
       <div className={styles.pads}>
         {(Object.keys(SOUND_CONFIG) as SoundType[]).map((sound) => (
           <button
@@ -268,7 +214,20 @@ export function SoundLabDemo() {
             onClick={() => playSound(sound)}
           >
             {SOUND_CONFIG[sound].label}
-            <span className={styles.padLabel}>{sound}</span>
+          </button>
+        ))}
+      </div>
+
+      <div className={styles.feels}>
+        {(Object.keys(FEEL_LABELS) as FeelType[]).map((f) => (
+          <button
+            key={f}
+            type="button"
+            className={styles.feelButton}
+            data-active={feel === f}
+            onClick={() => setFeel(f)}
+          >
+            {FEEL_LABELS[f].label}
           </button>
         ))}
       </div>

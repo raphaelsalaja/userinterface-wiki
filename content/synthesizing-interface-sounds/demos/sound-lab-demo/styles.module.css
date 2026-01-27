@@ -1,156 +1,173 @@
-.device {
+.container {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 20px;
-  background: #e8e4df;
-  border-radius: 12px;
-}
-
-.screen {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 16px;
-  background: #1a1a1a;
-  border-radius: 6px;
-}
-
-.screenLabel {
-  font-size: 10px;
-  font-weight: var(--font-weight-medium);
-  color: #666;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.screenValue {
-  font-family: "SF Mono", "Monaco", "Inconsolata", "Roboto Mono", monospace;
-  font-size: 18px;
-  font-weight: var(--font-weight-bold);
-  color: #ff6b35;
-}
-
-.feelNav {
-  display: flex;
-  gap: 8px;
-}
-
-.feelArrow {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  color: #666;
-  cursor: pointer;
-  background: #2a2a2a;
-  border: none;
-  border-radius: 4px;
-  transition:
-    color 0.1s ease,
-    background 0.1s ease;
-}
-
-.feelArrow:hover {
-  color: #999;
-  background: #333;
+  gap: 12px;
 }
 
 .pads {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
+  gap: 6px;
 }
 
 .pad {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
   align-items: center;
   justify-content: center;
   aspect-ratio: 1;
   padding: 8px;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: var(--font-weight-medium);
-  color: #666;
   cursor: pointer;
-  background: #d4d0cb;
   border: none;
-  border-radius: 6px;
-  box-shadow:
-    0 2px 0 #b8b4af,
-    0 3px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
   transition:
-    transform 0.05s ease,
-    box-shadow 0.05s ease,
-    background 0.1s ease;
-}
-
-.pad:hover {
-  background: #ccc8c3;
+    opacity 0.1s ease,
+    transform 0.1s ease,
+    box-shadow 0.1s ease;
 }
 
 .pad:active {
-  box-shadow:
-    0 0 0 #b8b4af,
-    0 1px 2px rgba(0, 0, 0, 0.1);
-  transform: translateY(2px);
+  transform: scale(0.96);
 }
 
-/* Accent pads */
+/* Color variants - muted by default */
+.pad[data-color="purple"] {
+  color: color-mix(in srgb, #a855f7 60%, var(--gray-11));
+  background: color-mix(in srgb, #a855f7 15%, transparent);
+}
+
+.pad[data-color="pink"] {
+  color: color-mix(in srgb, #ec4899 60%, var(--gray-11));
+  background: color-mix(in srgb, #ec4899 15%, transparent);
+}
+
+.pad[data-color="blue"] {
+  color: color-mix(in srgb, #3b82f6 60%, var(--gray-11));
+  background: color-mix(in srgb, #3b82f6 15%, transparent);
+}
+
+.pad[data-color="cyan"] {
+  color: color-mix(in srgb, #06b6d4 60%, var(--gray-11));
+  background: color-mix(in srgb, #06b6d4 15%, transparent);
+}
+
+.pad[data-color="teal"] {
+  color: color-mix(in srgb, #14b8a6 60%, var(--gray-11));
+  background: color-mix(in srgb, #14b8a6 15%, transparent);
+}
+
+.pad[data-color="green"] {
+  color: color-mix(in srgb, #22c55e 60%, var(--gray-11));
+  background: color-mix(in srgb, #22c55e 15%, transparent);
+}
+
+.pad[data-color="red"] {
+  color: color-mix(in srgb, #ef4444 60%, var(--gray-11));
+  background: color-mix(in srgb, #ef4444 15%, transparent);
+}
+
 .pad[data-color="orange"] {
+  color: color-mix(in srgb, #f97316 60%, var(--gray-11));
+  background: color-mix(in srgb, #f97316 15%, transparent);
+}
+
+.pad[data-color="yellow"] {
+  color: color-mix(in srgb, #eab308 60%, var(--gray-11));
+  background: color-mix(in srgb, #eab308 15%, transparent);
+}
+
+/* Hover - slightly brighter */
+.pad:hover {
+  opacity: 0.85;
+}
+
+/* Playing state - full brightness */
+.pad[data-playing="true"][data-color="purple"] {
   color: #fff;
-  background: #ff6b35;
-  box-shadow:
-    0 2px 0 #cc5529,
-    0 3px 4px rgba(0, 0, 0, 0.15);
+  background: #a855f7;
+  box-shadow: 0 0 20px color-mix(in srgb, #a855f7 50%, transparent);
 }
 
-.pad[data-color="orange"]:hover {
-  background: #ff7a4a;
+.pad[data-playing="true"][data-color="pink"] {
+  color: #fff;
+  background: #ec4899;
+  box-shadow: 0 0 20px color-mix(in srgb, #ec4899 50%, transparent);
 }
 
-.pad[data-color="orange"]:active {
-  box-shadow:
-    0 0 0 #cc5529,
-    0 1px 2px rgba(0, 0, 0, 0.1);
+.pad[data-playing="true"][data-color="blue"] {
+  color: #fff;
+  background: #3b82f6;
+  box-shadow: 0 0 20px color-mix(in srgb, #3b82f6 50%, transparent);
 }
 
-/* Playing state */
-.pad[data-playing="true"] {
-  color: #1a1a1a;
-  background: #fff;
-  box-shadow:
-    0 2px 0 #ccc,
-    0 3px 4px rgba(0, 0, 0, 0.1),
-    0 0 12px rgba(255, 255, 255, 0.5);
+.pad[data-playing="true"][data-color="cyan"] {
+  color: #fff;
+  background: #06b6d4;
+  box-shadow: 0 0 20px color-mix(in srgb, #06b6d4 50%, transparent);
+}
+
+.pad[data-playing="true"][data-color="teal"] {
+  color: #fff;
+  background: #14b8a6;
+  box-shadow: 0 0 20px color-mix(in srgb, #14b8a6 50%, transparent);
+}
+
+.pad[data-playing="true"][data-color="green"] {
+  color: #fff;
+  background: #22c55e;
+  box-shadow: 0 0 20px color-mix(in srgb, #22c55e 50%, transparent);
+}
+
+.pad[data-playing="true"][data-color="red"] {
+  color: #fff;
+  background: #ef4444;
+  box-shadow: 0 0 20px color-mix(in srgb, #ef4444 50%, transparent);
 }
 
 .pad[data-playing="true"][data-color="orange"] {
-  background: #fff;
-  box-shadow:
-    0 2px 0 #ccc,
-    0 3px 4px rgba(0, 0, 0, 0.1),
-    0 0 12px rgba(255, 107, 53, 0.6);
+  color: #fff;
+  background: #f97316;
+  box-shadow: 0 0 20px color-mix(in srgb, #f97316 50%, transparent);
 }
 
-.padLabel {
-  font-size: 9px;
-  color: #999;
+.pad[data-playing="true"][data-color="yellow"] {
+  color: #000;
+  background: #eab308;
+  box-shadow: 0 0 20px color-mix(in srgb, #eab308 50%, transparent);
+}
+
+.feels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+}
+
+.feelButton {
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: var(--font-weight-medium);
+  color: var(--gray-9);
   text-transform: uppercase;
-  letter-spacing: 0.03em;
+  letter-spacing: var(--font-letter-spacing-13px);
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  transition:
+    color 0.15s ease,
+    background 0.15s ease;
 }
 
-.pad:hover .padLabel {
-  color: #777;
+.feelButton:hover {
+  color: var(--gray-11);
 }
 
-.pad[data-color="orange"] .padLabel {
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.pad[data-playing="true"] .padLabel {
-  color: #666;
+.feelButton[data-active="true"] {
+  color: var(--gray-12);
+  background: var(--gray-a3);
 }
