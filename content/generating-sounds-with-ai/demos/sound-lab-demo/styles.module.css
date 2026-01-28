@@ -1,0 +1,174 @@
+.container {
+  display: flex;
+  gap: 32px;
+  justify-content: space-around;
+  width: 100%;
+  padding-block: 48px;
+}
+
+.pads {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: var(--shadow-2);
+}
+
+.pad {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 80px;
+  height: 48px;
+  font-size: 13px;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--font-letter-spacing-13px);
+  cursor: pointer;
+  border: none;
+
+  transition: all 0.2s ease;
+}
+
+/* Color variants - muted by default */
+.pad[data-color="purple"] {
+  color: color-mix(in srgb, #a855f7 60%, var(--gray-11));
+  background: color-mix(in srgb, #a855f7 15%, transparent);
+}
+
+.pad[data-color="pink"] {
+  color: color-mix(in srgb, #ec4899 60%, var(--gray-11));
+  background: color-mix(in srgb, #ec4899 15%, transparent);
+}
+
+.pad[data-color="blue"] {
+  color: color-mix(in srgb, #3b82f6 60%, var(--gray-11));
+  background: color-mix(in srgb, #3b82f6 15%, transparent);
+}
+
+.pad[data-color="cyan"] {
+  color: color-mix(in srgb, #06b6d4 60%, var(--gray-11));
+  background: color-mix(in srgb, #06b6d4 15%, transparent);
+}
+
+.pad[data-color="teal"] {
+  color: color-mix(in srgb, #14b8a6 60%, var(--gray-11));
+  background: color-mix(in srgb, #14b8a6 15%, transparent);
+}
+
+.pad[data-color="green"] {
+  color: color-mix(in srgb, #22c55e 60%, var(--gray-11));
+  background: color-mix(in srgb, #22c55e 15%, transparent);
+}
+
+.pad[data-color="red"] {
+  color: color-mix(in srgb, #ef4444 60%, var(--gray-11));
+  background: color-mix(in srgb, #ef4444 15%, transparent);
+}
+
+.pad[data-color="orange"] {
+  color: color-mix(in srgb, #f97316 60%, var(--gray-11));
+  background: color-mix(in srgb, #f97316 15%, transparent);
+}
+
+.pad[data-color="yellow"] {
+  color: color-mix(in srgb, #eab308 60%, var(--gray-11));
+  background: color-mix(in srgb, #eab308 15%, transparent);
+}
+
+/* Hover - slightly brighter */
+.pad:hover {
+  opacity: 0.85;
+}
+
+/* Playing state - full brightness */
+.pad[data-playing="true"][data-color="purple"] {
+  color: #fff;
+  background: #a855f7;
+  box-shadow: 0 0 20px color-mix(in srgb, #a855f7 50%, transparent);
+}
+
+.pad[data-playing="true"][data-color="pink"] {
+  color: #fff;
+  background: #ec4899;
+  box-shadow: 0 0 20px color-mix(in srgb, #ec4899 50%, transparent);
+}
+
+.pad[data-playing="true"][data-color="blue"] {
+  color: #fff;
+  background: #3b82f6;
+  box-shadow: 0 0 20px color-mix(in srgb, #3b82f6 50%, transparent);
+}
+
+.pad[data-playing="true"][data-color="cyan"] {
+  color: #fff;
+  background: #06b6d4;
+  box-shadow: 0 0 20px color-mix(in srgb, #06b6d4 50%, transparent);
+}
+
+.pad[data-playing="true"][data-color="teal"] {
+  color: #fff;
+  background: #14b8a6;
+  box-shadow: 0 0 20px color-mix(in srgb, #14b8a6 50%, transparent);
+}
+
+.pad[data-playing="true"][data-color="green"] {
+  color: #fff;
+  background: #22c55e;
+  box-shadow: 0 0 20px color-mix(in srgb, #22c55e 50%, transparent);
+}
+
+.pad[data-playing="true"][data-color="red"] {
+  color: #fff;
+  background: #ef4444;
+  box-shadow: 0 0 20px color-mix(in srgb, #ef4444 50%, transparent);
+}
+
+.pad[data-playing="true"][data-color="orange"] {
+  color: #fff;
+  background: #f97316;
+  box-shadow: 0 0 20px color-mix(in srgb, #f97316 50%, transparent);
+}
+
+.pad[data-playing="true"][data-color="yellow"] {
+  color: #000;
+  background: #eab308;
+  box-shadow: 0 0 20px color-mix(in srgb, #eab308 50%, transparent);
+}
+
+.feels {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: var(--shadow-2);
+}
+
+.feelButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 48px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: var(--font-weight-medium);
+  color: var(--gray-9);
+  letter-spacing: var(--font-letter-spacing-13px);
+  cursor: pointer;
+  background: transparent;
+  box-shadow: 0 0 0 0.5px var(--gray-4);
+  transition: all 0.2s ease;
+}
+
+.feelButton:hover {
+  color: var(--gray-11);
+}
+
+.feelButton[data-active="true"] {
+  color: var(--gray-12);
+  background: var(--gray-a3);
+}
