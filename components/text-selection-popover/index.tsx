@@ -13,7 +13,6 @@ import {
 import { createPortal } from "react-dom";
 import { ShareQuoteDialog } from "@/components/share-quote-dialog";
 import { SITE_MANIFEST } from "@/lib/site";
-import { sounds } from "@/lib/sounds";
 import styles from "./styles.module.css";
 
 interface TextSelectionPopoverProps {
@@ -31,28 +30,29 @@ function TextSelectionPopover({
 }: TextSelectionPopoverProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(false);
-  const [hasPlayedSound, setHasPlayedSound] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedText, setSelectedText] = useState("");
+  const [, forceUpdate] = useState(0);
 
   const { text, top, left, right } = useTextSelection(containerRef);
-  const hasValidSelection = text.length >= 3 && !Number.isNaN(top);
+  const hasFullWord = text.trim().split(/\s+/).filter(Boolean).length >= 1;
+  const hasValidSelection = hasFullWord && !Number.isNaN(top);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
   useEffect(() => {
-    if (hasValidSelection && !hasPlayedSound) {
-      sounds.pop();
-      setHasPlayedSound(true);
-    } else if (!hasValidSelection && hasPlayedSound) {
-      setHasPlayedSound(false);
-    }
-  }, [hasValidSelection, hasPlayedSound]);
+    const handleKeyUp = (e: KeyboardEvent) => {
+      if (e.shiftKey || e.key === "Shift") {
+        forceUpdate((n) => n + 1);
+      }
+    };
+    document.addEventListener("keyup", handleKeyUp);
+    return () => document.removeEventListener("keyup", handleKeyUp);
+  }, []);
 
   const handleClose = useCallback(() => {
-    setHasPlayedSound(false);
     window.getSelection()?.removeAllRanges();
   }, []);
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   playClick,
   playDrop,
@@ -149,9 +149,16 @@ const FEEL_PARAMS: Record<
 export function SoundLabDemo() {
   const [feel, setFeel] = useState<FeelType>("aero");
   const [playingSound, setPlayingSound] = useState<SoundType | null>(null);
+  const ctxRef = useRef<AudioContext | null>(null);
+
+  const getContext = () => {
+    ctxRef.current?.close();
+    ctxRef.current = new AudioContext();
+    return ctxRef.current;
+  };
 
   const playSound = (sound: SoundType) => {
-    const ctx = new AudioContext();
+    const ctx = getContext();
     const t = ctx.currentTime;
     const params = FEEL_PARAMS[feel];
 
@@ -194,7 +201,7 @@ export function SoundLabDemo() {
 
   const handleFeelChange = (newFeel: FeelType) => {
     setFeel(newFeel);
-    const ctx = new AudioContext();
+    const ctx = getContext();
     const t = ctx.currentTime;
     const params = FEEL_PARAMS[newFeel];
     playToggle(ctx, t, params);

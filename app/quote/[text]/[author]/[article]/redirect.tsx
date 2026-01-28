@@ -33,6 +33,7 @@ function QuoteRedirect({
       <blockquote
         style={{
           maxWidth: "600px",
+          fontFamily: "var(--font-family-serif, Georgia, serif)",
           fontSize: "18px",
           fontStyle: "italic",
           lineHeight: 1.6,

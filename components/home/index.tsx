@@ -5,6 +5,7 @@ import { Toggle } from "@base-ui/react/toggle";
 import { ToggleGroup } from "@base-ui/react/toggle-group";
 import { clsx } from "clsx";
 import Fuse from "fuse.js";
+import { AnimatePresence, motion } from "motion/react";
 import { useMemo, useState } from "react";
 import { PageTransition } from "@/components/page-transition";
 import { Post } from "@/components/post";
@@ -20,6 +21,7 @@ export function HomeLayout({ pages }: { pages: FormattedPage[] }) {
   function handleViewModeChange(value: string[]) {
     if (value.length > 0) {
       setViewMode(value[0] as "card" | "row");
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   }
 
@@ -74,51 +76,67 @@ export function HomeLayout({ pages }: { pages: FormattedPage[] }) {
           </ToggleGroup>
         </div>
 
-        {filteredPages.length !== 0 && viewMode === "card" && (
-          <div className={clsx(styles.list, styles.card)}>
-            {filteredPages.map((page) => (
-              <Post.Root key={page.url} page={page} className={styles.post}>
-                <Post.Link>
-                  <div className={styles.details}>
-                    <Post.Preview />
-                    <div>
-                      <Post.Title />
-                      <Post.Meta>
-                        <Post.Author />
-                        <Post.Separator />
-                        <Post.Date
-                          options={{
-                            day: "numeric",
-                            month: "short",
-                            year: "numeric",
-                          }}
-                        />
-                      </Post.Meta>
+        <AnimatePresence mode="wait">
+          {filteredPages.length !== 0 && viewMode === "card" && (
+            <motion.div
+              key="card"
+              className={clsx(styles.list, styles.card)}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+            >
+              {filteredPages.map((page) => (
+                <Post.Root key={page.url} page={page} className={styles.post}>
+                  <Post.Link>
+                    <div className={styles.details}>
+                      <Post.Preview />
+                      <div>
+                        <Post.Title />
+                        <Post.Meta>
+                          <Post.Author />
+                          <Post.Separator />
+                          <Post.Date
+                            options={{
+                              day: "numeric",
+                              month: "short",
+                              year: "numeric",
+                            }}
+                          />
+                        </Post.Meta>
+                      </div>
                     </div>
-                  </div>
-                  <div>
-                    <Post.Description />
-                  </div>
-                </Post.Link>
-              </Post.Root>
-            ))}
-          </div>
-        )}
+                    <div>
+                      <Post.Description />
+                    </div>
+                  </Post.Link>
+                </Post.Root>
+              ))}
+            </motion.div>
+          )}
 
-        {filteredPages.length !== 0 && viewMode === "row" && (
-          <div className={clsx(styles.list, styles.row)}>
-            {filteredPages.map((page) => (
-              <Post.Root key={page.url} page={page} className={styles.post}>
-                <Post.Link>
-                  <Post.Date options={{ year: "numeric" }} />
-                  <Post.Title as="span" />
-                  <Post.Date options={{ day: "2-digit", month: "2-digit" }} />
-                </Post.Link>
-                <Post.Divider />
-              </Post.Root>
-            ))}
-          </div>
-        )}
+          {filteredPages.length !== 0 && viewMode === "row" && (
+            <motion.div
+              key="row"
+              className={clsx(styles.list, styles.row)}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+            >
+              {filteredPages.map((page) => (
+                <Post.Root key={page.url} page={page} className={styles.post}>
+                  <Post.Link>
+                    <Post.Date options={{ year: "numeric" }} />
+                    <Post.Title as="span" />
+                    <Post.Date options={{ day: "2-digit", month: "2-digit" }} />
+                  </Post.Link>
+                  <Post.Divider />
+                </Post.Root>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </PageTransition>
   );

@@ -31,6 +31,10 @@ export async function GET(request: NextRequest) {
   const authorDecoded = decodeURIComponent(author);
   const article = Buffer.from(articleBase64, "base64url").toString("utf-8");
 
+  const MAX_CHARS = 180;
+  const truncatedText =
+    text.length > MAX_CHARS ? `${text.slice(0, MAX_CHARS).trim()}…` : text;
+
   const [interSemiBold, georgia] = await fontsPromise;
 
   return new ImageResponse(
@@ -99,7 +103,7 @@ export async function GET(request: NextRequest) {
               lineHeight: 1.5,
             }}
           >
-            {text}&rdquo;
+            {truncatedText}&rdquo;
           </span>
         </div>
 
