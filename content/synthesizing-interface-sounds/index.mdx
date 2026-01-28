@@ -7,95 +7,64 @@ icon: "code"
 ---
 
 
-import {
-  OscillatorDemo,
-  NoiseDemo,
-  EnvelopeDemo,
-  FilterDemo,
-  ClickSynthDemo,
-  SoundLabDemo,
-} from "./demos";
+import { AudioConceptsDemo, SoundLabDemo } from "./demos";
 
 I'd like to think I'm someone with good taste in sounds. I listen to a lot of music, I play a lot of games, I interact with a lot of apps. I know what sounds I like, and I absolutely know what sucks.
 
-The problem is I'm not a sound engineer. I don't know what a "bandpass filter" is. I couldn't tell you the difference between a sine wave and a sawtooth wave. But luckily we're in 2026 and AI is a thing, so recently I've been using Cursor to help me generate custom sounds for my projects. It's actually been a charm and saves me having to source sounds online like the old days.
+The problem is I'm not a sound engineer. But luckily we're in 2026 and AI is a thing, so recently I've been using Cursor to help me generate custom sounds for my projects. It's actually been a charm and saves me having to source sounds online like the old days.
 
-This article is about my journey to becoming a pseudo sound engineer with AI and how I used it to build a library of UI sounds for my projects.
 
 # The Web Audio API
 
-It starts with the Web Audio API. This is the backbone of all the sounds—it's what lets you generate audio programmatically in the browser without needing audio files. It's been available across browsers since April 2021 and works on everything modern.
+It starts with the Web Audio API. This is the backbone of all the sounds. It's what lets you generate audio programmatically in the browser without needing audio files. It's been available across browsers since April 2021 and works on everything modern.
 
 The [docs](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API) for it are extremely dense and kind of a bore to read through unless you're someone who understands sound completely (not me). So what I did, is funnel it into Cursor and started conversing with it.
 
 # Prompting Cursor
 
-The first few prompts were actually quite good. I was able to get a click sound from scratch by just describing what I wanted.
+The first few prompts were actually quite good. I was able to get a click sound from scratch by just describing what I wanted. However, I wanted to build a library of sounds, so I needed to be able to describe the sounds I wanted and have Cursor be able to generate them from scratch.
 
-However, I wanted to build a library of sounds, so I needed to be able to describe the sounds I wanted and have Cursor be able to generate them from scratch.
+To do this, I like to understand what makes a sound good or bad. This is a process of trial and error, but it's a process that can be automated with AI. Cursor told me that I needed to understand the math behind the sounds I wanted to create. Mainly that some sounds required things like "filtered noise" or "oscillators" or "envelopes".
 
-To do this, I like to understand what makes a sound good or bad. This is a process of trial and error, but it's a process that can be automated with AI.
-
-Cursor told me that I needed to understand the math behind the sounds I wanted to create. Mainly that some sounds required things like "filtered noise" or "oscillators" or "envelopes".
-
-I had no idea what "filtered noise" meant, so I asked. Basically, `noise` is just random values. By itself it sounds harsh and unnatural, but when used right is rather tasteful. Filtering it with a `bandpass` filter keeps only a specific range of frequencies, which is what makes it sound like a click. When you filter noise, you can make it sound like a click, a whoosh, a thud—depending on what frequencies you keep.
+I had no idea what "filtered noise" meant, so I asked. Basically, `noise` is just random values. By itself it sounds harsh and unnatural, but when used right is rather tasteful. 
 
 <Figure>
-  <NoiseDemo />
-  <Caption>Raw noise is chaos. Filter it and it starts to sound like something.</Caption>
+  <Video src="https://www.youtube.com/watch?v=SqayDnQ2wmw" />
+  <Caption>A Tasteful Use of Noise</Caption>
 </Figure>
 
-I asked Cursor to show me different filter types on the same noise. `lowpass` made it muffled. `highpass` made it thin and harsh. `bandpass` in the right range made it sound like a click.
+Filtering it with a `bandpass` filter keeps only a specific range of frequencies, which is what makes it sound like a click. When you filter noise, you can make it sound like a click, a whoosh, a thud, depending on what frequencies you keep.
 
-Once I had something that resembled a click, it was wrong in ways I could describe but not fix. I wanted a click sound that was short and percussive, but it was either too long or too short. It was either too harsh or too muffled. It was either too high or too low.
+I asked Cursor to show me different filter types on the same noise. `lowpass` made it muffled. `highpass` made it thin and harsh. `bandpass` in the right range made it sound like a click. Once I had something that resembled a click, it was wrong in ways I could describe but not fix. I wanted a click sound that was short and percussive, but it was either too long or too short. It was either too harsh or too muffled. It was either too high or too low.
 
-Finally, when I said "fade naturally," it introduced me to envelopes. Envelopes are how sounds change volume over time. It explained that real sounds don't just stop, they decay. And they decay `exponentially`, not linearly.
+Finally, when I asked it to "fade naturally," it introduced me to envelopes. Envelopes are how sounds change volume over time. It explained that real sounds don't just stop, they decay. And they decay `exponentially`, not linearly.
 
+Basically you can split it into two parts: the `attack` and the `decay`. Turning up the `attack` makes the sound louder and faster, while turning up the `decay` makes the sound quieter and slower.
 
 <Figure>
-  <EnvelopeDemo />
-  <Caption>Examples of Attack and Decay</Caption>
+  <AudioConceptsDemo />
+  <Caption>Waveforms - Click To Hear.</Caption>
 </Figure>
 
-Basically you can split the decay into two parts: the `attack` and the `decay`. Turning up the `attack` makes the sound louder and faster, while turning up the `decay` makes the sound quieter and slower.
-
-I spent some time going back and forth with Cursor, tweaking the attack and decay until I had a click sound I actually liked.
-
-Once I understood the basic loop, I started building out more sounds. I described what I wanted and listened to the results. I described what was wrong and repeated the process until I had a sound I liked.
-
-# The Library
-
-After enough back-and-forth, I asked Cursor to build me a tool where I could adjust all the parameters myself and hear the results in real-time. Sliders for duration, frequency, filter settings, everything.
-
-<Figure>
-  <ClickSynthDemo />
-  <Caption>This is how I actually designed my sounds—tweaking sliders until it sounded right.</Caption>
-</Figure>
-
-This changed everything. Instead of describing changes in words, I could just drag a slider and instantly hear the difference. Then I'd ask Cursor to explain what I just changed and why it sounded different.
-
-<Figure>
-  <FilterDemo />
-  <Caption>Playing with filter frequency and resonance taught me more than any documentation.</Caption>
-</Figure>
+I spent some time going back and forth with Cursor, tweaking the attack and decay until I had a click sound I actually liked. Once I understood the basic loop, I started building out more sounds. I described what I wanted and listened to the results. I described what was wrong and repeated the process until I had a sound I liked.
 
 
 # The Sound Library
 
-Here's the final library. Click any sound to hear it, and try switching between the different feels at the bottom—mechanical, soft, aero, arcade, organic. Same sounds, different vibes.
+Here's the complete library I was able to come up with. There's still some room for improvement, but I'm happy with the results.
 
 <Figure>
   <SoundLabDemo />
-  <Caption>Nine sounds across five different feels.</Caption>
 </Figure>
 
+It's crazy that with zero knowledge of audio synthesis, I was able to come up with a library of sounds that feel pretty good. 
 
 # Looking Back
 
-I went into this knowing nothing about audio synthesis. I came out with a library of sounds that feel intentional. Sounds I understand and can tweak instead of random files I downloaded. 
+I went into this knowing nothing about audio engineering and came out with a library of sounds. Sounds I understand and can tweak instead of random files I downloaded. 
 
 The process was collaborative. I provided taste and AI provided implementation. Neither of us could have done it alone. What I learned is that sometimes not knowing the technicalities is actually a good thing. Using Cursor as a translator helped me turn feelings into logic.
 
-When trying to create something new, it's easy to get stuck in your own head and think you need to know everything about the thing you're trying to create. This is not the case anymore. 
+When trying to create something new, it's easy to get stuck in your own head and think you need to know everything about the thing you're trying to create. This is not the case anymore. You can get a long way with just a few questions and a lot of listening. 
 
-You can get a long way with just a few questions and a lot of listening. Try it out for yourself and see what you can create.
+Try it out for yourself and see what you can create.

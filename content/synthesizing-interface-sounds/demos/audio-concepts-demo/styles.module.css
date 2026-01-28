@@ -1,0 +1,68 @@
+.wrapper {
+  width: 100%;
+  overflow: visible;
+}
+
+.container {
+  display: grid;
+  grid-template-rows: repeat(5, auto);
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+  width: fit-content;
+  padding-block: 48px;
+  overflow: visible;
+}
+
+.concept {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+  min-width: 0;
+  aspect-ratio: 1;
+  padding: 8px 6px;
+  overflow: visible;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  transition: all 0.18s ease;
+}
+
+.concept:hover {
+  color: var(--gray-12);
+}
+
+.svg {
+  width: 48px;
+  height: 24px;
+  overflow: visible;
+  fill: none;
+  stroke: var(--gray-10);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transform-origin: center;
+  transition: stroke 0.15s ease;
+}
+
+.concept:hover .svg:not([data-active="true"]) {
+  stroke: var(--gray-12);
+}
+
+.path {
+  vector-effect: non-scaling-stroke;
+}
+
+.label {
+  font-size: 10px;
+  font-weight: var(--font-weight-medium);
+  color: var(--gray-10);
+  text-align: center;
+  transition: color 0.15s ease;
+}
+
+.concept:hover .label {
+  color: var(--gray-12);
+}

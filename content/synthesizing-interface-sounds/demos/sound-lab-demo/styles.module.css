@@ -1,37 +1,35 @@
 .container {
   display: flex;
-  flex-direction: column;
-  gap: 12px;
+  gap: 32px;
+  justify-content: space-around;
+  width: 100%;
+  padding-block: 48px;
 }
 
 .pads {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: var(--shadow-2);
 }
 
 .pad {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 4px;
   align-items: center;
   justify-content: center;
-  aspect-ratio: 1;
-  padding: 8px;
+
+  width: 80px;
+  height: 48px;
   font-size: 13px;
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--font-letter-spacing-13px);
   cursor: pointer;
   border: none;
-  border-radius: 8px;
-  transition:
-    opacity 0.1s ease,
-    transform 0.1s ease,
-    box-shadow 0.1s ease;
-}
 
-.pad:active {
-  transform: scale(0.96);
+  transition: all 0.2s ease;
 }
 
 /* Color variants - muted by default */
@@ -141,26 +139,29 @@
 }
 
 .feels {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   justify-content: center;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: var(--shadow-2);
 }
 
 .feelButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 48px;
   padding: 6px 12px;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: var(--font-weight-medium);
   color: var(--gray-9);
-  text-transform: uppercase;
   letter-spacing: var(--font-letter-spacing-13px);
   cursor: pointer;
   background: transparent;
-  border: none;
-  border-radius: 4px;
-  transition:
-    color 0.15s ease,
-    background 0.15s ease;
+  box-shadow: 0 0 0 0.5px var(--gray-4);
+  transition: all 0.2s ease;
 }
 
 .feelButton:hover {
