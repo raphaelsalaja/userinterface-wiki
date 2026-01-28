@@ -1,0 +1,43 @@
+.popover {
+  z-index: 9999;
+  pointer-events: auto;
+}
+
+.popup {
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  background: var(--gray-1);
+  border: 0.5px solid var(--gray-a4);
+  border-radius: 12px;
+  box-shadow: var(--shadow-4);
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: var(--font-weight-medium);
+  color: var(--gray-11);
+  letter-spacing: var(--font-letter-spacing-12px);
+  white-space: nowrap;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease;
+
+  &:hover {
+    color: var(--gray-12);
+    background: var(--gray-a3);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--gray-8);
+    outline-offset: -2px;
+  }
+}

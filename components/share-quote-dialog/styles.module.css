@@ -1,0 +1,120 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  background: rgb(0 0 0 / 0.5);
+  backdrop-filter: blur(4px);
+}
+
+.viewport {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  pointer-events: none;
+}
+
+.popup {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  max-width: 480px;
+  max-height: calc(100vh - 48px);
+  padding: 24px;
+  overflow-y: auto;
+  pointer-events: auto;
+  background: var(--gray-1);
+  border: 0.5px solid var(--gray-a4);
+  border-radius: 16px;
+  box-shadow: var(--shadow-5);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: var(--font-weight-medium);
+  color: var(--gray-12);
+  letter-spacing: var(--font-letter-spacing-16px);
+}
+
+.close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  color: var(--gray-11);
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid var(--gray-a4);
+  border-radius: 8px;
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+
+  &:hover {
+    color: var(--gray-12);
+    background: var(--gray-a3);
+    border-color: var(--gray-a5);
+  }
+}
+
+.preview {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 1200 / 630;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: var(--shadow-2);
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.skeleton {
+  width: 100%;
+  aspect-ratio: 1200 / 630;
+  background: linear-gradient(
+    90deg,
+    var(--gray-a3) 0%,
+    var(--gray-a4) 50%,
+    var(--gray-a3) 100%
+  );
+  background-size: 200% 100%;
+  border-radius: 8px;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
