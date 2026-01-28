@@ -1,14 +1,14 @@
 ---
-name: synthesizing-interface-sounds
+name: generating-sounds-with-ai
 description: Guidelines for using AI to create UI sounds with the Web Audio API. Use when helping users synthesize audio feedback, create procedural sounds, or iterate on sound design without audio engineering knowledge.
 license: MIT
 metadata:
   author: raphael-salaja
   version: "1.0.0"
-  source: /content/synthesizing-interface-sounds/index.mdx
+  source: /content/generating-sounds-with-ai/index.mdx
 ---
 
-# Synthesizing Interface Sounds with AI
+# Generating Sounds with AI
 
 Help users create UI sounds from scratch using the Web Audio API, even without audio engineering knowledge. Focus on translating their descriptions into working code.
 
@@ -137,4 +137,3 @@ Let the user's ears guide the iteration.
 ## References
 
 - [Web Audio API - MDN](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API)
-- [Morphing icons with Claude](https://benji.org/morphing-icons-with-claude) — Similar AI-assisted creative process
