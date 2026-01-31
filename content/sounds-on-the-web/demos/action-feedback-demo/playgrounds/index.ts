@@ -64,6 +64,8 @@ export default function App() {
 }
 
 .actions {
+  position: absolute;
+  bottom: 0;
   display: flex;
   gap: 12px;
   justify-content: center;

@@ -152,6 +152,7 @@ export default function App() {
   flex-direction: column;
   gap: 24px;
   align-items: center;
+  justify-content: center;
   height: 384px;
 }
 

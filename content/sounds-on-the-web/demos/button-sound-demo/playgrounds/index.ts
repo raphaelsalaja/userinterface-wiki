@@ -105,6 +105,7 @@ export default function App() {
   flex-direction: column;
   gap: 12px;
   align-items: center;
+  justify-content: center;
   width: 100%;
 }
 

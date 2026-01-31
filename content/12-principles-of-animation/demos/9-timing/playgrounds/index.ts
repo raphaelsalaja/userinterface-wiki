@@ -66,7 +66,7 @@ export default function App() {
         </Popover.Root>
       </div>
 
-      <Controls>
+      <Controls className={styles.controls}>
         <Button onClick={() => setIsSnappy((prev) => !prev)}>
           {isSnappy ? "Snappy (120ms)" : "Sluggish (800ms)"}
         </Button>

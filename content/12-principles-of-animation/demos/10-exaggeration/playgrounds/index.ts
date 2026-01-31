@@ -30,6 +30,7 @@ export default function App() {
   gap: 12px;
   align-items: center;
   justify-content: center;
+  height: 384px;
 
   &::before {
     position: absolute;

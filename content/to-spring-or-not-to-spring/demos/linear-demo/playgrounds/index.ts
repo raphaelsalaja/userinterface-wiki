@@ -122,7 +122,7 @@ export default function App() {
   align-items: center;
   justify-content: center;
   width: 100%;
-  padding-block: 48px;
+  padding-bottom: 48px;
 }
 
 .button {
@@ -153,6 +153,11 @@ export default function App() {
   justify-content: center;
   color: var(--gray-1);
   background: var(--red-9);
+}
+
+.controls {
+  position: absolute;
+  bottom: 0;
 }
 `,
   },

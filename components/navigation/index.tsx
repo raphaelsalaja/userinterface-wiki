@@ -8,9 +8,15 @@ import styles from "./styles.module.css";
 
 const LINKS = [
   {
+    id: "demos",
+    href: "/demo",
+    title: "Demos",
+    external: false,
+  },
+  {
     id: "twitter",
     href: "https://twitter.com/intent/follow?screen_name=raphaelsalaja",
-    title: "(X) Twitter",
+    title: "Twitter",
     external: true,
   },
   {

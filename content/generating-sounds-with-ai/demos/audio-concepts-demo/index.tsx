@@ -197,7 +197,7 @@ function ConceptVisual({
           initial={false}
           animate={{
             pathLength: isActive ? [0, 1] : 1,
-            stroke: isActive ? CONCEPT_COLORS[type] : "#71717A",
+            stroke: isActive ? CONCEPT_COLORS[type] : "var(--gray-12)",
           }}
           transition={{
             pathLength: { duration: 0.8 },

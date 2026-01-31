@@ -94,6 +94,9 @@ export default function App() {
 }
 `,
     "/styles.module.css": `.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: 384px;
 }
 
