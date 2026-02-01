@@ -1,13 +1,14 @@
 "use client";
 
 import clsx from "clsx";
-import { motion, useReducedMotion, useSpring } from "motion/react";
+import {
+  motion,
+  type Transition,
+  useReducedMotion,
+  useSpring,
+} from "motion/react";
 import { useEffect, useMemo, useRef } from "react";
 import styles from "./styles.module.css";
-
-// ============================================================================
-// Types
-// ============================================================================
 
 interface IconLine {
   x1: number;
@@ -44,24 +45,15 @@ type IconName =
   | "chevron-right"
   | "chevron-down"
   | "chevron-left"
-  | "chevron-up";
-
-type SpringPreset = "snappy" | "smooth" | "bouncy";
-
-interface SpringConfig {
-  stiffness: number;
-  damping: number;
-  mass: number;
-}
-
-// ============================================================================
-// Constants
-// ============================================================================
+  | "chevron-up"
+  | "grip"
+  | "slash"
+  | "corner";
 
 const CENTER = 7;
+
 const VIEWBOX_SIZE = 14;
 
-// Collapsed line (invisible point at center)
 const collapsed: IconLine = {
   x1: CENTER,
   y1: CENTER,
@@ -70,22 +62,30 @@ const collapsed: IconLine = {
   opacity: 0,
 };
 
-// Spring presets for different animation feels
-const springPresets: Record<SpringPreset, SpringConfig> = {
-  snappy: { stiffness: 400, damping: 30, mass: 0.8 },
-  smooth: { stiffness: 200, damping: 20, mass: 1 },
-  bouncy: { stiffness: 300, damping: 15, mass: 1 },
+const defaultTransition: Transition = {
+  ease: [0.19, 1, 0.22, 1],
+  duration: 0.4,
 };
 
-// Instant transition for reduced motion
-const instantTransition = { duration: 0 };
+const arrowLines: [IconLine, IconLine, IconLine] = [
+  { x1: 2, y1: 7, x2: 12, y2: 7 },
+  { x1: 7.5, y1: 2.5, x2: 12, y2: 7 },
+  { x1: 7.5, y1: 11.5, x2: 12, y2: 7 },
+];
 
-// ============================================================================
-// Icon Definitions
-// ============================================================================
+const chevronLines: [IconLine, IconLine, IconLine] = [
+  { x1: 5, y1: 2.5, x2: 9.5, y2: 7 },
+  { x1: 5, y1: 11.5, x2: 9.5, y2: 7 },
+  collapsed,
+];
+
+const plusLines: [IconLine, IconLine, IconLine] = [
+  { x1: 7, y1: 2, x2: 7, y2: 12 },
+  { x1: 2, y1: 7, x2: 12, y2: 7 },
+  collapsed,
+];
 
 const icons: Record<IconName, IconDefinition> = {
-  // Basic icons
   menu: {
     lines: [
       { x1: 2, y1: 3.5, x2: 12, y2: 3.5 },
@@ -93,24 +93,8 @@ const icons: Record<IconName, IconDefinition> = {
       { x1: 2, y1: 10.5, x2: 12, y2: 10.5 },
     ],
   },
-  cross: {
-    lines: [
-      { x1: 3, y1: 3, x2: 11, y2: 11 },
-      { x1: 11, y1: 3, x2: 3, y2: 11 },
-      collapsed,
-    ],
-    rotation: 0,
-    group: "plus-cross",
-  },
-  plus: {
-    lines: [
-      { x1: 7, y1: 2, x2: 7, y2: 12 },
-      { x1: 2, y1: 7, x2: 12, y2: 7 },
-      collapsed,
-    ],
-    rotation: 0,
-    group: "plus-cross",
-  },
+  cross: { lines: plusLines, rotation: 45, group: "plus-cross" },
+  plus: { lines: plusLines, rotation: 0, group: "plus-cross" },
   minus: {
     lines: [{ x1: 2, y1: 7, x2: 12, y2: 7 }, collapsed, collapsed],
   },
@@ -142,8 +126,6 @@ const icons: Record<IconName, IconDefinition> = {
       collapsed,
     ],
   },
-
-  // Media icons
   play: {
     lines: [
       { x1: 4, y1: 2.5, x2: 4, y2: 11.5 },
@@ -158,8 +140,6 @@ const icons: Record<IconName, IconDefinition> = {
       collapsed,
     ],
   },
-
-  // Transfer icons
   download: {
     lines: [
       { x1: 7, y1: 2, x2: 7, y2: 10 },
@@ -181,101 +161,39 @@ const icons: Record<IconName, IconDefinition> = {
       { x1: 11, y1: 3, x2: 11, y2: 9 },
     ],
   },
-
-  // Arrows (rotation group)
-  "arrow-right": {
+  "arrow-right": { lines: arrowLines, rotation: 0, group: "arrow" },
+  "arrow-down": { lines: arrowLines, rotation: 90, group: "arrow" },
+  "arrow-left": { lines: arrowLines, rotation: 180, group: "arrow" },
+  "arrow-up": { lines: arrowLines, rotation: -90, group: "arrow" },
+  "chevron-right": { lines: chevronLines, rotation: 0, group: "chevron" },
+  "chevron-down": { lines: chevronLines, rotation: 90, group: "chevron" },
+  "chevron-left": { lines: chevronLines, rotation: 180, group: "chevron" },
+  "chevron-up": { lines: chevronLines, rotation: -90, group: "chevron" },
+  grip: {
     lines: [
-      { x1: 2, y1: 7, x2: 12, y2: 7 },
-      { x1: 7.5, y1: 2.5, x2: 12, y2: 7 },
-      { x1: 7.5, y1: 11.5, x2: 12, y2: 7 },
+      { x1: 7, y1: 3, x2: 7, y2: 3 },
+      { x1: 7, y1: 7, x2: 7, y2: 7 },
+      { x1: 7, y1: 11, x2: 7, y2: 11 },
     ],
-    rotation: 0,
-    group: "arrow",
   },
-  "arrow-down": {
-    lines: [
-      { x1: 2, y1: 7, x2: 12, y2: 7 },
-      { x1: 7.5, y1: 2.5, x2: 12, y2: 7 },
-      { x1: 7.5, y1: 11.5, x2: 12, y2: 7 },
-    ],
-    rotation: 90,
-    group: "arrow",
+  slash: {
+    lines: [{ x1: 11, y1: 3, x2: 3, y2: 11 }, collapsed, collapsed],
   },
-  "arrow-left": {
+  corner: {
     lines: [
-      { x1: 2, y1: 7, x2: 12, y2: 7 },
-      { x1: 7.5, y1: 2.5, x2: 12, y2: 7 },
-      { x1: 7.5, y1: 11.5, x2: 12, y2: 7 },
-    ],
-    rotation: 180,
-    group: "arrow",
-  },
-  "arrow-up": {
-    lines: [
-      { x1: 2, y1: 7, x2: 12, y2: 7 },
-      { x1: 7.5, y1: 2.5, x2: 12, y2: 7 },
-      { x1: 7.5, y1: 11.5, x2: 12, y2: 7 },
-    ],
-    rotation: -90,
-    group: "arrow",
-  },
-
-  // Chevrons (rotation group)
-  "chevron-right": {
-    lines: [
-      { x1: 5, y1: 2.5, x2: 9.5, y2: 7 },
-      { x1: 5, y1: 11.5, x2: 9.5, y2: 7 },
+      { x1: 4, y1: 3, x2: 4, y2: 11 },
+      { x1: 4, y1: 11, x2: 11, y2: 11 },
       collapsed,
     ],
-    rotation: 0,
-    group: "chevron",
-  },
-  "chevron-down": {
-    lines: [
-      { x1: 5, y1: 2.5, x2: 9.5, y2: 7 },
-      { x1: 5, y1: 11.5, x2: 9.5, y2: 7 },
-      collapsed,
-    ],
-    rotation: 90,
-    group: "chevron",
-  },
-  "chevron-left": {
-    lines: [
-      { x1: 5, y1: 2.5, x2: 9.5, y2: 7 },
-      { x1: 5, y1: 11.5, x2: 9.5, y2: 7 },
-      collapsed,
-    ],
-    rotation: 180,
-    group: "chevron",
-  },
-  "chevron-up": {
-    lines: [
-      { x1: 5, y1: 2.5, x2: 9.5, y2: 7 },
-      { x1: 5, y1: 11.5, x2: 9.5, y2: 7 },
-      collapsed,
-    ],
-    rotation: -90,
-    group: "chevron",
   },
 };
 
-// ============================================================================
-// Animated Line Component
-// ============================================================================
-
 interface AnimatedLineProps {
   line: IconLine;
-  springConfig: SpringConfig;
-  reducedMotion: boolean;
+  transition: Transition;
 }
 
-function AnimatedLine({
-  line,
-  springConfig,
-  reducedMotion,
-}: AnimatedLineProps) {
-  const transition = reducedMotion ? instantTransition : springConfig;
-
+function AnimatedLine({ line, transition }: AnimatedLineProps) {
   return (
     <motion.line
       animate={{
@@ -291,23 +209,12 @@ function AnimatedLine({
   );
 }
 
-// ============================================================================
-// Main Component
-// ============================================================================
-
 interface MorphingIconProps {
-  /** The icon to display */
   icon: IconName;
-  /** Size in pixels (default: 14) */
   size?: number;
-  /** Additional CSS class */
   className?: string;
-  /** Stroke width (default: 1.5) */
   strokeWidth?: number;
-  /** Animation feel preset (default: "smooth") */
-  spring?: SpringPreset;
-  /** Custom spring configuration (overrides preset) */
-  springConfig?: SpringConfig;
+  transition?: Transition;
 }
 
 function MorphingIcon({
@@ -315,44 +222,26 @@ function MorphingIcon({
   size = 14,
   className,
   strokeWidth = 1.5,
-  spring = "smooth",
-  springConfig: customSpringConfig,
+  transition = defaultTransition,
 }: MorphingIconProps) {
   const definition = icons[icon];
   const reducedMotion = useReducedMotion() ?? false;
   const prevDefinitionRef = useRef<IconDefinition>(definition);
+  const activeTransition = reducedMotion ? { duration: 0 } : transition;
 
-  // Use custom config or preset
-  const springConfig = customSpringConfig ?? springPresets[spring];
+  const rotation = useSpring(definition.rotation ?? 0, activeTransition);
 
-  // Track rotation for smooth transitions within rotation groups
-  const rotation = useSpring(
-    definition.rotation ?? 0,
-    reducedMotion ? instantTransition : springConfig,
-  );
-
-  // Determine if we should rotate or morph
   const shouldRotate = useMemo(() => {
     const prev = prevDefinitionRef.current;
-    const curr = definition;
-
-    // Same rotation group = rotate
-    if (prev.group && curr.group && prev.group === curr.group) {
-      return true;
-    }
-
-    return false;
+    return prev.group && definition.group && prev.group === definition.group;
   }, [definition]);
 
   useEffect(() => {
     if (shouldRotate) {
-      // Animate rotation within the same group
       rotation.set(definition.rotation ?? 0);
     } else {
-      // Reset rotation for cross-group morphs
       rotation.jump(definition.rotation ?? 0);
     }
-
     prevDefinitionRef.current = definition;
   }, [definition, shouldRotate, rotation]);
 
@@ -364,6 +253,7 @@ function MorphingIcon({
       fill="none"
       stroke="currentColor"
       strokeWidth={strokeWidth}
+      strokeLinejoin="round"
       className={clsx(styles.icon, className)}
       aria-hidden="true"
     >
@@ -375,52 +265,22 @@ function MorphingIcon({
       >
         <AnimatedLine
           line={definition.lines[0]}
-          springConfig={springConfig}
-          reducedMotion={reducedMotion}
+          transition={activeTransition}
         />
         <AnimatedLine
           line={definition.lines[1]}
-          springConfig={springConfig}
-          reducedMotion={reducedMotion}
+          transition={activeTransition}
         />
         <AnimatedLine
           line={definition.lines[2]}
-          springConfig={springConfig}
-          reducedMotion={reducedMotion}
+          transition={activeTransition}
         />
       </motion.g>
     </svg>
   );
 }
 
-// ============================================================================
-// Exports
-// ============================================================================
+export { MorphingIcon };
+export type { IconName, MorphingIconProps };
 
-export { MorphingIcon, springPresets };
-export type { IconName, MorphingIconProps, SpringPreset, SpringConfig };
-
-// Export icon names for convenience
-export const iconNames: IconName[] = [
-  "menu",
-  "cross",
-  "plus",
-  "minus",
-  "equals",
-  "asterisk",
-  "more",
-  "check",
-  "play",
-  "pause",
-  "download",
-  "upload",
-  "external",
-  "arrow-right",
-  "arrow-down",
-  "arrow-left",
-  "arrow-up",
-  "chevron-right",
-  "chevron-down",
-  "chevron-left",
-  "chevron-up",
-];
+export const iconNames = Object.keys(icons) as IconName[];

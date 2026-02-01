@@ -1,0 +1,18 @@
+---
+title: "Morphing Icons"
+description: "Icons that transform through actual shape transformation, not crossfades. Inspired by Benji's experiments with Claude."
+date: "2026-02-01"
+author: "raphael-salaja"
+icon: "motion"
+---
+
+import { MorphingIconDemo } from "./demos";
+
+
+<Figure>
+  <MorphingIconDemo />
+</Figure>
+
+Inspired by [Benji's experiments with Claude](https://benji.org/morphing-icons-with-claude). Every icon uses exactly three SVG lines. Icons that need fewer collapse the extras to invisible points. This means any icon can morph into any other since they share the same underlying structure.[^1]
+
+[^1]: [Benji's experiments with Claude](https://benji.org/morphing-icons-with-claude)
