@@ -1,0 +1,87 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.cards {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: space-around;
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+    gap: 24px;
+    justify-content: center;
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: var(--gray-1);
+  border-radius: 12px;
+  box-shadow: var(--shadow-2);
+}
+
+.label {
+  font-size: 12px;
+  font-weight: var(--font-weight-medium);
+  color: var(--gray-10);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.items {
+  display: flex;
+  gap: 8px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  font-size: 14px;
+  font-weight: var(--font-weight-medium);
+  color: var(--gray-12);
+  background: var(--gray-2);
+  border-radius: 8px;
+  box-shadow: var(--shadow-2);
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 0;
+  background: var(--gray-2);
+  border-top: 1px solid var(--gray-4);
+}
+
+.button {
+  height: 32px;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--gray-10);
+  cursor: pointer;
+  background: var(--gray-1);
+  border: none;
+  border-radius: 6px;
+  box-shadow: var(--shadow-2);
+}
+
+.button:hover {
+  color: var(--gray-12);
+  background: var(--gray-3);
+}
+
+.button:active {
+  transform: scale(0.98);
+}

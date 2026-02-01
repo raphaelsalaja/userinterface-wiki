@@ -7,6 +7,7 @@ import { Button } from "@/components/button";
 import { Menu } from "@/components/menu";
 import { useNarrationContext } from "@/components/narration/provider";
 import { Spinner } from "@/components/spinner";
+import { TextSelectionPopover } from "@/components/text-selection-popover";
 import {
   DotGrid1X3HorizontalIcon,
   PauseIcon,
@@ -192,7 +193,7 @@ function Header({ className }: HeaderProps) {
                     }}
                   />
                   <Menu.RichItem
-                    title="Copy page"
+                    title="Copy Page"
                     description="Copy page as Markdown for LLMs"
                     onClick={() => {
                       const content = document.querySelector(
@@ -279,9 +280,18 @@ interface ContentProps {
 }
 
 function Content({ children, className }: ContentProps) {
+  const { page, author } = useArticleContext("Content");
+  const pageSlug = page.slugs?.join("/") ?? "";
+
   return (
     <article className={className} data-article-content>
-      {children}
+      <TextSelectionPopover
+        pageTitle={page.data.title}
+        pageSlug={pageSlug}
+        authorName={author.name}
+      >
+        {children}
+      </TextSelectionPopover>
     </article>
   );
 }

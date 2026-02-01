@@ -45,6 +45,7 @@
   position: relative;
   line-height: 24px;
   color: var(--gray-8);
+  cursor: pointer;
   transition: all 0.2s ease;
 }
 

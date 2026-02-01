@@ -1,260 +1,294 @@
-/* amber */
 @import "@radix-ui/colors/amber.css";
-@import "@radix-ui/colors/amber-alpha.css";
 @import "@radix-ui/colors/amber-dark.css";
+@import "@radix-ui/colors/amber-alpha.css";
 @import "@radix-ui/colors/amber-dark-alpha.css";
 
-/* blue */
 @import "@radix-ui/colors/blue.css";
-@import "@radix-ui/colors/blue-alpha.css";
 @import "@radix-ui/colors/blue-dark.css";
+@import "@radix-ui/colors/blue-alpha.css";
 @import "@radix-ui/colors/blue-dark-alpha.css";
 
-/* bronze */
 @import "@radix-ui/colors/bronze.css";
-@import "@radix-ui/colors/bronze-alpha.css";
 @import "@radix-ui/colors/bronze-dark.css";
+@import "@radix-ui/colors/bronze-alpha.css";
 @import "@radix-ui/colors/bronze-dark-alpha.css";
 
-/* brown */
 @import "@radix-ui/colors/brown.css";
-@import "@radix-ui/colors/brown-alpha.css";
 @import "@radix-ui/colors/brown-dark.css";
+@import "@radix-ui/colors/brown-alpha.css";
 @import "@radix-ui/colors/brown-dark-alpha.css";
 
-/* crimson */
 @import "@radix-ui/colors/crimson.css";
-@import "@radix-ui/colors/crimson-alpha.css";
 @import "@radix-ui/colors/crimson-dark.css";
+@import "@radix-ui/colors/crimson-alpha.css";
 @import "@radix-ui/colors/crimson-dark-alpha.css";
 
-/* cyan */
 @import "@radix-ui/colors/cyan.css";
-@import "@radix-ui/colors/cyan-alpha.css";
 @import "@radix-ui/colors/cyan-dark.css";
+@import "@radix-ui/colors/cyan-alpha.css";
 @import "@radix-ui/colors/cyan-dark-alpha.css";
 
-/* gold */
 @import "@radix-ui/colors/gold.css";
-@import "@radix-ui/colors/gold-alpha.css";
 @import "@radix-ui/colors/gold-dark.css";
+@import "@radix-ui/colors/gold-alpha.css";
 @import "@radix-ui/colors/gold-dark-alpha.css";
 
-/* grass */
 @import "@radix-ui/colors/grass.css";
-@import "@radix-ui/colors/grass-alpha.css";
 @import "@radix-ui/colors/grass-dark.css";
+@import "@radix-ui/colors/grass-alpha.css";
 @import "@radix-ui/colors/grass-dark-alpha.css";
 
-/* gray */
 @import "@radix-ui/colors/gray.css";
-@import "@radix-ui/colors/gray-alpha.css";
 @import "@radix-ui/colors/gray-dark.css";
+@import "@radix-ui/colors/gray-alpha.css";
 @import "@radix-ui/colors/gray-dark-alpha.css";
 
-/* green */
 @import "@radix-ui/colors/green.css";
-@import "@radix-ui/colors/green-alpha.css";
 @import "@radix-ui/colors/green-dark.css";
+@import "@radix-ui/colors/green-alpha.css";
 @import "@radix-ui/colors/green-dark-alpha.css";
 
-/* indigo */
 @import "@radix-ui/colors/indigo.css";
-@import "@radix-ui/colors/indigo-alpha.css";
 @import "@radix-ui/colors/indigo-dark.css";
+@import "@radix-ui/colors/indigo-alpha.css";
 @import "@radix-ui/colors/indigo-dark-alpha.css";
 
-/* iris */
 @import "@radix-ui/colors/iris.css";
-@import "@radix-ui/colors/iris-alpha.css";
 @import "@radix-ui/colors/iris-dark.css";
+@import "@radix-ui/colors/iris-alpha.css";
 @import "@radix-ui/colors/iris-dark-alpha.css";
 
-/* jade */
 @import "@radix-ui/colors/jade.css";
-@import "@radix-ui/colors/jade-alpha.css";
 @import "@radix-ui/colors/jade-dark.css";
+@import "@radix-ui/colors/jade-alpha.css";
 @import "@radix-ui/colors/jade-dark-alpha.css";
 
-/* lime */
 @import "@radix-ui/colors/lime.css";
-@import "@radix-ui/colors/lime-alpha.css";
 @import "@radix-ui/colors/lime-dark.css";
+@import "@radix-ui/colors/lime-alpha.css";
 @import "@radix-ui/colors/lime-dark-alpha.css";
 
-/* mauve */
 @import "@radix-ui/colors/mauve.css";
-@import "@radix-ui/colors/mauve-alpha.css";
 @import "@radix-ui/colors/mauve-dark.css";
+@import "@radix-ui/colors/mauve-alpha.css";
 @import "@radix-ui/colors/mauve-dark-alpha.css";
 
-/* mint */
 @import "@radix-ui/colors/mint.css";
-@import "@radix-ui/colors/mint-alpha.css";
 @import "@radix-ui/colors/mint-dark.css";
+@import "@radix-ui/colors/mint-alpha.css";
 @import "@radix-ui/colors/mint-dark-alpha.css";
 
-/* olive */
 @import "@radix-ui/colors/olive.css";
-@import "@radix-ui/colors/olive-alpha.css";
 @import "@radix-ui/colors/olive-dark.css";
+@import "@radix-ui/colors/olive-alpha.css";
 @import "@radix-ui/colors/olive-dark-alpha.css";
 
-/* orange */
 @import "@radix-ui/colors/orange.css";
-@import "@radix-ui/colors/orange-alpha.css";
 @import "@radix-ui/colors/orange-dark.css";
+@import "@radix-ui/colors/orange-alpha.css";
 @import "@radix-ui/colors/orange-dark-alpha.css";
 
-/* pink */
 @import "@radix-ui/colors/pink.css";
-@import "@radix-ui/colors/pink-alpha.css";
 @import "@radix-ui/colors/pink-dark.css";
+@import "@radix-ui/colors/pink-alpha.css";
 @import "@radix-ui/colors/pink-dark-alpha.css";
 
-/* plum */
 @import "@radix-ui/colors/plum.css";
-@import "@radix-ui/colors/plum-alpha.css";
 @import "@radix-ui/colors/plum-dark.css";
+@import "@radix-ui/colors/plum-alpha.css";
 @import "@radix-ui/colors/plum-dark-alpha.css";
 
-/* purple */
 @import "@radix-ui/colors/purple.css";
-@import "@radix-ui/colors/purple-alpha.css";
 @import "@radix-ui/colors/purple-dark.css";
+@import "@radix-ui/colors/purple-alpha.css";
 @import "@radix-ui/colors/purple-dark-alpha.css";
 
-/* red */
 @import "@radix-ui/colors/red.css";
-@import "@radix-ui/colors/red-alpha.css";
 @import "@radix-ui/colors/red-dark.css";
+@import "@radix-ui/colors/red-alpha.css";
 @import "@radix-ui/colors/red-dark-alpha.css";
 
-/* ruby */
 @import "@radix-ui/colors/ruby.css";
-@import "@radix-ui/colors/ruby-alpha.css";
 @import "@radix-ui/colors/ruby-dark.css";
+@import "@radix-ui/colors/ruby-alpha.css";
 @import "@radix-ui/colors/ruby-dark-alpha.css";
 
-/* sage */
 @import "@radix-ui/colors/sage.css";
-@import "@radix-ui/colors/sage-alpha.css";
 @import "@radix-ui/colors/sage-dark.css";
+@import "@radix-ui/colors/sage-alpha.css";
 @import "@radix-ui/colors/sage-dark-alpha.css";
 
-/* sand */
 @import "@radix-ui/colors/sand.css";
-@import "@radix-ui/colors/sand-alpha.css";
 @import "@radix-ui/colors/sand-dark.css";
+@import "@radix-ui/colors/sand-alpha.css";
 @import "@radix-ui/colors/sand-dark-alpha.css";
 
-/* sky */
 @import "@radix-ui/colors/sky.css";
-@import "@radix-ui/colors/sky-alpha.css";
 @import "@radix-ui/colors/sky-dark.css";
+@import "@radix-ui/colors/sky-alpha.css";
 @import "@radix-ui/colors/sky-dark-alpha.css";
 
-/* slate */
 @import "@radix-ui/colors/slate.css";
-@import "@radix-ui/colors/slate-alpha.css";
 @import "@radix-ui/colors/slate-dark.css";
+@import "@radix-ui/colors/slate-alpha.css";
 @import "@radix-ui/colors/slate-dark-alpha.css";
 
-/* teal */
 @import "@radix-ui/colors/teal.css";
-@import "@radix-ui/colors/teal-alpha.css";
 @import "@radix-ui/colors/teal-dark.css";
+@import "@radix-ui/colors/teal-alpha.css";
 @import "@radix-ui/colors/teal-dark-alpha.css";
 
-/* tomato */
 @import "@radix-ui/colors/tomato.css";
-@import "@radix-ui/colors/tomato-alpha.css";
 @import "@radix-ui/colors/tomato-dark.css";
+@import "@radix-ui/colors/tomato-alpha.css";
 @import "@radix-ui/colors/tomato-dark-alpha.css";
 
-/* violet */
 @import "@radix-ui/colors/violet.css";
-@import "@radix-ui/colors/violet-alpha.css";
 @import "@radix-ui/colors/violet-dark.css";
+@import "@radix-ui/colors/violet-alpha.css";
 @import "@radix-ui/colors/violet-dark-alpha.css";
 
-/* yellow */
 @import "@radix-ui/colors/yellow.css";
-@import "@radix-ui/colors/yellow-alpha.css";
 @import "@radix-ui/colors/yellow-dark.css";
+@import "@radix-ui/colors/yellow-alpha.css";
 @import "@radix-ui/colors/yellow-dark-alpha.css";
 
-/* black & white */
 @import "@radix-ui/colors/black-alpha.css";
 @import "@radix-ui/colors/white-alpha.css";
 
-/* family */
 :root {
-  --family-redPink: #ee4562;
-  --family-pink: #ec4899;
-  --family-purple: #d946ef;
-  --family-darkPurple: #9553f9;
-  --family-bluePurple: #5647f0;
-  --family-darkBlue: #0680fa;
-  --family-seaBlue: #4dafff;
-  --family-blue: #0ea5e9;
-  --family-emerald: #14bbc7;
-  --family-grassGreen: #10b981;
-  --family-green: #34c759;
-  --family-lime: #84cc16;
-  --family-offYellow: #eab308;
-  --family-orange: #f59e0b;
-  --family-burntOrange: #f97316;
-  --family-red: #ef4444;
-  --family-yellowBrown: #cdb35e;
-  --family-copper: #c48c54;
-  --family-navy: #023364;
-  --family-black: #1a1a1a;
-  --family-gray: grey;
+  --shadow-1:
+    inset 0 0 0 1px var(--gray-a5), inset 0 1.5px 2px 0 var(--gray-a2),
+    inset 0 1.5px 2px 0 var(--black-a2);
+
+  --shadow-2:
+    0 0 0 1px var(--gray-a3),
+    0 0 0 0.5px var(--black-a1),
+    0 1px 1px 0 var(--gray-a2),
+    0 2px 1px -1px var(--black-a1),
+    0 1px 3px 0 var(--black-a1);
+
+  --shadow-3:
+    0 0 0 1px var(--gray-a3),
+    0 2px 3px -2px var(--gray-a3),
+    0 3px 12px -4px var(--black-a2),
+    0 4px 16px -8px var(--black-a2);
+
+  --shadow-4:
+    0 0 0 1px var(--gray-a3), 0 8px 40px var(--black-a1),
+    0 12px 32px -16px var(--gray-a3);
+
+  --shadow-5:
+    0 0 0 1px var(--gray-a3), 0 12px 60px var(--black-a3),
+    0 12px 32px -16px var(--gray-a5);
+
+  --shadow-6:
+    0 0 0 1px var(--gray-a3), 0 12px 60px var(--black-a3),
+    0 16px 64px var(--gray-a2), 0 16px 36px -20px var(--gray-a7);
 }
 
-@supports (color: color(display-p3 1 1 1)) {
-  @media (color-gamut: p3) {
-    :root {
-      --family-redPink: color(
-        display-p3 0.9333333333 0.2705882353 0.3843137255
-      );
-      --family-pink: color(display-p3 0.9254901961 0.2823529412 0.6);
-      --family-purple: color(display-p3 0.8509803922 0.2745098039 0.937254902);
-      --family-darkPurple: color(
-        display-p3 0.5843137255 0.3254901961 0.9764705882
-      );
-      --family-bluePurple: color(
-        display-p3 0.337254902 0.2784313725 0.9411764706
-      );
-      --family-darkBlue: color(
-        display-p3 0.0235294118 0.5019607843 0.9803921569
-      );
-      --family-seaBlue: color(display-p3 0.3019607843 0.6862745098 1);
-      --family-blue: color(display-p3 0.0549019608 0.6470588235 0.9137254902);
-      --family-emerald: color(
-        display-p3 0.0784313725 0.7333333333 0.7803921569
-      );
-      --family-grassGreen: color(
-        display-p3 0.062745098 0.7254901961 0.5058823529
-      );
-      --family-green: color(display-p3 0.2039215686 0.7803921569 0.3490196078);
-      --family-lime: color(display-p3 0.5176470588 0.8 0.0862745098);
-      --family-offYellow: color(
-        display-p3 0.9176470588 0.7019607843 0.031372549
-      );
-      --family-orange: color(display-p3 0.9607843137 0.6196078431 0.0431372549);
-      --family-burntOrange: color(
-        display-p3 0.9764705882 0.4509803922 0.0862745098
-      );
-      --family-red: color(display-p3 0.937254902 0.2666666667 0.2666666667);
-      --family-yellowBrown: color(
-        display-p3 0.8039215686 0.7019607843 0.368627451
-      );
-      --family-copper: color(display-p3 0.768627451 0.5490196078 0.3294117647);
-      --family-navy: color(display-p3 0.0078431373 0.2 0.3921568627);
-      --family-black: color(display-p3 0.1019607843 0.1019607843 0.1019607843);
-      --family-gray: color(display-p3 0.5019607843 0.5019607843 0.5019607843);
-    }
+@supports (color: color-mix(in oklab, white, black)) {
+  :root {
+    --shadow-1:
+      inset 0 0 0 1px var(--gray-a5), inset 0 1.5px 2px 0 var(--gray-a2),
+      inset 0 1.5px 2px 0 var(--black-a2);
+
+    --shadow-2:
+      0 0 0 1px color-mix(in oklab, var(--gray-a3), var(--gray-3) 25%),
+      0 0 0 0.5px var(--black-a1),
+      0 1px 1px 0 var(--gray-a2),
+      0 2px 1px -1px var(--black-a1),
+      0 1px 3px 0 var(--black-a1);
+
+    --shadow-3:
+      0 0 0 1px color-mix(in oklab, var(--gray-a3), var(--gray-3) 25%),
+      0 2px 3px -2px var(--gray-a3),
+      0 3px 12px -4px var(--black-a2),
+      0 4px 16px -8px var(--black-a2);
+
+    --shadow-4:
+      0 0 0 1px color-mix(in oklab, var(--gray-a3), var(--gray-3) 25%),
+      0 8px 40px var(--black-a1), 0 12px 32px -16px var(--gray-a3);
+
+    --shadow-5:
+      0 0 0 1px color-mix(in oklab, var(--gray-a3), var(--gray-3) 25%),
+      0 12px 60px var(--black-a3), 0 12px 32px -16px var(--gray-a5);
+
+    --shadow-6:
+      0 0 0 1px color-mix(in oklab, var(--gray-a3), var(--gray-3) 25%),
+      0 12px 60px var(--black-a3), 0 16px 64px var(--gray-a2),
+      0 16px 36px -20px var(--gray-a7);
+  }
+}
+
+:is(.dark, .dark-theme),
+:is(.dark, .dark-theme) :where(.radix-themes:not(.light, .light-theme)) {
+  --shadow-1:
+    inset 0 -1px 1px 0 var(--gray-a3),
+    inset 0 0 0 1px var(--gray-a3),
+    inset 0 3px 4px 0 var(--black-a5),
+    inset 0 0 0 1px var(--gray-a4);
+
+  --shadow-2:
+    0 0 0 1px var(--gray-a6),
+    0 0 0 0.5px var(--black-a3),
+    0 1px 1px 0 var(--black-a6),
+    0 2px 1px -1px var(--black-a6),
+    0 1px 3px 0 var(--black-a5);
+
+  --shadow-3:
+    0 0 0 1px var(--gray-a6),
+    0 2px 3px -2px var(--black-a3),
+    0 3px 8px -2px var(--black-a6),
+    0 4px 12px -4px var(--black-a7);
+
+  --shadow-4:
+    0 0 0 1px var(--gray-a6), 0 8px 40px var(--black-a3),
+    0 12px 32px -16px var(--black-a5);
+
+  --shadow-5:
+    0 0 0 1px var(--gray-a6), 0 12px 60px var(--black-a5),
+    0 12px 32px -16px var(--black-a7);
+
+  --shadow-6:
+    0 0 0 1px var(--gray-a6), 0 12px 60px var(--black-a4),
+    0 16px 64px var(--black-a6), 0 16px 36px -20px var(--black-a11);
+}
+
+/* prettier-ignore */
+@supports (color: color-mix(in oklab, white, black)) {
+  :is(.dark, .dark-theme),
+  :is(.dark, .dark-theme) :where(.radix-themes:not(.light, .light-theme)) {
+    --shadow-1:
+      inset 0 -1px 1px 0 var(--gray-a3),
+      inset 0 0 0 1px var(--gray-a3),
+      inset 0 3px 4px 0 var(--black-a5),
+      inset 0 0 0 1px var(--gray-a4);
+
+    --shadow-2:
+      0 0 0 1px color-mix(in oklab, var(--gray-a6), var(--gray-6) 25%),
+      0 0 0 0.5px var(--black-a3),
+      0 1px 1px 0 var(--black-a6),
+      0 2px 1px -1px var(--black-a6),
+      0 1px 3px 0 var(--black-a5);
+
+    --shadow-3:
+      0 0 0 1px color-mix(in oklab, var(--gray-a6), var(--gray-6) 25%),
+      0 2px 3px -2px var(--black-a3),
+      0 3px 8px -2px var(--black-a6),
+      0 4px 12px -4px var(--black-a7);
+
+    --shadow-4:
+      0 0 0 1px color-mix(in oklab, var(--gray-a6), var(--gray-6) 25%),
+      0 8px 40px var(--black-a3), 0 12px 32px -16px var(--black-a5);
+
+    --shadow-5:
+      0 0 0 1px color-mix(in oklab, var(--gray-a6), var(--gray-6) 25%),
+      0 12px 60px var(--black-a5), 0 12px 32px -16px var(--black-a7);
+
+    --shadow-6:
+      0 0 0 1px color-mix(in oklab, var(--gray-a6), var(--gray-6) 25%),
+      0 12px 60px var(--black-a4), 0 16px 64px var(--black-a6),
+      0 16px 36px -20px var(--black-a11);
   }
 }

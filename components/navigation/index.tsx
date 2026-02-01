@@ -2,14 +2,21 @@
 
 import { NavigationMenu } from "@base-ui/react/navigation-menu";
 import Link from "next/link";
+import { ThemeSwitcher } from "@/components/theme-switcher";
 import { sounds } from "@/lib/sounds";
 import styles from "./styles.module.css";
 
 const LINKS = [
   {
+    id: "demos",
+    href: "/demo",
+    title: "Demos",
+    external: false,
+  },
+  {
     id: "twitter",
     href: "https://twitter.com/intent/follow?screen_name=raphaelsalaja",
-    title: "(X) Twitter",
+    title: "Twitter",
     external: true,
   },
   {
@@ -27,7 +34,7 @@ export default function Navigation() {
         <Link
           href="/"
           className={styles.logo}
-          aria-label="userinterface.wiki home"
+          aria-label="Home"
           onClick={sounds.click}
         >
           U
@@ -46,6 +53,9 @@ export default function Navigation() {
               </NavigationMenu.Link>
             </NavigationMenu.Item>
           ))}
+          <li>
+            <ThemeSwitcher />
+          </li>
         </NavigationMenu.List>
       </div>
     </NavigationMenu.Root>

@@ -36,6 +36,12 @@ const config = {
       ],
     });
 
+    // Support .txt imports for playground source files
+    config.module.rules.push({
+      test: /\.(tsx|css)\.txt$/,
+      type: "asset/source",
+    });
+
     return config;
   },
   async headers() {

@@ -331,6 +331,10 @@
     margin-top: var(--prose-block-spacing-small);
   }
 
+  [data-prose-type="code-playground"] {
+    margin-block: var(--prose-block-spacing-large);
+  }
+
   sup {
     display: inline-block;
     line-height: 1;

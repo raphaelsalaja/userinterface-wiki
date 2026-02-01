@@ -1,6 +1,7 @@
 import type { MDXComponents } from "mdx/types";
 import { Callout } from "./components/callout";
 import { Caption, Figure } from "./components/figure";
+import { Playground } from "./components/playground";
 import { Video } from "./components/video";
 
 export function getMDXComponents(components?: MDXComponents): MDXComponents {
@@ -24,6 +25,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     Figure,
     Caption,
     Callout,
+    Playground,
     Video,
   };
 }

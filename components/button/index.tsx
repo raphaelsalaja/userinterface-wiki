@@ -4,6 +4,7 @@ import { Button as BaseButton } from "@base-ui/react/button";
 import clsx from "clsx";
 import { motion } from "motion/react";
 import type React from "react";
+
 import { sounds } from "@/lib/sounds";
 import styles from "./styles.module.css";
 
@@ -38,6 +39,7 @@ function Button({
   return (
     <MotionBaseButton
       data-button
+      nativeButton={true}
       className={clsx(
         styles.button,
         styles[size],

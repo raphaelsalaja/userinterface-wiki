@@ -15,7 +15,7 @@ export function getPageImage(page: InferPageType<typeof source>) {
   const segments = [...page.slugs, "image.png"];
   return {
     segments,
-    url: `/og/${segments.join("/")}`,
+    url: `/open-graph/${page.slugs.join("/")}/image.png`,
   };
 }
 
@@ -31,7 +31,6 @@ export interface FormattedPage {
   url: string;
   title: string;
   description: string;
-  tags: string[];
   author: Author;
   coauthors: Author[];
   icon?: "motion" | "code" | "writing";
@@ -46,7 +45,6 @@ function formatData(data: Page["data"]) {
   return {
     title: data.title,
     description: data.description,
-    tags: data.tags ?? [],
     author: getAuthorById(data.author),
     coauthors: (data.coauthors ?? []).map(getAuthorById),
     icon: data.icon,
