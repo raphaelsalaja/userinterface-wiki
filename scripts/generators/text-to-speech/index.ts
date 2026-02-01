@@ -1,9 +1,7 @@
 import { readdir } from "node:fs/promises";
 import path from "node:path";
 import * as readline from "node:readline";
-import { log } from "@clack/prompts";
 import { config } from "dotenv";
-import pc from "picocolors";
 import {
   analyzeParagraphs,
   buildParagraphCacheKey,
@@ -14,7 +12,15 @@ import {
   synthesizeSpeech,
   writeParagraphToCache,
 } from "../../../lib/speech";
-import { type GeneratedFile, Generator } from "../../lib/generator-base";
+import {
+  DIM,
+  type GeneratedFile,
+  Generator,
+  p,
+  pc,
+  RESET,
+  TEXT,
+} from "../../lib/generator-base";
 
 config({ path: ".env.local", quiet: true });
 
@@ -123,7 +129,7 @@ async function analyzeDocument(slugSegments: string[]): Promise<DocumentInfo> {
 async function generateTTSForDocument(
   doc: DocumentInfo,
 ): Promise<GenerationResult> {
-  const uncachedParagraphs = doc.paragraphs.filter((p) => !p.isCached);
+  const uncachedParagraphs = doc.paragraphs.filter((para) => !para.isCached);
 
   if (uncachedParagraphs.length === 0) {
     return { slug: doc.slug, status: "cached" };
@@ -139,8 +145,8 @@ async function generateTTSForDocument(
       totalChars += paragraph.characters;
     }
 
-    log.success(
-      `${pc.dim(doc.slug)} ${pc.gray(`(${uncachedParagraphs.length} paragraphs, ${formatChars(totalChars)} chars)`)}`,
+    p.log.success(
+      `${pc.green("✓")} ${TEXT}${doc.slug}${RESET} ${DIM}(${uncachedParagraphs.length} paragraphs, ${formatChars(totalChars)} chars)${RESET}`,
     );
 
     return {
@@ -150,8 +156,8 @@ async function generateTTSForDocument(
       charactersGenerated: totalChars,
     };
   } catch (error) {
-    log.error(
-      `${pc.dim(doc.slug)} ${pc.red(error instanceof Error ? error.message : String(error))}`,
+    p.log.error(
+      `${pc.red("✗")} ${TEXT}${doc.slug}${RESET} ${DIM}${error instanceof Error ? error.message : String(error)}${RESET}`,
     );
     return {
       slug: doc.slug,
@@ -181,8 +187,8 @@ export class TextToSpeechGenerator extends Generator {
     const quota = await getQuotaInfo();
     const quotaRemaining = quota.remainingCharacters;
 
-    log.info(
-      `ElevenLabs quota: ${formatChars(quotaRemaining)} characters remaining`,
+    this.info(
+      `ElevenLabs quota: ${TEXT}${formatChars(quotaRemaining)}${RESET} characters remaining`,
     );
 
     // Find and analyze all documents
@@ -209,32 +215,29 @@ export class TextToSpeechGenerator extends Generator {
       0,
     );
     const cachedParagraphs = docs.reduce(
-      (sum, d) => sum + d.paragraphs.filter((p) => p.isCached).length,
+      (sum, d) => sum + d.paragraphs.filter((para) => para.isCached).length,
       0,
     );
     const pendingParagraphs = totalParagraphs - cachedParagraphs;
 
-    log.info(
-      `Total: ${totalParagraphs} paragraphs (${formatChars(totalCharacters)} chars)`,
-    );
-    log.info(
-      `Cached: ${cachedParagraphs} paragraphs (${formatChars(cachedCharacters)} chars)`,
-    );
-    log.info(
-      `Pending: ${pendingParagraphs} paragraphs (${formatChars(pendingCharacters)} chars, ${formatCost(pendingCharacters)})`,
-    );
+    const summaryLines = [
+      `${TEXT}Total:${RESET}   ${totalParagraphs} paragraphs ${DIM}(${formatChars(totalCharacters)} chars)${RESET}`,
+      `${pc.green("Cached:")}  ${cachedParagraphs} paragraphs ${DIM}(${formatChars(cachedCharacters)} chars)${RESET}`,
+      `${pc.yellow("Pending:")} ${pendingParagraphs} paragraphs ${DIM}(${formatChars(pendingCharacters)} chars, ${formatCost(pendingCharacters)})${RESET}`,
+    ];
+    p.note(summaryLines.join("\n"), "Analysis");
 
     const docsWithPending = docs.filter((d) => d.pendingCharacters > 0);
 
     // Dry run - exit early
     if (this.options.dryRun) {
-      log.warning("Dry run mode - no API calls made");
+      this.warn("Dry run mode - no API calls made");
       return [];
     }
 
     // Nothing to generate
     if (docsWithPending.length === 0) {
-      log.success("All paragraphs already cached");
+      p.log.success(`${pc.green("✓")} All paragraphs already cached`);
       return [];
     }
 
@@ -249,7 +252,7 @@ export class TextToSpeechGenerator extends Generator {
         `Generate ${pendingParagraphs} paragraphs using ${formatChars(pendingCharacters)} characters (${formatCost(pendingCharacters)})?`,
       );
       if (!shouldProceed) {
-        log.warning("Generation cancelled");
+        this.warn("Generation cancelled");
         return [];
       }
     }
@@ -278,8 +281,8 @@ export class TextToSpeechGenerator extends Generator {
     if (files.length > 0) {
       try {
         const newQuota = await getQuotaInfo();
-        log.info(
-          `Remaining quota: ${formatChars(newQuota.remainingCharacters)} characters`,
+        this.info(
+          `Remaining quota: ${TEXT}${formatChars(newQuota.remainingCharacters)}${RESET} characters`,
         );
       } catch {
         // Ignore

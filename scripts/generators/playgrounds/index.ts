@@ -1,8 +1,14 @@
 import fs from "node:fs";
 import path from "node:path";
-import { log } from "@clack/prompts";
-import pc from "picocolors";
-import { type GeneratedFile, Generator } from "../../lib/generator-base";
+import {
+  DIM,
+  type GeneratedFile,
+  Generator,
+  p,
+  pc,
+  RESET,
+  TEXT,
+} from "../../lib/generator-base";
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
 
@@ -117,11 +123,11 @@ export class PlaygroundsGenerator extends Generator {
     const demos = findDemoFolders(CONTENT_DIR);
 
     if (demos.length === 0) {
-      log.warning("No demos found");
-      log.info("Expected structure:");
-      log.message(pc.gray("  content/*/demos/*/index.tsx"));
-      log.message(pc.gray("  content/*/demos/*/styles.module.css"));
-      log.message(pc.gray("  content/*/demos/*/playgrounds/"));
+      this.warn("No demos found");
+      this.info("Expected structure:");
+      console.log(`  ${DIM}→${RESET} content/*/demos/*/index.tsx`);
+      console.log(`  ${DIM}→${RESET} content/*/demos/*/styles.module.css`);
+      console.log(`  ${DIM}→${RESET} content/*/demos/*/playgrounds/`);
       return [];
     }
 
@@ -159,8 +165,8 @@ export class PlaygroundsGenerator extends Generator {
           const displayName = relativePath
             .replace(/^content\//, "")
             .replace(/\/playgrounds\/index\.ts$/, "");
-          log.success(
-            `${pc.dim(displayName)} ${pc.gray(`(${(stats.size / 1024).toFixed(1)} kB)`)}`,
+          p.log.success(
+            `${pc.green("↻")} ${TEXT}${displayName}${RESET} ${DIM}(${(stats.size / 1024).toFixed(1)} kB)${RESET}`,
           );
         }
       });
@@ -180,8 +186,8 @@ export class PlaygroundsGenerator extends Generator {
               const displayName = relativePath
                 .replace(/^content\//, "")
                 .replace(/\/playgrounds\/index\.ts$/, "");
-              log.success(
-                `${pc.dim(displayName)} ${pc.gray(`(${(stats.size / 1024).toFixed(1)} kB)`)}`,
+              p.log.success(
+                `${pc.green("↻")} ${TEXT}${displayName}${RESET} ${DIM}(${(stats.size / 1024).toFixed(1)} kB)${RESET}`,
               );
             }
           },
@@ -189,6 +195,6 @@ export class PlaygroundsGenerator extends Generator {
       }
     }
 
-    log.info(pc.dim(`Watching ${demos.length} directories...`));
+    p.log.info(`${DIM}Watching ${demos.length} directories...${RESET}`);
   }
 }

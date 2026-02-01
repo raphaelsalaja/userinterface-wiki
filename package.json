@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "concurrently \"next dev\" \"pnpm generate playgrounds --watch\" --names \"next,playgrounds\" --prefix-colors \"cyan,magenta\"",
-    "build": "pnpm generate icons opengraph && next build",
+    "build": "pnpm generate icons opengraph playgrounds && next build",
     "build:next": "next build",
     "start": "next start",
     "lint": "biome check --fix --unsafe .",
