@@ -246,8 +246,12 @@ export function SoundLabDemo() {
   const currentSound = sequence[safeIndex] ?? "click";
 
   const getContext = useCallback(() => {
-    ctxRef.current?.close();
-    ctxRef.current = new AudioContext();
+    if (!ctxRef.current || ctxRef.current.state === "closed") {
+      ctxRef.current = new AudioContext();
+    }
+    if (ctxRef.current.state === "suspended") {
+      ctxRef.current.resume();
+    }
     return ctxRef.current;
   }, []);
 
