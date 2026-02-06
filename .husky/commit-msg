@@ -1,4 +1,4 @@
-commit_msg=$(cat "$1")
+commit_msg=$(head -n 1 "$1")
 
 # Allow merge commits (they don't follow conventional commit format)
 if [[ "$commit_msg" =~ ^[Mm]erge ]]; then

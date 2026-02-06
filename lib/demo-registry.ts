@@ -96,6 +96,11 @@ export const demoRegistry: Record<string, ComponentType> = {
       (m) => m.ModesDemo,
     ),
   ),
+  "morphing-icons/morphing-icon-demo": dynamic(() =>
+    import("@/content/morphing-icons/demos/morphing-icon-demo").then(
+      (m) => m.MorphingIconDemo,
+    ),
+  ),
   "sounds-on-the-web/action-feedback-demo": dynamic(() =>
     import("@/content/sounds-on-the-web/demos/action-feedback-demo").then(
       (m) => m.ActionFeedbackDemo,
