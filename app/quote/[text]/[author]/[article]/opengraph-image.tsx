@@ -1,6 +1,6 @@
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 import { ImageResponse } from "next/og";
-
-export const runtime = "edge";
 
 export const alt = "Quote from userinterface.wiki";
 export const size = {
@@ -16,14 +16,6 @@ const colors = {
     secondary: "#838383",
   },
 };
-
-const interSemiBold = fetch(
-  new URL("../../../../../public/fonts/inter/semi-bold.ttf", import.meta.url),
-).then((res) => res.arrayBuffer());
-
-const georgia = fetch(
-  new URL("../../../../../public/fonts/georgia/georgia.ttf", import.meta.url),
-).then((res) => res.arrayBuffer());
 
 function decodeBase64Url(str: string): string {
   const base64 = str.replace(/-/g, "+").replace(/_/g, "/");
@@ -52,8 +44,8 @@ export default async function Image({
   const article = decodeBase64Url(articleBase64);
 
   const [interSemiBoldData, georgiaData] = await Promise.all([
-    interSemiBold,
-    georgia,
+    readFile(join(process.cwd(), "public/fonts/inter/semi-bold.ttf")),
+    readFile(join(process.cwd(), "public/fonts/georgia/georgia.ttf")),
   ]);
 
   const MAX_CHARS = 180;
