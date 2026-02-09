@@ -1,0 +1,39 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: var(--gray-10);
+  cursor: pointer;
+  outline: none;
+  background: var(--gray-1);
+  border: none;
+  border-radius: 8px;
+  box-shadow: var(--shadow-2);
+}
+
+.button:active {
+  transform: scale(0.98);
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.label {
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--font-letter-spacing-14px);
+  white-space: nowrap;
+}

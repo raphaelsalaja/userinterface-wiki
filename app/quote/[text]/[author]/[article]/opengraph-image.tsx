@@ -79,8 +79,8 @@ export default async function Image({
           flexDirection: "column",
           alignItems: "flex-start",
           justifyContent: "space-between",
-          height: 502,
           width: "100%",
+          height: "100%",
         }}
       >
         <div

@@ -14,7 +14,8 @@
       "!**/dist",
       "!**/node_modules/**/*",
       "!**/out",
-      "!dist"
+      "!dist",
+      "!lib/demo-registry.ts"
     ]
   },
   "formatter": {

@@ -1,0 +1,61 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  background: var(--gray-1);
+  border-radius: 12px;
+  box-shadow: var(--shadow-2);
+}
+
+.content {
+  overflow: hidden;
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.text {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--gray-11);
+  letter-spacing: var(--font-letter-spacing-14px);
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: var(--font-weight-medium);
+  color: var(--gray-10);
+  cursor: pointer;
+  outline: none;
+  background: var(--gray-3);
+  border: none;
+  border-radius: 8px;
+}
+
+.button:hover {
+  color: var(--gray-12);
+  background: var(--gray-4);
+}
+
+.button:active {
+  transform: scale(0.98);
+}
