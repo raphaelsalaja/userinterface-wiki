@@ -111,6 +111,7 @@ export default function App() {
   align-items: center;
   justify-content: center;
   width: 100%;
+  height: 256px;
 }
 
 .container {
