@@ -479,9 +479,7 @@
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  :where(article) .shiki,
-  :where(article) .shiki span {
-    color: var(--shiki-dark);
-  }
+.dark :where(article) .shiki,
+.dark :where(article) .shiki span {
+  color: var(--shiki-dark);
 }
