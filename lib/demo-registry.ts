@@ -49,14 +49,14 @@ export const demoRegistry: Record<string, ComponentType> = {
   "animating-container-bounds/02-animated-height": dynamic(() =>
     import("@/content/animating-container-bounds/demos/02-animated-height").then((m) => m.AnimatedHeight),
   ),
+  "fluid-text/00-fluid-text": dynamic(() =>
+    import("@/content/fluid-text/demos/00-fluid-text").then((m) => m.FluidTextDemo),
+  ),
   "generating-sounds-with-ai/audio-concepts-demo": dynamic(() =>
     import("@/content/generating-sounds-with-ai/demos/audio-concepts-demo").then((m) => m.AudioConceptsDemo),
   ),
   "generating-sounds-with-ai/sound-lab-demo": dynamic(() =>
     import("@/content/generating-sounds-with-ai/demos/sound-lab-demo").then((m) => m.SoundLabDemo),
-  ),
-  "making-fluid-text/00-fluid-text": dynamic(() =>
-    import("@/content/making-fluid-text/demos/00-fluid-text").then((m) => m.FluidTextDemo),
   ),
   "mastering-animate-presence/01-presence-state": dynamic(() =>
     import("@/content/mastering-animate-presence/demos/01-presence-state").then((m) => m.PresenceState),
