@@ -192,9 +192,7 @@ export function FluidTextDemo() {
             <button
               type="button"
               className={styles.value}
-              onClick={() =>
-                setSizeIndex((sizeIndex + 1) % sizes.length)
-              }
+              onClick={() => setSizeIndex((sizeIndex + 1) % sizes.length)}
             >
               {sizes[sizeIndex]}pt
             </button>
@@ -205,9 +203,7 @@ export function FluidTextDemo() {
             <button
               type="button"
               className={styles.value}
-              onClick={() =>
-                setWeightIndex((weightIndex + 1) % weights.length)
-              }
+              onClick={() => setWeightIndex((weightIndex + 1) % weights.length)}
             >
               {weights[weightIndex].label}
             </button>
@@ -218,9 +214,7 @@ export function FluidTextDemo() {
             <button
               type="button"
               className={styles.value}
-              onClick={() =>
-                setAlignIndex((alignIndex + 1) % aligns.length)
-              }
+              onClick={() => setAlignIndex((alignIndex + 1) % aligns.length)}
             >
               {align.charAt(0).toUpperCase() + align.slice(1)}
             </button>
