@@ -1,114 +1,8 @@
 "use client";
 
-import { AnimatePresence, motion, type Transition } from "motion/react";
-import { useRef, useState } from "react";
+import { Calligraph } from "calligraph";
+import { useState } from "react";
 import styles from "./styles.module.css";
-
-function computeLCS(oldStr: string, newStr: string): [number, number][] {
-  const m = oldStr.length;
-  const n = newStr.length;
-  const dp: number[][] = [];
-
-  for (let i = 0; i <= m; i++) {
-    dp[i] = [];
-    for (let j = 0; j <= n; j++) {
-      if (i === 0 || j === 0) {
-        dp[i][j] = 0;
-      } else if (oldStr[i - 1] === newStr[j - 1]) {
-        dp[i][j] = dp[i - 1][j - 1] + 1;
-      } else {
-        dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
-      }
-    }
-  }
-
-  const pairs: [number, number][] = [];
-  let i = m;
-  let j = n;
-
-  while (i > 0 && j > 0) {
-    if (oldStr[i - 1] === newStr[j - 1]) {
-      pairs.unshift([i - 1, j - 1]);
-      i--;
-      j--;
-    } else if (dp[i - 1][j] > dp[i][j - 1]) {
-      i--;
-    } else {
-      j--;
-    }
-  }
-
-  return pairs;
-}
-
-interface FluidTextProps {
-  children: string;
-  className?: string;
-  style?: React.CSSProperties;
-  transition?: Transition;
-}
-
-function FluidText({ children, className, style, transition }: FluidTextProps) {
-  const nextIdRef = useRef(children.length);
-  const enteringKeysRef = useRef<Set<string>>(new Set());
-
-  const [prevText, setPrevText] = useState(children);
-  const [charKeys, setCharKeys] = useState<string[]>(() =>
-    children.split("").map((_, i) => `c${i}`),
-  );
-
-  if (children !== prevText) {
-    const matches = computeLCS(prevText, children);
-    const newKeys: string[] = new Array(children.length).fill("");
-
-    for (const [oldIdx, newIdx] of matches) {
-      newKeys[newIdx] = charKeys[oldIdx];
-    }
-
-    const entering = new Set<string>();
-    for (let i = 0; i < newKeys.length; i++) {
-      if (!newKeys[i]) {
-        const key = `c${nextIdRef.current++}`;
-        newKeys[i] = key;
-        entering.add(key);
-      }
-    }
-
-    enteringKeysRef.current = entering;
-    setPrevText(children);
-    setCharKeys(newKeys);
-  }
-
-  const base: Transition = transition ?? {
-    duration: 0.35,
-    ease: [0.19, 1, 0.22, 1],
-  };
-
-  return (
-    <span className={className} style={{ display: "inline-flex", ...style }}>
-      <AnimatePresence mode="popLayout" initial={false}>
-        {children.split("").map((char, i) => {
-          const key = charKeys[i];
-          const isEntering = enteringKeysRef.current.has(key);
-
-          return (
-            <motion.span
-              key={key}
-              layout={isEntering ? false : "position"}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={base}
-              style={{ display: "inline-block", whiteSpace: "pre" }}
-            >
-              {char}
-            </motion.span>
-          );
-        })}
-      </AnimatePresence>
-    </span>
-  );
-}
 
 const sizes = [24, 32, 40, 48, 56];
 
@@ -162,7 +56,7 @@ export function FluidTextDemo() {
           className={styles.display}
           style={{ justifyContent: justifyMap[align] }}
         >
-          <FluidText
+          <Calligraph
             style={{
               fontSize: sizes[sizeIndex],
               fontWeight: weights[weightIndex].value,
@@ -170,7 +64,7 @@ export function FluidTextDemo() {
             }}
           >
             {currentWord}
-          </FluidText>
+          </Calligraph>
         </div>
 
         <div className={styles.settings}>
