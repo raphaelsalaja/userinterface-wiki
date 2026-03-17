@@ -17,8 +17,16 @@ export const GROUPS: FeatureGroup[] = [
     label: "Ligatures",
     sample: "3*9 12:34 -> --> ==> ff fi ft fjord",
     features: [
-      { tag: "calt", name: "Contextual Alternates", sample: "3*9 12:34 -> --> ==>" },
-      { tag: "dlig", name: "Discretionary Ligatures", sample: "Difficult affine fjord ff fi ft" },
+      {
+        tag: "calt",
+        name: "Contextual Alternates",
+        sample: "3*9 12:34 -> --> ==>",
+      },
+      {
+        tag: "dlig",
+        name: "Discretionary Ligatures",
+        sample: "Difficult affine fjord ff fi ft",
+      },
     ],
   },
   {
@@ -42,11 +50,19 @@ export const GROUPS: FeatureGroup[] = [
     label: "Letters",
     sample: "Illegal llama Illinois Glyph anatomy Efficient Stuttgart",
     features: [
-      { tag: "ss02", name: "Disambiguation", sample: "WP0ACO9XSI1012O9 Illegal" },
+      {
+        tag: "ss02",
+        name: "Disambiguation",
+        sample: "WP0ACO9XSI1012O9 Illegal",
+      },
       { tag: "cv05", name: "Tail l", sample: "Illegal llama Illusion" },
       { tag: "cv08", name: "Serif I", sample: "Illinois ILLICIT Identity" },
       { tag: "cv10", name: "Spur G", sample: "Guillable Glyph Graphic" },
-      { tag: "cv11", name: "Single-story a", sample: "anatomy alpha character" },
+      {
+        tag: "cv11",
+        name: "Single-story a",
+        sample: "anatomy alpha character",
+      },
       { tag: "cv12", name: "Compact f", sample: "Efficient after affine" },
       { tag: "cv13", name: "Compact t", sample: "Stuttgart attraction at" },
     ],
@@ -56,10 +72,14 @@ export const GROUPS: FeatureGroup[] = [
     label: "Punctuation",
     sample: "(Hello) [World] {9000} 'quoted' \"smol\" A@B .!?",
     features: [
-      { tag: "case", name: "Case Alternates", sample: "(Hello) [World] {9000} A@B" },
-      { tag: "ss03", name: "Round Quotes", sample: "I'm not, uhm \"smol\"" },
+      {
+        tag: "case",
+        name: "Case Alternates",
+        sample: "(Hello) [World] {9000} A@B",
+      },
+      { tag: "ss03", name: "Round Quotes", sample: 'I\'m not, uhm "smol"' },
       { tag: "ss07", name: "Square Punct.", sample: "Hello, Mästare.!?" },
-      { tag: "ss08", name: "Square Quotes", sample: "I'm not, uhm \"smol\"" },
+      { tag: "ss08", name: "Square Quotes", sample: 'I\'m not, uhm "smol"' },
     ],
   },
   {
@@ -79,11 +99,15 @@ export const ALL_FEATURES = GROUPS.flatMap((g) => g.features);
 export const DEFAULT_ON = new Set(["calt"]);
 
 export function buildSettings(enabled: Set<string>, features: Feature[]) {
-  return features.map((f) => `"${f.tag}" ${enabled.has(f.tag) ? 1 : 0}`).join(", ");
+  return features
+    .map((f) => `"${f.tag}" ${enabled.has(f.tag) ? 1 : 0}`)
+    .join(", ");
 }
 
 export function buildAllSettings(enabled: Set<string>) {
-  return ALL_FEATURES.map((f) => `"${f.tag}" ${enabled.has(f.tag) ? 1 : 0}`).join(", ");
+  return ALL_FEATURES.map(
+    (f) => `"${f.tag}" ${enabled.has(f.tag) ? 1 : 0}`,
+  ).join(", ");
 }
 
 export function settingsOutput(enabled: Set<string>) {

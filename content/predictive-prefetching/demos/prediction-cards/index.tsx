@@ -127,9 +127,7 @@ export function PredictionComparison() {
   const tileRefs = useRef<(HTMLElement | null)[]>(
     new Array(TILES.length).fill(null),
   );
-  const [predictedTiles, setPredictedTiles] = useState<Set<number>>(
-    new Set(),
-  );
+  const [predictedTiles, setPredictedTiles] = useState<Set<number>>(new Set());
   const [clickedTile, setClickedTile] = useState<number | null>(null);
 
   const predictionTimesRef = useRef<Record<number, number>>({});

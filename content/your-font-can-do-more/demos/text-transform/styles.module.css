@@ -13,9 +13,9 @@
   font-family: inherit;
   font-size: 14px;
   color: var(--gray-12);
+  outline: none;
   background: var(--gray-1);
   border: none;
-  outline: none;
 }
 
 .input::placeholder {

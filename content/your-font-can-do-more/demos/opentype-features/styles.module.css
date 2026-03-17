@@ -40,11 +40,11 @@
 }
 
 .tag {
+  padding: 1px 5px;
   font-family: var(--font-family-monospace);
   font-size: 10px;
   font-weight: var(--font-weight-medium);
   color: var(--gray-a8);
-  padding: 1px 5px;
   background: var(--gray-a3);
   border-radius: 3px;
 }
@@ -55,19 +55,19 @@
 }
 
 .name {
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-size: 11px;
   color: var(--gray-a7);
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .sample {
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-size: 14px;
   color: var(--gray-12);
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .output {
