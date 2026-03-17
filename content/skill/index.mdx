@@ -1,0 +1,47 @@
+---
+title: "Skill"
+description: "A skill file with 119 rules across 11 categories for building better user interfaces. Install it in Claude Code, Codex, Cursor, and more."
+date: "2026-03-17"
+author: "raphael-salaja"
+icon: "code"
+---
+
+import { InstallCommand } from "./demos";
+
+Everything I've written on this site has been distilled into a single skill file. It's designed for AI coding agents — tools like Claude Code, Codex, Cursor, and others that can follow structured guidelines when writing or reviewing code.
+
+<InstallCommand />
+
+# What's Inside
+
+119 rules across 11 categories, each with incorrect and correct code examples.
+
+| Category | Rules | Impact |
+|----------|-------|--------|
+| Animation Principles | 12 | Critical |
+| Timing Functions | 16 | High |
+| Exit Animations | 12 | High |
+| Laws of UX | 8 | High |
+| CSS Pseudo Elements | 13 | Medium |
+| Audio Feedback | 14 | Medium |
+| Sound Synthesis | 13 | Medium |
+| Container Animation | 6 | Medium |
+| Predictive Prefetching | 6 | Medium |
+| Typography | 10 | Medium |
+| Morphing Icons | 9 | Low |
+
+# How It Works
+
+The skill installs a set of markdown files into your project that AI agents can read. Each rule has a brief explanation, an incorrect code example, and a correct one. Agents use these as guardrails when generating or reviewing code.
+
+The structure follows the [Vercel agent-skills](https://github.com/vercel-labs/agent-skills) pattern:
+
+- `SKILL.md` — compact quick-reference with one-liner per rule
+- `AGENTS.md` — full compiled document with all rules expanded
+- `rules/` — individual rule files for granular access
+
+# Usage
+
+I recommend using it on a case-by-case basis rather than having it always on. One example would be reviewing your animations, another would be implementing audio feedback on your site.
+
+The skill file is available on [GitHub](https://github.com/raphaelsalaja/userinterface-wiki/tree/main/skills).

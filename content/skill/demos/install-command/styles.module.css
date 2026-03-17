@@ -1,0 +1,58 @@
+.install {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.command-container {
+  position: relative;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  max-width: 480px;
+  padding: 12px 16px;
+  background: var(--gray-a2);
+  border: 1px solid var(--gray-a4);
+  border-radius: 10px;
+}
+
+.command {
+  flex: 1;
+  font-family: var(--font-family-mono);
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--gray-12);
+  letter-spacing: -0.1px;
+  user-select: all;
+}
+
+.copy-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  color: var(--gray-10);
+  cursor: pointer;
+  background: transparent;
+  border-radius: 6px;
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.copy-button:hover {
+  color: var(--gray-12);
+  background: var(--gray-a3);
+}
+
+.copy-button:active {
+  transform: scale(0.95);
+}
+
+.supported {
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--gray-8);
+  letter-spacing: var(--font-letter-spacing-13px);
+}
