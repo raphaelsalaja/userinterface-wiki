@@ -1,4 +1,5 @@
 import type { MDXComponents } from "mdx/types";
+import { Bleed } from "./components/bleed";
 import { Callout } from "./components/callout";
 import { Caption, Figure } from "./components/figure";
 import { Playground } from "./components/playground";
@@ -22,6 +23,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     li: (props) => <li data-prose-type="text" {...props} />,
     ul: (props) => <ul data-prose-type="list" {...props} />,
     ol: (props) => <ol data-prose-type="list" {...props} />,
+    Bleed,
     Figure,
     Caption,
     Callout,

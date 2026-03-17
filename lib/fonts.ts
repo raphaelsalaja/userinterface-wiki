@@ -2,17 +2,27 @@
  * Font configuration
  */
 
-import { Inter, JetBrains_Mono } from "next/font/google";
 import localFont from "next/font/local";
 
-const inter = Inter({
+const inter = localFont({
   variable: "--font-family-display",
-  subsets: ["latin"],
+  src: [
+    {
+      path: "../public/fonts/inter/InterVariable.woff2",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/inter/InterVariable-Italic.woff2",
+      style: "italic",
+    },
+  ],
+  display: "swap",
 });
 
-const jetbrainsMono = JetBrains_Mono({
+const berkeleyMono = localFont({
   variable: "--font-family-monospace",
-  subsets: ["latin"],
+  src: "../public/fonts/berkeley-mono/BerkeleyMonoVariable.woff2",
+  display: "swap",
 });
 
 const newYork = localFont({
@@ -38,7 +48,7 @@ const lfe = localFont({
 
 export const fonts = [
   inter.variable,
-  jetbrainsMono.variable,
+  berkeleyMono.variable,
   newYork.variable,
   lfe.variable,
 ].join(" ");

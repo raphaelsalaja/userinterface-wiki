@@ -1,0 +1,173 @@
+---
+title: "Your Font Can Do More Than You Think"
+description: "A comprehensive guide to every CSS font and text property, using Inter as the example. OpenType features, variable axes, numeric variants, text rendering, transforms, decorations, and layout — all in one place."
+date: "2026-03-04"
+tags: ["typography", "css", "inter", "opentype", "variable-fonts"]
+author: "raphael-salaja"
+icon: "writing"
+---
+
+import {
+  OpentypeFeatures,
+  NumericDisplay,
+  VariableAxes,
+  TextRendering,
+  TextTransform,
+  TextDecoration,
+  TextLayout,
+} from "./demos";
+
+Most of us pick a font, set the size and weight, and move on. But there's an entire layer of typographic control sitting right there in CSS that almost nobody uses. Your font already supports it. Your browser already supports it. You're just not asking for it.
+
+I'm going to use [Inter](https://rsms.me/inter/) for every example here because it's what this site runs on and it has one of the richest OpenType feature sets of any free font. But everything here applies to whatever you're using — check your font's feature support and adapt.
+
+# OpenType Features
+
+This is the big one. OpenType features are instructions baked into the font file that change how specific glyphs render. Inter ships with over 35 of them. Most people never touch any of them beyond what the browser turns on by default.
+
+You control them with `font-feature-settings`. Each feature has a four-letter tag and can be turned on (`1`) or off (`0`).
+
+<Bleed>
+<Figure>
+  <OpentypeFeatures />
+  <Caption>Toggle features on and off. Affected characters highlight in blue.</Caption>
+</Figure>
+</Bleed>
+
+A few worth calling out. `calt` (contextual alternates) is on by default in Inter — it adjusts punctuation like colons and arrows based on surrounding characters. `tnum` gives you tabular (fixed-width) numbers, essential for any data display. `frac` automatically converts number/slash/number sequences into proper fractions. `zero` gives you a slashed zero so you never confuse `0` with `O` again.
+
+The `ss01` through `ss08` tags are stylistic sets. These swap entire groups of glyphs at once. `ss02` is the disambiguation set — it makes visually similar characters like `I`, `l`, `1`, and `0`, `O` look distinct. Extremely useful for code-adjacent UIs.
+
+The `cv01` through `cv13` tags are character variants. More granular than stylistic sets — they let you change individual characters. Want a single-story `a`? That's `cv11`. Want a capital `G` with a spur? `cv10`.
+
+There's also the CSS-native way to do most of this: `font-variant-ligatures`, `font-variant-alternates`, `font-variant-caps`, and `font-variant-position`. These are more readable than raw feature strings and the browser can optimize them better. In practice, `font-feature-settings` gives you access to everything, and the `font-variant-*` properties cover the most common cases with cleaner syntax.
+
+## Numeric Display
+
+Numbers are where font features become immediately practical. If you've ever built a dashboard or a pricing table and the columns don't align, it's because you're using proportional numbers (the default) instead of tabular ones.
+
+<Bleed>
+<Figure>
+  <NumericDisplay />
+  <Caption>Switch between numeric variants. Watch how the columns align.</Caption>
+</Figure>
+</Bleed>
+
+`tabular-nums` makes every digit the same width. Your numbers line up in columns without any extra CSS. `proportional-nums` is the default — each digit takes only the space it needs, which looks better in prose but terrible in tables.
+
+`oldstyle-nums` gives you numbers with ascenders and descenders, like lowercase letters. They blend into body text beautifully but look wrong in a data table. `lining-nums` keeps everything on the baseline.
+
+`diagonal-fractions` converts sequences like `1/3` into proper typographic fractions. `slashed-zero` adds a slash through the zero. `ordinal` superscripts the letters in ordinals like `1st` and `2nd`.
+
+You can set these with `font-variant-numeric` in CSS — it's the clean way to do it. Or use `font-feature-settings: "tnum"` if you need more control. Either works.
+
+# Variable Font Axes
+
+Inter is a variable font. Instead of loading separate files for Regular, Medium, Bold, etc., you get a single file with continuous axes you can dial to any value.
+
+Inter has two axes: `wght` (weight, 100–900) and `opsz` (optical size, 14–32). Weight is obvious. Optical size is the interesting one.
+
+<Bleed>
+<Figure>
+  <VariableAxes />
+  <Caption>Drag the sliders. Toggle optical sizing on and off.</Caption>
+</Figure>
+</Bleed>
+
+When `font-optical-sizing` is set to `auto` (the default), Inter automatically adjusts its glyph shapes based on the font size. At small sizes, the x-height is taller, strokes are thicker, and ink traps open up to stay legible. At large sizes, curves get smoother, details get finer, and the overall feel becomes more refined.
+
+Turn it off and you'll see the same glyph shapes regardless of size. The difference is subtle at medium sizes but becomes obvious at the extremes.
+
+You can also control this manually with `font-variation-settings: "opsz" 14` to force a specific optical size. Useful when you want the "text" design at a large display size for a specific aesthetic.
+
+`font-weight` takes any integer from 100 to 900 with a variable font — not just the standard stops at 400, 500, 600, 700. You can use 450 or 630 or anything in between. `font-stretch` works the same way for width axes (Inter doesn't have one, but many variable fonts do).
+
+# Text Rendering
+
+How your text actually gets painted to screen depends on a few properties that most people set once in their reset and never think about again.
+
+<Bleed>
+<Figure>
+  <TextRendering />
+  <Caption>Switch between rendering modes. Look closely at the kerning and curves.</Caption>
+</Figure>
+</Bleed>
+
+`text-rendering: optimizeLegibility` tells the browser to prioritize legibility over speed. In practice, this enables kerning and ligatures. `optimizeSpeed` disables them for faster rendering — you'd only use this for massive amounts of text where performance matters. `geometricPrecision` prioritizes precise scaling, which matters more for SVG text than HTML.
+
+`font-kerning` controls the spacing between specific character pairs. With `normal`, the font's built-in kerning tables adjust pairs like AV, To, and We so they sit together naturally. Set it to `none` and every character uses its default advance width — the text looks slightly off but renders faster.
+
+`-webkit-font-smoothing: antialiased` is what gives text on macOS that clean, thin appearance. The default (`auto`) uses subpixel rendering, which is technically higher resolution but looks thicker and fuzzier on retina displays. Almost every modern site sets `antialiased` in their reset. This site does too.
+
+# Text Transform & Caps
+
+`text-transform` changes the case of your text without touching the source. `font-variant-caps` gives you access to proper small caps if the font supports them.
+
+<Bleed>
+<Figure>
+  <TextTransform />
+  <Caption>Type your own text. Switch between transforms and cap variants.</Caption>
+</Figure>
+</Bleed>
+
+`uppercase` is the obvious one, but there's a reason typographers prefer `font-variant-caps: small-caps` for running text — proper small caps are designed to match the weight and proportion of the lowercase, while `text-transform: uppercase` just scales up lowercase letterforms (or in some fonts, uses the regular capitals which look oversized inline).
+
+`all-small-caps` converts both upper and lowercase to small cap forms. `petite-caps` uses an even smaller variant. `unicase` mixes uppercase and lowercase forms together — more of a stylistic choice than a practical one.
+
+`font-synthesis` controls whether the browser is allowed to fake bold or italic when the font doesn't have those variants. `font-synthesis: none` prevents this. You want this when you're using a font that genuinely doesn't have an italic — the browser's fake italic looks terrible and you're better off without it.
+
+# Text Decoration
+
+Underlines, overlines, strikethroughs, and emphasis marks. CSS gives you a surprising amount of control over all of these now.
+
+<Bleed>
+<Figure>
+  <TextDecoration />
+  <Caption>Build your own decoration. Adjust line style, thickness, offset, and emphasis marks.</Caption>
+</Figure>
+</Bleed>
+
+The `text-decoration` shorthand has come a long way. You can now control the line type (`underline`, `overline`, `line-through`), the style (`solid`, `double`, `dotted`, `dashed`, `wavy`), the color, and the thickness independently.
+
+`text-underline-offset` is the one that changed everything for me. Before this property existed, underlines sat right on top of descenders and looked terrible. Now you can push them down a few pixels and suddenly underlines look intentional instead of sloppy.
+
+`text-decoration-skip-ink` controls whether the underline breaks around descenders (letters like g, p, y). `auto` breaks around them, `none` draws straight through. `auto` is the default and almost always what you want.
+
+`text-emphasis` is less commonly used in Latin text but worth knowing about. It places marks above or below characters — dots, circles, triangles, sesame marks. In East Asian typography these are used instead of bold or italic for emphasis. In Latin text they can be a subtle way to highlight specific words.
+
+# Text Layout
+
+The last piece is how your text flows, wraps, aligns, and spaces itself within its container. These properties control the macro-level rhythm of your typography.
+
+<Bleed>
+<Figure>
+  <TextLayout />
+  <Caption>Adjust wrapping, alignment, spacing, and indentation. The same paragraph, many different feels.</Caption>
+</Figure>
+</Bleed>
+
+`text-wrap: balance` is the newer one worth paying attention to. It tries to make all lines roughly the same length instead of having one long line and one short orphan at the end. Great for headings. `text-wrap: pretty` optimizes for fewer orphans in body text — it's what this site uses by default.
+
+`text-align: justify` fills every line to the full width by adjusting word spacing. It looks clean in print but can create rivers of whitespace on screen, especially in narrow columns. If you use it, pair it with `hyphens: auto` to give the browser more places to break words.
+
+`letter-spacing` and `word-spacing` are percentage-of-font-size adjustments. Negative letter spacing tightens headlines. Positive letter spacing opens up small uppercase text (this is why `letter-spacing: 0.05em` shows up in so many small-caps designs). `line-height` controls the space between lines — `1.5` to `1.7` for body text, `1.1` to `1.3` for headings.
+
+`text-indent` pushes the first line of a paragraph in from the left. It's the traditional typographic way to mark paragraph beginnings — an alternative to margin-between-paragraphs that works better in long-form text.
+
+`text-overflow: ellipsis` truncates overflowing text with `…`. It only works with `overflow: hidden` and `white-space: nowrap`, which is why you always see those three properties together.
+
+# Looking Back
+
+The point of all this is that your font is already doing a lot of work for you. But it's also capable of doing more — you just need to ask. Tabular numbers for your data tables. Proper fractions in your content. Contextual alternates that clean up punctuation. Optical sizing that adapts to your layout.
+
+None of these are obscure features. They're part of the CSS spec, supported in every modern browser, built into most quality fonts. The difference between a page that feels typographically considered and one that doesn't often comes down to a handful of these properties.
+
+If you want to explore what your specific font supports, [Wakamai Fondue](https://wakamaifondue.com/) will analyze any font file and show you every feature. For Inter specifically, the [features page](https://rsms.me/inter/#features) has the definitive reference.
+
+[^1]: Rasmus Andersson. [Inter typeface family](https://rsms.me/inter/). Features reference and glyph catalog.
+
+[^2]: MDN Web Docs. [font-feature-settings](https://developer.mozilla.org/en-US/docs/Web/CSS/font-feature-settings). CSS property reference.
+
+[^3]: MDN Web Docs. [font-variant-numeric](https://developer.mozilla.org/en-US/docs/Web/CSS/font-variant-numeric). CSS property reference.
+
+[^4]: MDN Web Docs. [text-wrap](https://developer.mozilla.org/en-US/docs/Web/CSS/text-wrap). CSS property reference.

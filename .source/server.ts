@@ -1,10 +1,12 @@
 // @ts-nocheck
-import * as __fd_glob_8 from "../content/to-spring-or-not-to-spring/index.mdx?collection=docs"
-import * as __fd_glob_7 from "../content/taking-advantage-of-pseudo-elements/index.mdx?collection=docs"
-import * as __fd_glob_6 from "../content/laws-of-ux/index.mdx?collection=docs"
-import * as __fd_glob_5 from "../content/mastering-animate-presence/index.mdx?collection=docs"
-import * as __fd_glob_4 from "../content/morphing-icons/index.mdx?collection=docs"
-import * as __fd_glob_3 from "../content/sounds-on-the-web/index.mdx?collection=docs"
+import * as __fd_glob_10 from "../content/your-font-can-do-more/index.mdx?collection=docs"
+import * as __fd_glob_9 from "../content/to-spring-or-not-to-spring/index.mdx?collection=docs"
+import * as __fd_glob_8 from "../content/taking-advantage-of-pseudo-elements/index.mdx?collection=docs"
+import * as __fd_glob_7 from "../content/sounds-on-the-web/index.mdx?collection=docs"
+import * as __fd_glob_6 from "../content/predictive-prefetching/index.mdx?collection=docs"
+import * as __fd_glob_5 from "../content/morphing-icons/index.mdx?collection=docs"
+import * as __fd_glob_4 from "../content/mastering-animate-presence/index.mdx?collection=docs"
+import * as __fd_glob_3 from "../content/laws-of-ux/index.mdx?collection=docs"
 import * as __fd_glob_2 from "../content/generating-sounds-with-ai/index.mdx?collection=docs"
 import * as __fd_glob_1 from "../content/animating-container-bounds/index.mdx?collection=docs"
 import * as __fd_glob_0 from "../content/12-principles-of-animation/index.mdx?collection=docs"
@@ -16,4 +18,4 @@ const create = server<typeof Config, import("fumadocs-mdx/runtime/types").Intern
   }
 }>({"doc":{"passthroughs":["extractedReferences"]}});
 
-export const docs = await create.docs("docs", "content", {}, {"12-principles-of-animation/index.mdx": __fd_glob_0, "animating-container-bounds/index.mdx": __fd_glob_1, "generating-sounds-with-ai/index.mdx": __fd_glob_2, "sounds-on-the-web/index.mdx": __fd_glob_3, "morphing-icons/index.mdx": __fd_glob_4, "mastering-animate-presence/index.mdx": __fd_glob_5, "laws-of-ux/index.mdx": __fd_glob_6, "taking-advantage-of-pseudo-elements/index.mdx": __fd_glob_7, "to-spring-or-not-to-spring/index.mdx": __fd_glob_8, });
+export const docs = await create.docs("docs", "content", {}, {"12-principles-of-animation/index.mdx": __fd_glob_0, "animating-container-bounds/index.mdx": __fd_glob_1, "generating-sounds-with-ai/index.mdx": __fd_glob_2, "laws-of-ux/index.mdx": __fd_glob_3, "mastering-animate-presence/index.mdx": __fd_glob_4, "morphing-icons/index.mdx": __fd_glob_5, "predictive-prefetching/index.mdx": __fd_glob_6, "sounds-on-the-web/index.mdx": __fd_glob_7, "taking-advantage-of-pseudo-elements/index.mdx": __fd_glob_8, "to-spring-or-not-to-spring/index.mdx": __fd_glob_9, "your-font-can-do-more/index.mdx": __fd_glob_10, });

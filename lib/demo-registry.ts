@@ -88,6 +88,9 @@ export const demoRegistry: Record<string, ComponentType> = {
   "morphing-icons/morphing-icon-demo": dynamic(() =>
     import("@/content/morphing-icons/demos/morphing-icon-demo").then((m) => m.MorphingIconDemo),
   ),
+  "predictive-prefetching/prediction-cards": dynamic(() =>
+    import("@/content/predictive-prefetching/demos/prediction-cards").then((m) => m.PredictionComparison),
+  ),
   "sounds-on-the-web/action-feedback-demo": dynamic(() =>
     import("@/content/sounds-on-the-web/demos/action-feedback-demo").then((m) => m.ActionFeedbackDemo),
   ),
@@ -114,6 +117,27 @@ export const demoRegistry: Record<string, ComponentType> = {
   ),
   "to-spring-or-not-to-spring/spring-demo": dynamic(() =>
     import("@/content/to-spring-or-not-to-spring/demos/spring-demo").then((m) => m.SpringDemo),
+  ),
+  "your-font-can-do-more/numeric-display": dynamic(() =>
+    import("@/content/your-font-can-do-more/demos/numeric-display").then((m) => m.NumericDisplay),
+  ),
+  "your-font-can-do-more/opentype-features": dynamic(() =>
+    import("@/content/your-font-can-do-more/demos/opentype-features").then((m) => m.OpentypeFeatures),
+  ),
+  "your-font-can-do-more/text-decoration": dynamic(() =>
+    import("@/content/your-font-can-do-more/demos/text-decoration").then((m) => m.TextDecoration),
+  ),
+  "your-font-can-do-more/text-layout": dynamic(() =>
+    import("@/content/your-font-can-do-more/demos/text-layout").then((m) => m.TextLayout),
+  ),
+  "your-font-can-do-more/text-rendering": dynamic(() =>
+    import("@/content/your-font-can-do-more/demos/text-rendering").then((m) => m.TextRendering),
+  ),
+  "your-font-can-do-more/text-transform": dynamic(() =>
+    import("@/content/your-font-can-do-more/demos/text-transform").then((m) => m.TextTransform),
+  ),
+  "your-font-can-do-more/variable-axes": dynamic(() =>
+    import("@/content/your-font-can-do-more/demos/variable-axes").then((m) => m.VariableAxes),
   ),
 };
 

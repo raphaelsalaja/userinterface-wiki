@@ -1,0 +1,78 @@
+---
+title: "Your Interface Should See You Coming"
+description: "How predictive prefetching uses mouse trajectory analysis to load content before the user clicks, eliminating perceived latency."
+date: "2026-03-04"
+tags: ["performance", "prefetching", "ux", "foresightjs"]
+author: "raphael-salaja"
+icon: "code"
+---
+
+import { PredictionComparison } from "./demos";
+
+There's a really quick and simple way to make your site feel faster, and it's pretty simple when you think about it.
+
+Just start loading things before the user needs them. This is known as predictive prefetching.
+
+Now I don't mean prefetching everything in the viewport. I mean watching where the cursor is heading and loading exactly what it's about to need.
+
+[ForesightJS](https://foresightjs.com) helps with this.[^1] It tracks your mouse trajectory, runs it through a linear extrapolation model, and checks if the predicted path intersects any registered elements using the [Liang-Barsky algorithm](https://en.wikipedia.org/wiki/Liang%E2%80%93Barsky_algorithm). If it does, it fires the callback early.
+
+The reason it works is simple. When you move your cursor toward a button 9/10 times you're going to click it. That motor phase takes somewhere between 100 and 200ms, and most interfaces waste that entire window doing nothing. 
+
+Most prefetching falls into one of three buckets. Click-based, where nothing happens until the user commits. Hover-based, where data loads when the cursor enters the element. And trajectory-based, where loading starts while the cursor is still in motion.
+
+Try them side by side.
+
+<Bleed>
+  <Figure>
+    <PredictionComparison />
+    <Caption>
+      Click, hover, and trajectory prediction compared. Move your cursor toward
+      the ForesightJS button to see it prefetch early.
+    </Caption>
+  </Figure>
+</Bleed>
+
+The click button waits for a full round-trip every time. The hover button is better, it starts loading when you arrive, but you've already spent 100ms getting there. The ForesightJS button fires before you reach it. By the time you click, the data is waiting.
+
+# Why This Matters
+
+Hover prefetching was a good idea. It just starts too late. By the time your cursor reaches the target, you've already spent the majority of the interaction time just travelling. Trajectory prediction reclaims that window. The fetch fires while your hand is still in motion.
+
+What surprised me is how lightweight the implementation is. The core is around 14KB, with handlers lazy-loaded by device type.[^2] On touch devices it falls back to viewport or touch-start strategies automatically, which makes sense since there's no cursor to track.
+
+It also handles keyboard navigation. Tab prediction monitors focus changes and prefetches when you're a few tab stops away from a registered element. Scroll prediction works similarly, firing callbacks when you scroll toward elements based on direction. These are the kinds of things that individually seem small but together start to feel like the interface is paying attention.
+
+# Integration
+
+ForesightJS is framework agnostic but has ready-made integrations for [Next.js](https://foresightjs.com/docs/react/nextjs), [React Router](https://foresightjs.com/docs/react/react-router), [Vue](https://foresightjs.com/docs/vue/directive), and [Angular](https://foresightjs.com/docs/angular). The Next.js integration is particularly interesting because Next already prefetches aggressively on viewport entry, which can trigger over a megabyte of unnecessary requests just from scrolling.[^3] ForesightJS replaces that with intent-based loading.
+
+For React, the pattern is a `useForesight` hook that returns a ref. Attach it to an element, pass a callback, and the library handles the rest.[^4]
+
+```tsx
+const { elementRef } = useForesight({
+  callback: () => router.prefetch("/about"),
+  hitSlop: 20,
+  name: "about-link",
+});
+
+return (
+  <Link ref={elementRef} href="/about">
+    About
+  </Link>
+);
+```
+
+The `hitSlop` expands the invisible hit area around the element, making predictions trigger earlier. It's a small detail but it makes a noticeable difference in practice.
+
+# Closing Thoughts
+
+I don't think predictive prefetching belongs in every project. But for anything where navigation latency is noticeable, it's worth looking at. The gap between hover-based and trajectory-based prefetching is only 100ms or so, but that's the difference between an interface that reacts to you and one that's already ready.
+
+[^1]: [ForesightJS](https://foresightjs.com) is open source and maintained by [Bart Spaans](https://github.com/spaansba). The [Behind the Scenes](https://foresightjs.com/docs/Behind_the_Scenes) page is a good technical deep dive.
+
+[^2]: Desktop users load around 32KB total, touch devices around 19KB. Predictors for tab and scroll are lazy-loaded only when enabled. See the [bundle optimization docs](https://foresightjs.com/docs/Behind_the_Scenes#bundle-optimization).
+
+[^3]: The Next.js homepage triggers roughly 1.59MB of prefetch requests just from scrolling. ForesightJS is mentioned in the official [Next.js prefetching docs](https://nextjs.org/docs/app/guides/prefetching#extending-or-ejecting-link) as an alternative strategy.
+
+[^4]: The [useForesight hook](https://foresightjs.com/docs/react/hook) is the base for all React integrations. Framework-specific components like `ForesightLink` are built on top of it.

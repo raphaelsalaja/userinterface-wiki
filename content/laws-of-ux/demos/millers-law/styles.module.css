@@ -14,9 +14,11 @@
   flex-direction: column;
   width: 100%;
   max-width: 384px;
+  overflow: visible;
 }
 
 .row {
+  overflow: visible;
   display: flex;
   gap: 16px;
   align-items: center;
