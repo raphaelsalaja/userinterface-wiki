@@ -413,35 +413,24 @@ function Controls({ children }: { children: React.ReactNode }) {
 }
 ```
 
-### Skills Files
+### Skills
 
-Create SKILL.md files in `/skills/` for reusable guidelines:
+The `/skills/` directory contains a unified skill following the [Vercel agent-skills](https://github.com/vercel-labs/agent-skills) pattern:
 
-```markdown
----
-name: skill-name
-description: When and how to apply this skill
-license: MIT
-metadata:
-  author: raphael-salaja
-  version: "1.0.0"
-  source: /content/related-article/index.mdx
----
-
-# Skill Title
-
-## When to Apply
-
-Reference these guidelines when:
-- Condition 1
-- Condition 2
-
-## Core Principles
-
-| Principle | Description |
-|-----------|-------------|
-| Name | Explanation |
 ```
+skills/
+  SKILL.md              # Compact quick-reference (one-liner per rule)
+  AGENTS.md             # Full compiled doc with all rules expanded
+  metadata.json         # Version, author, abstract, references
+  rules/
+    _sections.md        # Category definitions + ordering
+    _template.md        # Template for adding new rules
+    timing-under-300ms.md
+    spring-for-gestures.md
+    ...                 # 89 individual rule files
+```
+
+To add a new rule, copy `rules/_template.md`, fill in the frontmatter, and add the rule ID to `SKILL.md` and `AGENTS.md`.
 
 ---
 

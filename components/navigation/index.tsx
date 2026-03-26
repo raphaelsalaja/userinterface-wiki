@@ -15,6 +15,12 @@ const LINKS = [
     external: false,
   },
   {
+    id: "skill",
+    href: "/skill",
+    title: "Skill",
+    external: false,
+  },
+  {
     id: "twitter",
     href: "https://twitter.com/intent/follow?screen_name=raphaelsalaja",
     title: "Twitter",
