@@ -1,3 +1,11 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: var(--page-max-width);
+  margin-inline: auto;
+}
+
 .header {
   display: flex;
   flex-direction: column;
@@ -90,7 +98,7 @@
 .section {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 32px;
 }
 
 .meta {
@@ -114,67 +122,75 @@
 }
 
 .list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 12px;
-}
-
-.card {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  height: 100%;
-  padding: 16px;
+  gap: 48px;
+}
+
+.post [data-post-link] {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-start;
+  align-self: stretch;
   text-decoration: none;
-  background: var(--gray-1);
-  border: 1px solid var(--gray-a4);
-  border-radius: 12px;
-  box-shadow: var(--shadow-1);
-  transition:
-    background-color 0.15s ease,
-    border-color 0.15s ease;
-
-  &:hover {
-    background: var(--gray-2);
-    border-color: var(--gray-a6);
-  }
-
-  &:active {
-    transform: scale(0.99);
-  }
 
   &:focus-visible {
     outline: 2px solid var(--gray-12);
-    outline-offset: 2px;
+    outline-offset: 4px;
+    border-radius: 4px;
   }
 }
 
-.name {
-  font-size: 14px;
+.details {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  align-self: stretch;
+}
+
+.post [data-post-title] {
+  font-family: var(--font-family-display);
+  font-size: 16px;
   font-weight: var(--font-weight-medium);
+  line-height: 24px;
   color: var(--gray-12);
+  letter-spacing: var(--font-letter-spacing-16px);
+  transition: color 0.2s ease;
+}
+
+.post [data-post-meta] {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.post [data-post-meta] > span {
+  font-size: 14px;
+  line-height: 24px;
+  color: var(--gray-10);
   letter-spacing: var(--font-letter-spacing-14px);
+  transition: color 0.2s ease;
 }
 
-.excerpt {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  -webkit-line-clamp: 2;
-  font-size: 13px;
-  line-height: 20px;
-  color: var(--gray-11);
-  letter-spacing: var(--font-letter-spacing-13px);
+.post [data-post-description] {
+  font-size: 14px;
+  line-height: 24px;
+  color: var(--gray-10);
+  letter-spacing: var(--font-letter-spacing-14px);
+  transition: color 0.2s ease;
 }
 
-.date {
-  margin-top: auto;
-  font-size: 12px;
-  color: var(--gray-9);
+.post:hover [data-post-meta] > span,
+.post:hover [data-post-description] {
+  color: var(--gray-12);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .card {
+  .post [data-post-title],
+  .post [data-post-meta] > span,
+  .post [data-post-description] {
     transition: none;
   }
 }
