@@ -1,0 +1,17 @@
+---
+title: "Spring"
+description: "A physics-based animation model driven by stiffness, damping, and mass instead of duration and curve."
+category: "motion"
+---
+
+A spring animation doesn't have a duration. Instead, it simulates a physical system: a mass attached to a spring, pulled toward a target. Three parameters shape the motion, **stiffness** (how strongly it's pulled), **damping** (how much resistance slows it), and **mass** (how much inertia it carries).
+
+```tsx
+<motion.div
+  transition={{ type: "spring", stiffness: 500, damping: 30 }}
+/>
+```
+
+The payoff is continuity. Because a spring is a simulation, it can be interrupted mid-flight and retargeted without a visual seam, and it can inherit the velocity of a gesture, so a hard flick [overshoots](/glossary/overshoot) and settles while a gentle release eases home.
+
+That's why the rule of thumb is: springs for user-driven motion (drag, flick, anything interruptible), [easing](/glossary/easing) for system-driven state changes. Keep parameters balanced, very high stiffness with very low damping produces oscillation that reads as broken rather than lively.

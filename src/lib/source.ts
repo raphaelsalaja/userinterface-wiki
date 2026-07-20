@@ -2,7 +2,7 @@
  * Content source - Fumadocs loader and page formatting
  */
 
-import { docs } from "fumadocs/server";
+import { docs, glossary } from "fumadocs/server";
 import { type InferPageType, loader } from "fumadocs-core/source";
 import { type Author, getAuthorById } from "./authors";
 
@@ -10,6 +10,15 @@ export const source = loader({
   baseUrl: "/",
   source: docs.toFumadocsSource(),
 });
+
+export const glossarySource = loader({
+  baseUrl: "/glossary",
+  source: glossary.toFumadocsSource(),
+});
+
+export type GlossaryPage = NonNullable<
+  ReturnType<typeof glossarySource.getPage>
+>;
 
 export function getPageImage(page: InferPageType<typeof source>) {
   const segments = [...page.slugs, "image.png"];

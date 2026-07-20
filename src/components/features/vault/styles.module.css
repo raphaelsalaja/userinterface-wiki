@@ -1,0 +1,141 @@
+.vault {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+}
+
+.filter-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 0;
+  margin: 0;
+  border: none;
+}
+
+.filter {
+  height: 28px;
+  padding: 5px 10px;
+  font-size: 13px;
+  font-weight: var(--font-weight-medium);
+  color: var(--gray-11);
+  letter-spacing: var(--font-letter-spacing-13px);
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid var(--gray-a4);
+  border-radius: 999px;
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease;
+
+  &:hover {
+    color: var(--gray-12);
+    background: var(--gray-a3);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--gray-12);
+    outline-offset: 2px;
+  }
+
+  &[data-active] {
+    color: var(--gray-1);
+    background: var(--gray-12);
+    border-color: var(--gray-12);
+  }
+}
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  height: 100%;
+  padding: 16px;
+  text-decoration: none;
+  background: var(--gray-1);
+  border: 1px solid var(--gray-a4);
+  border-radius: 12px;
+  box-shadow: var(--shadow-1);
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+
+  &:hover {
+    background: var(--gray-2);
+    border-color: var(--gray-a6);
+  }
+
+  &:active {
+    transform: scale(0.99);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--gray-12);
+    outline-offset: 2px;
+  }
+}
+
+.row {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.name {
+  font-size: 14px;
+  font-weight: var(--font-weight-medium);
+  color: var(--gray-12);
+  letter-spacing: var(--font-letter-spacing-14px);
+}
+
+.type {
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: var(--font-weight-medium);
+  color: var(--gray-9);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.note {
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--gray-11);
+  letter-spacing: var(--font-letter-spacing-13px);
+}
+
+.source {
+  margin-top: auto;
+  font-size: 12px;
+  color: var(--gray-9);
+}
+
+.empty {
+  font-size: 14px;
+  color: var(--gray-11);
+  letter-spacing: var(--font-letter-spacing-14px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .filter,
+  .card {
+    transition: none;
+  }
+}

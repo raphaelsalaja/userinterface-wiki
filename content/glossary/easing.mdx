@@ -1,0 +1,17 @@
+---
+title: "Easing"
+description: "A curve that maps animation time to progress, controlling how motion accelerates and decelerates."
+category: "motion"
+---
+
+An easing curve answers one question: at each moment of an animation, how far along should the value be? Linear easing maps time to progress one-to-one. Every other curve bends that relationship, spending more of the duration at the start (ease-in), the end (ease-out), or the middle (ease-in-out).
+
+The names describe where the *slow* part is. Ease-out starts fast and settles gently, which is why it suits entrances, the element arrives with energy and lands softly. Ease-in builds momentum before departure, which suits exits. Ease-in-out spreads attention evenly, fitting transitions between two equally important states.
+
+```css
+.modal-enter { animation-timing-function: ease-out; }
+.modal-exit { animation-timing-function: ease-in; }
+.page-transition { animation-timing-function: ease-in-out; }
+```
+
+Unlike a [spring](/glossary/spring), an easing curve has a fixed duration and cannot respond to interruption, it always plays out its scripted arc. Use easing when the system is announcing a change; use springs when motion follows the user's hand.

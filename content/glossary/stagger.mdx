@@ -1,0 +1,17 @@
+---
+title: "Stagger"
+description: "Offsetting the start time of animations across a group of elements so they arrive in sequence rather than all at once."
+category: "motion"
+---
+
+When a list of elements animates in simultaneously, the group reads as one block. Staggering, delaying each element slightly after the previous one, lets the eye register the items as individuals and gives the entrance a direction.
+
+```tsx
+<motion.ul
+  transition={{ staggerChildren: 0.03 }}
+/>
+```
+
+The delay per item should be small, under 50 milliseconds. Beyond that, the total sequence time grows linearly with list length and the last items feel like they're arriving late to their own interface. A 150ms stagger across ten items means the final one waits a second and a half.
+
+Stagger is an entrance technique. Exits should generally be faster and less choreographed, users who dismissed something have already moved on.

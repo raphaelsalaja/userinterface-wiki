@@ -1,0 +1,21 @@
+---
+title: "Tabular Numbers"
+description: "Digits that all occupy the same width, so columns of numbers align and live values don't jitter."
+category: "craft"
+---
+
+Most fonts draw digits proportionally, a 1 is narrower than an 8. That's right for prose but wrong for data: columns misalign, and a live-updating value (a timer, a price) shifts its neighbors every time a digit changes width.
+
+Tabular figures give every digit the same advance width:
+
+```css
+.price,
+.timer,
+.data-table {
+  font-variant-numeric: tabular-nums;
+}
+```
+
+Use tabular numbers anywhere digits stack vertically or change over time. Use the proportional default (or `oldstyle-nums`, which blends with lowercase text) in running prose, where evenly spaced digits would look oddly gappy.
+
+More font features like this in [Your Font Can Do More](/your-font-can-do-more).

@@ -1,0 +1,42 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-block: 64px;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  color: var(--gray-12);
+  cursor: pointer;
+  background: var(--gray-1);
+  border: 1px solid var(--gray-a4);
+  border-radius: 14px;
+  box-shadow: var(--shadow-1);
+  transition:
+    background-color 0.15s ease,
+    transform 0.18s ease;
+}
+
+.button:hover {
+  background: var(--gray-2);
+}
+
+.button:active {
+  transform: scale(0.96);
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--gray-12);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button {
+    transition: none;
+  }
+}

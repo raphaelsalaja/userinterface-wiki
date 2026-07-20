@@ -62,6 +62,20 @@ export const SECTION_DEFINITIONS: SectionDefinition[] = [
   },
 ];
 
+/**
+ * Walkthroughs — build-along series surfaced as the sidebar's second tab.
+ * Same article infrastructure as sections, different editorial format.
+ */
+export const WALKTHROUGH_DEFINITIONS: SectionDefinition[] = [
+  {
+    id: "walkthroughs",
+    label: "Walkthroughs",
+    description:
+      "Build-along rebuilds of real interface patterns, showing the full thought process step by step.",
+    slugs: ["build-a-morphing-menu-icon"],
+  },
+];
+
 export interface Section {
   id: string;
   label: string;
@@ -73,25 +87,17 @@ function pageSlug(page: Page): string {
   return page.slugs.join("/");
 }
 
-/**
- * Returns all sections with their pages resolved, in curriculum order.
- * Pages not assigned to any section are collected into an "Other" bucket.
- */
-export function getSections(): Section[] {
+function resolveSections(definitions: SectionDefinition[]): Section[] {
   const pages = source.getPages();
   const bySlug = new Map(pages.map((page) => [pageSlug(page), page]));
-  const assigned = new Set<string>();
 
   const sections: Section[] = [];
 
-  for (const definition of SECTION_DEFINITIONS) {
+  for (const definition of definitions) {
     const sectionPages: Page[] = [];
     for (const slug of definition.slugs) {
       const page = bySlug.get(slug);
-      if (page) {
-        sectionPages.push(page);
-        assigned.add(slug);
-      }
+      if (page) sectionPages.push(page);
     }
     if (sectionPages.length > 0) {
       sections.push({
@@ -103,7 +109,26 @@ export function getSections(): Section[] {
     }
   }
 
-  const unassigned = pages.filter((page) => !assigned.has(pageSlug(page)));
+  return sections;
+}
+
+/**
+ * Returns all learn sections with their pages resolved, in curriculum order.
+ * Pages not assigned to any section or walkthrough are collected into an
+ * "Other" bucket so nothing silently disappears.
+ */
+export function getSections(): Section[] {
+  const sections = resolveSections(SECTION_DEFINITIONS);
+
+  const assigned = new Set([
+    ...SECTION_DEFINITIONS.flatMap((definition) => definition.slugs),
+    ...WALKTHROUGH_DEFINITIONS.flatMap((definition) => definition.slugs),
+  ]);
+
+  const unassigned = source
+    .getPages()
+    .filter((page) => !assigned.has(pageSlug(page)));
+
   if (unassigned.length > 0) {
     sections.push({
       id: "other",
@@ -122,10 +147,19 @@ export function getSections(): Section[] {
 }
 
 /**
- * All pages flattened in curriculum order.
+ * Returns walkthrough sections with their pages resolved.
+ */
+export function getWalkthroughSections(): Section[] {
+  return resolveSections(WALKTHROUGH_DEFINITIONS);
+}
+
+/**
+ * All pages flattened in curriculum order, walkthroughs last.
  */
 export function getOrderedPages(): FormattedPage[] {
-  return getSections().flatMap((section) => section.pages);
+  return [...getSections(), ...getWalkthroughSections()].flatMap(
+    (section) => section.pages,
+  );
 }
 
 /**

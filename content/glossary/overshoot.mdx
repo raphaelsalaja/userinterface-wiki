@@ -1,0 +1,20 @@
+---
+title: "Overshoot"
+description: "When an animated value passes its target before settling, giving motion a sense of momentum and life."
+category: "motion"
+---
+
+Overshoot is what happens when a moving object carries too much momentum to stop exactly at its destination, it sails slightly past, then corrects. In the physical world almost everything overshoots a little; in interfaces, a touch of it makes motion feel energetic instead of mechanical.
+
+The honest way to get overshoot is a [spring](/glossary/spring) with moderate damping, the amount of overshoot falls naturally out of the physics:
+
+```tsx
+<motion.div
+  animate={{ scale: 1 }}
+  transition={{ type: "spring", stiffness: 400, damping: 15 }}
+/>
+```
+
+You can fake it with an easing curve whose control points exceed 1 (a "back" ease), but the fake version always overshoots by the same scripted amount regardless of context, which is exactly the tell that separates it from real spring motion.
+
+Use it sparingly. Overshoot draws attention, so it belongs on the focal element of an interaction, not on every element at once.

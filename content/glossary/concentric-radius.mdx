@@ -1,0 +1,25 @@
+---
+title: "Concentric Radius"
+description: "Nested rounded corners that share a center point: inner radius equals outer radius minus the gap between them."
+category: "craft"
+---
+
+Two nested rounded rectangles only look right when their corner curves share a center. Because the inner element sits closer to that center by exactly the padding between them, its radius must be smaller by the same amount:
+
+```css
+.outer {
+  --padding: 8px;
+  --inner-radius: 8px;
+
+  border-radius: calc(var(--inner-radius) + var(--padding));
+  padding: var(--padding);
+}
+
+.inner {
+  border-radius: var(--inner-radius);
+}
+```
+
+Give both elements the same radius and the inner corners look pinched, a subtle wrongness most people feel but can't name. iOS applies this everywhere (icons in folders, cards in sheets), which is part of why its nesting feels effortless.
+
+Covered in depth in [Nest Radii](/nest-radii).

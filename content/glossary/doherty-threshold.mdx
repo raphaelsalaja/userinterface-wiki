@@ -1,0 +1,19 @@
+---
+title: "Doherty Threshold"
+description: "The 400ms response boundary below which an interaction feels instant and above which users notice the wait."
+category: "experience"
+---
+
+In 1979, Walter Doherty and Ahrvind Thadani found that productivity rose sharply when computer response times dropped below 400 milliseconds, users stayed in flow instead of context-switching while they waited. The number became a design rule: respond within 400ms or the interaction stops feeling like a conversation.
+
+The response doesn't have to be the *result*, it has to be *feedback*. Optimistic UI updates the interface immediately and lets the network catch up. Skeletons and progress indicators acknowledge the request even when the work takes longer:
+
+```tsx
+async function handleClick() {
+  setResult(optimisticData); // respond now
+  const data = await fetchData(); // confirm later
+  setResult(data);
+}
+```
+
+Perceived speed is the actual product. See [Skip the Spinner](/skip-the-spinner) and [Laws of UX](/laws-of-ux) for how this plays out in practice.

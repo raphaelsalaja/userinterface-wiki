@@ -1,0 +1,131 @@
+---
+title: "Build a Morphing Menu Icon"
+description: "A step-by-step walkthrough of building a menu button that morphs into a close icon, using three SVG lines and a single constraint."
+date: "2026-07-20"
+author: "raphael-salaja"
+icon: "code"
+---
+
+import { MenuToClose } from "./demos";
+
+This is a walkthrough, we're going to build one thing from scratch, and the thing is the morphing menu button you've seen in a hundred polished apps: three lines that fold into an X when the menu opens. Here's where we'll end up.
+
+<Figure>
+  <MenuToClose />
+  <Caption>The finished button. Click it.</Caption>
+</Figure>
+
+The obvious way to build this is to crossfade two icons. The obvious way looks cheap, one shape blinks out, another blinks in, and the connection between them is lost. Morphing works differently: the *same* lines move to new positions, so your eye tracks the transformation as one continuous object.
+
+# Step 1: One constraint makes everything possible
+
+The entire technique rests on a single decision: **every icon is exactly three lines.** Not paths, not polygons, three `<line>` elements. A menu icon uses all three. An X only needs two, so the third collapses to an invisible point.
+
+Start by giving that idea types:
+
+```tsx
+const CENTER = 7;
+
+interface IconLine {
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+  opacity?: number;
+}
+
+const collapsed: IconLine = {
+  x1: CENTER, y1: CENTER, x2: CENTER, y2: CENTER, opacity: 0,
+};
+```
+
+The `collapsed` constant is a zero-length line parked at the center of the viewBox with zero opacity. It's the trick that lets a three-line X and a three-line menu morph into each other: unused lines don't disappear from the DOM, they shrink into the middle and fade.
+
+# Step 2: Describe the icons as data
+
+With the constraint in place, each icon is just coordinates in a 14×14 viewBox:
+
+```tsx
+const icons = {
+  menu: [
+    { x1: 2, y1: 3.5, x2: 12, y2: 3.5 },
+    { x1: 2, y1: 7, x2: 12, y2: 7 },
+    { x1: 2, y1: 10.5, x2: 12, y2: 10.5 },
+  ],
+  close: [
+    { x1: 3, y1: 3, x2: 11, y2: 11 },
+    { x1: 3, y1: 11, x2: 11, y2: 3 },
+    collapsed,
+  ],
+};
+```
+
+Two details are doing quiet work here. The viewBox is the same for both icons, mixing scales breaks the coordinate math. And line *order* matters: the first menu bar becomes the first stroke of the X, the bottom bar becomes the second, and the middle bar collapses. Motion will interpolate slot-by-slot, so how you assign lines to slots is how the morph choreographs itself.
+
+# Step 3: Let Motion move the lines
+
+Rendering is a plain SVG with `motion.line` elements. When the icon changes, each line's `animate` target changes, and Motion interpolates the coordinates:
+
+```tsx
+<svg width={28} height={28} viewBox="0 0 14 14" aria-hidden="true">
+  {lines.map((line, index) => (
+    <motion.line
+      key={index}
+      animate={{
+        x1: line.x1, y1: line.y1,
+        x2: line.x2, y2: line.y2,
+        opacity: line.opacity ?? 1,
+      }}
+      transition={{ ease: [0.19, 1, 0.22, 1], duration: 0.4 }}
+      stroke="currentColor"
+      strokeWidth={1.25}
+      strokeLinecap="round"
+    />
+  ))}
+</svg>
+```
+
+The index key is deliberate, normally a code smell, but here the three line slots are positional by design, and stable slots are exactly what makes the interpolation continuous.
+
+`strokeLinecap="round"` is not optional polish. With butt caps, line endpoints look clipped mid-morph; round caps keep every intermediate frame looking intentional.
+
+# Step 4: Wire up the button
+
+State is a single boolean. The button toggles it, and the lines follow:
+
+```tsx
+export function MenuButton() {
+  const [open, setOpen] = useState(false);
+  const lines = open ? icons.close : icons.menu;
+
+  return (
+    <button
+      type="button"
+      onClick={() => setOpen(!open)}
+      aria-label={open ? "Close menu" : "Open menu"}
+      aria-expanded={open}
+    >
+      {/* the SVG from step 3 */}
+    </button>
+  );
+}
+```
+
+Accessibility lives on the button, not the icon. The SVG is `aria-hidden` because it's decorative; the button carries `aria-label` and `aria-expanded` so screen readers get the state change the animation is communicating visually.
+
+# Step 5: Respect reduced motion
+
+The morph is the point of the component, which is exactly why it needs an off switch. `useReducedMotion` collapses the transition to an instant jump:
+
+```tsx
+const reducedMotion = useReducedMotion() ?? false;
+const activeTransition = reducedMotion
+  ? { duration: 0 }
+  : { ease: [0.19, 1, 0.22, 1], duration: 0.4 };
+```
+
+The icon still changes, the state is still communicated, only the interpolation disappears.
+
+# Where to take it
+
+You've built the two-icon version. The full system in [Morphing Icons](/morphing-icons) generalizes every step you just took: more icons as coordinate data, rotation groups so arrows spin into each other instead of scrambling, and springs on the rotation for weight. None of it requires new ideas, just the same constraint, applied more times.

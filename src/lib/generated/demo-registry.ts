@@ -55,6 +55,9 @@ export const demoRegistry: Record<string, ComponentType> = {
   "balance-headlines/balanced-heading": dynamic(() =>
     import("@/content/balance-headlines/demos/balanced-heading").then((m) => m.BalancedHeading),
   ),
+  "build-a-morphing-menu-icon/menu-to-close": dynamic(() =>
+    import("@/content/build-a-morphing-menu-icon/demos/menu-to-close").then((m) => m.MenuToClose),
+  ),
   "generating-sounds-with-ai/audio-concepts": dynamic(() =>
     import("@/content/generating-sounds-with-ai/demos/audio-concepts").then((m) => m.AudioConceptsDemo),
   ),

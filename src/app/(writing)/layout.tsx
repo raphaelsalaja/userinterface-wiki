@@ -1,13 +1,17 @@
-import { Sidebar, type SidebarSection } from "@/components/chrome/sidebar";
-import { getSections } from "@/lib/sections";
+import {
+  Sidebar,
+  type SidebarSection,
+  type SidebarTab,
+} from "@/components/chrome/sidebar";
+import {
+  getSections,
+  getWalkthroughSections,
+  type Section,
+} from "@/lib/sections";
 import styles from "./styles.module.css";
 
-export default function WritingLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  const sections: SidebarSection[] = getSections().map((section) => ({
+function toSidebarSections(sections: Section[]): SidebarSection[] {
+  return sections.map((section) => ({
     id: section.id,
     label: section.label,
     items: section.pages.map((page) => ({
@@ -15,10 +19,35 @@ export default function WritingLayout({
       url: page.url,
     })),
   }));
+}
+
+export default function WritingLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  const tabs: SidebarTab[] = [
+    {
+      id: "learn",
+      label: "Learn",
+      sections: toSidebarSections(getSections()),
+    },
+    {
+      id: "walkthroughs",
+      label: "Walkthroughs",
+      sections: toSidebarSections(getWalkthroughSections()),
+    },
+  ].filter((tab) => tab.sections.length > 0);
 
   return (
     <div className={styles.shell}>
-      <Sidebar sections={sections} />
+      <Sidebar
+        tabs={tabs}
+        links={[
+          { title: "Glossary", url: "/glossary" },
+          { title: "Vault", url: "/vault" },
+        ]}
+      />
       <div className={styles.main}>{children}</div>
     </div>
   );

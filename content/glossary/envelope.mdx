@@ -1,0 +1,18 @@
+---
+title: "Envelope"
+description: "The shape of a sound's loudness over time — attack, decay, sustain, release — and the difference between a click and a buzz."
+category: "sound"
+---
+
+Two sounds with the same pitch can feel completely different because of their envelope: how quickly the sound reaches full volume (attack), how it falls to a resting level (decay/sustain), and how it fades out (release). UI sounds are almost all attack and decay, a near-instant onset and a fast fade.
+
+The fade shape matters. Real sounds decay exponentially, not linearly, so a linear ramp reads as artificial and often ends with an audible cut:
+
+```ts
+gain.gain.setValueAtTime(0.3, t);
+gain.gain.exponentialRampToValueAtTime(0.001, t + 0.05);
+```
+
+Two Web Audio gotchas: always set an initial value before ramping (otherwise the ramp glitches from wherever the parameter happened to be), and never target exactly zero with an exponential ramp, it's mathematically impossible, so aim for a near-zero value like 0.001.
+
+More synthesis practice in [Generating Sounds with AI](/generating-sounds-with-ai).

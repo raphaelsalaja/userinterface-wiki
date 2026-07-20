@@ -1,0 +1,28 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 560px;
+  padding-block-start: 96px;
+  padding-block-end: 48px;
+}
+
+.title {
+  font-family: var(--font-family-display);
+  font-size: 32px;
+  font-weight: var(--font-weight-semibold);
+  line-height: 40px;
+  letter-spacing: -0.64px;
+  text-wrap: balance;
+}
+
+.subtitle {
+  font-size: 15px;
+  line-height: 24px;
+  color: var(--gray-11);
+  text-wrap: pretty;
+}
+
+.content {
+  padding-block-end: 128px;
+}
