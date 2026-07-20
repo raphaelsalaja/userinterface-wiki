@@ -4,6 +4,7 @@ import { DemosGenerator } from "./generators/demos";
 import { IconsGenerator } from "./generators/icons";
 import { OpenGraphGenerator } from "./generators/opengraph";
 import { PlaygroundsGenerator } from "./generators/playgrounds";
+import { SkillsGenerator } from "./generators/skills";
 import { TextToSpeechGenerator } from "./generators/text-to-speech";
 
 // 256-color grays for cross-theme compatibility
@@ -85,6 +86,7 @@ const generators = {
   icons: IconsGenerator,
   opengraph: OpenGraphGenerator,
   playgrounds: PlaygroundsGenerator,
+  skills: SkillsGenerator,
   tts: TextToSpeechGenerator,
 };
 
@@ -119,6 +121,7 @@ async function main() {
           "icons",
           "opengraph",
           "playgrounds",
+          "skills",
         ] as GeneratorName[]);
 
   // Validate generator names

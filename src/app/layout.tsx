@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next";
 import { GlobalHotkeys } from "@/components/chrome/global-hotkeys";
 import { Navigation } from "@/components/chrome/navigation";
 import { Providers } from "@/components/chrome/providers";
@@ -33,6 +34,7 @@ export default function RootLayout({
           </main>
           <GlobalHotkeys pages={pages} />
         </Providers>
+        <Analytics />
       </body>
     </html>
   );

@@ -46,6 +46,7 @@ export default function WritingLayout({
         links={[
           { title: "Glossary", url: "/glossary" },
           { title: "Vault", url: "/vault" },
+          { title: "Sponsors", url: "/sponsors" },
         ]}
       />
       <div className={styles.main}>{children}</div>

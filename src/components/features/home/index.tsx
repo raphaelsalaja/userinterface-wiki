@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { PageTransition } from "@/components/chrome/page-transition";
+import { Newsletter } from "@/components/features/newsletter";
 import type { Section } from "@/lib/sections";
+import { SPONSOR_CTA_URL, SPONSORS } from "@/lib/sponsors";
 import styles from "./styles.module.css";
 
 function formatDate(dateString: string): string {
@@ -43,6 +45,36 @@ export function HomeLayout({ sections }: { sections: Section[] }) {
           </section>
         ))}
       </div>
+
+      <footer className={styles.footer}>
+        <Newsletter />
+        <div className={styles.sponsors}>
+          {SPONSORS.length > 0 && (
+            <ul className={styles["sponsor-strip"]}>
+              {SPONSORS.map((sponsor) => (
+                <li key={sponsor.url}>
+                  <a
+                    href={sponsor.url}
+                    className={styles.sponsor}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {sponsor.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
+          <span className={styles["sponsor-note"]}>
+            The wiki is free and open source, supported by{" "}
+            <Link href="/sponsors">sponsors</Link>. You can{" "}
+            <a href={SPONSOR_CTA_URL} target="_blank" rel="noreferrer">
+              become one
+            </a>
+            .
+          </span>
+        </div>
+      </footer>
     </PageTransition>
   );
 }

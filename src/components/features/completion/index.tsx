@@ -1,5 +1,6 @@
 "use client";
 
+import { track } from "@vercel/analytics";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { Button } from "@/components/primitives/button";
@@ -35,7 +36,10 @@ export function Completion({ slug }: CompletionProps) {
         <Button
           variant={completed ? "secondary" : "primary"}
           size="small"
-          onClick={() => toggleCompleted(slug)}
+          onClick={() => {
+            if (!completed) track("article-completed", { slug });
+            toggleCompleted(slug);
+          }}
           aria-pressed={completed}
         >
           {completed ? (

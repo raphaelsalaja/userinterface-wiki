@@ -1,0 +1,71 @@
+.newsletter {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: var(--gray-2);
+  border: 1px solid var(--gray-a4);
+  border-radius: 12px;
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.title {
+  font-size: 14px;
+  font-weight: var(--font-weight-medium);
+  color: var(--gray-12);
+  letter-spacing: var(--font-letter-spacing-14px);
+}
+
+.subtitle {
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--gray-11);
+  letter-spacing: var(--font-letter-spacing-13px);
+}
+
+.form {
+  display: flex;
+  gap: 8px;
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  height: 28px;
+  padding: 5px 10px;
+  font-size: 13px;
+  color: var(--gray-12);
+  letter-spacing: var(--font-letter-spacing-13px);
+  background: var(--gray-1);
+  border: 1px solid var(--gray-a4);
+  border-radius: 8px;
+  transition: border-color 0.15s ease;
+}
+
+.input::placeholder {
+  color: var(--gray-9);
+  opacity: 1;
+}
+
+.input:focus-visible {
+  outline: 2px solid var(--gray-12);
+  outline-offset: 2px;
+  border-color: var(--gray-a8);
+}
+
+.error {
+  font-size: 13px;
+  color: var(--gray-11);
+  letter-spacing: var(--font-letter-spacing-13px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .input {
+    transition: none;
+  }
+}

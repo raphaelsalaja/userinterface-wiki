@@ -8,6 +8,7 @@ import {
   NarrationPlayer,
   NarrationProvider,
 } from "@/components/features/narration";
+import { Newsletter } from "@/components/features/newsletter";
 import {
   ArticleContent,
   ArticleHeader,
@@ -124,6 +125,7 @@ export default async function Page(props: {
                 <MDX components={getMDXComponents()} />
               </ArticleContent>
               <Completion slug={params.slug.join("/")} />
+              <Newsletter />
               <Pager prev={prev} next={next} />
               <NarrationPlayer />
             </NarrationProvider>

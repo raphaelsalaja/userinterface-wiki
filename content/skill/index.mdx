@@ -1,17 +1,47 @@
 ---
-title: "Skill"
-description: "152 rules for building better user interfaces, packaged as a skill for AI coding agents."
+title: "Skills"
+description: "152 rules for building better user interfaces, packaged as installable skills for AI coding agents."
 date: "2026-03-17"
 author: "raphael-salaja"
 icon: "code"
 ---
 
-Everything written on this site and more has been distilled into [userinterface-wiki](https://github.com/raphaelsalaja/userinterface-wiki), a structured skill file optimized for AI agents and LLMs.
+Everything written on this site and more has been distilled into structured skill files optimized for AI agents and LLMs, packaged following the [Agent Skills](https://github.com/vercel-labs/agent-skills) pattern and installable into Claude Code, Codex, Cursor, and other coding agents.
 
-The rules are packaged as an [Agent Skill](https://github.com/vercel-labs/agent-skills) that installs into Claude Code, Codex, Cursor, and other coding agents.
+# The full skill
+
+The unified skill contains all 152 rules across 12 categories — animation principles, timing functions, exit animations, CSS pseudo-elements, audio feedback, sound synthesis, morphing icons, container animation, laws of UX, predictive prefetching, typography, and visual design.
 
 ```bash
 npx skills add raphaelsalaja/userinterface-wiki
 ```
 
-If you want to see the rules, check out the [repository](https://github.com/raphaelsalaja/userinterface-wiki). Feel free to contribute or suggest new rules by opening an issue or pull request.
+# Focused skills
+
+If the full skill is more than a project needs, each major topic is also published as a standalone skill, generated from the same single-sourced rules:
+
+**Animation** — 56 rules covering Disney's principles, timing functions, exit animations, morphing icons, and container animation.
+
+```bash
+npx skills add raphaelsalaja/userinterface-wiki --skill animation
+```
+
+**Sound** — 27 rules covering when audio is appropriate, accessibility requirements, and Web Audio synthesis.
+
+```bash
+npx skills add raphaelsalaja/userinterface-wiki --skill sound
+```
+
+**Typography** — 16 rules covering OpenType features, numeric variants, variable fonts, and text wrapping.
+
+```bash
+npx skills add raphaelsalaja/userinterface-wiki --skill typography
+```
+
+**UX** — 29 rules covering the Laws of UX and predictive prefetching.
+
+```bash
+npx skills add raphaelsalaja/userinterface-wiki --skill ux
+```
+
+If you want to see the rules themselves, check out the [repository](https://github.com/raphaelsalaja/userinterface-wiki). Feel free to contribute or suggest new rules by opening an issue or pull request.

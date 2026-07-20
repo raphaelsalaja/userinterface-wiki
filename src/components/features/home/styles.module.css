@@ -27,7 +27,64 @@
   display: flex;
   flex-direction: column;
   gap: 64px;
+  padding-block-end: 64px;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 480px;
   padding-block-end: 128px;
+}
+
+.sponsors {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sponsor-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.sponsor {
+  display: inline-flex;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: var(--font-weight-medium);
+  color: var(--gray-11);
+  letter-spacing: var(--font-letter-spacing-13px);
+  text-decoration: none;
+  border: 1px solid var(--gray-a4);
+  border-radius: 8px;
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.sponsor:hover {
+  color: var(--gray-12);
+  border-color: var(--gray-a6);
+}
+
+.sponsor-note {
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--gray-9);
+  letter-spacing: var(--font-letter-spacing-13px);
+}
+
+.sponsor-note a {
+  color: var(--gray-11);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.sponsor-note a:hover {
+  color: var(--gray-12);
 }
 
 .section {
