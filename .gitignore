@@ -44,3 +44,14 @@ next-env.d.ts
 
 # cursor
 .cursor
+
+# generated fumadocs output
+/.source/
+
+# installed skill artifacts (source of truth lives in /skills)
+/.agents/
+/.claude/
+/skills/userinterface-wiki
+
+# turbo
+.turbo

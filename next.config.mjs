@@ -22,28 +22,6 @@ const config = {
       },
     ],
   },
-  webpack(config) {
-    config.module.rules.push({
-      test: /\.svg$/i,
-      issuer: /\.[jt]sx?$/,
-      use: [
-        {
-          loader: "@svgr/webpack",
-          options: {
-            svgo: false,
-          },
-        },
-      ],
-    });
-
-    // Support .txt imports for playground source files
-    config.module.rules.push({
-      test: /\.(tsx|css)\.txt$/,
-      type: "asset/source",
-    });
-
-    return config;
-  },
   async headers() {
     return [
       {
@@ -65,10 +43,6 @@ const config = {
           {
             key: "X-Frame-Options",
             value: "DENY",
-          },
-          {
-            key: "X-XSS-Protection",
-            value: "1; mode=block",
           },
         ],
       },

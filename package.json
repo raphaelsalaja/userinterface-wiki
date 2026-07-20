@@ -2,6 +2,7 @@
   "name": "userinterface-wiki",
   "version": "1.0.0",
   "private": true,
+  "packageManager": "pnpm@10.15.0",
   "scripts": {
     "dev": "concurrently \"pnpm:dev:*\" --prefix-colors \"cyan,magenta\"",
     "dev:next": "next dev",
@@ -91,7 +92,6 @@
     "dotenv": "^17.3.1",
     "husky": "^9.1.7",
     "picocolors": "^1.1.1",
-    "raw-loader": "^4.0.2",
     "satori": "^0.19.2",
     "sharp": "^0.34.5",
     "tsx": "^4.21.0",
