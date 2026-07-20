@@ -3,7 +3,7 @@
   flex-direction: column;
   gap: 12px;
   max-width: 560px;
-  padding-block-start: 128px;
+  padding-block-start: 64px;
   padding-block-end: 64px;
 }
 

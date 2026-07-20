@@ -107,7 +107,6 @@ export default async function Page(props: {
   return (
     <PageTransition>
       <div className={styles.container}>
-        <div className={styles.spacer} />
         <div className={styles.columns}>
           <ArticleRoot
             data={pageData}

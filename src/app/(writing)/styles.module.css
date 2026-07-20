@@ -1,7 +1,7 @@
 .shell {
   display: flex;
   flex: 1;
-  gap: 48px;
+  align-items: stretch;
   width: 100%;
 }
 
@@ -10,4 +10,15 @@
   flex: 1;
   flex-direction: column;
   min-width: 0;
+}
+
+.container {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1080px;
+  padding-right: var(--page-padding-right);
+  padding-left: var(--page-padding-left);
+  margin-inline: auto;
 }

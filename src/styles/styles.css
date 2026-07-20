@@ -15,7 +15,6 @@
   --prose-bullet-disc-offset: 8px;
   --page-padding-inline: 24px;
   --page-padding-block: 64px;
-  --page-navigation-height: 124px;
   --page-padding-left: max(
     env(safe-area-inset-left),
     var(--page-padding-inline)
@@ -26,6 +25,8 @@
   );
   --page-max-width: 640px;
   --page-shell-max-width: 1200px;
+  --page-sidebar-width: 260px;
+  --page-header-height: 56px;
   --prose-max-width: 640px;
 }
 
@@ -45,7 +46,6 @@ html {
 }
 
 body {
-  overflow-x: hidden;
   font-family: var(--font-family-display);
   font-size: 14px;
   font-weight: var(--font-weight-normal);
@@ -59,11 +59,18 @@ body {
   display: flex;
   flex: 1;
   flex-direction: column;
-  min-height: calc(100 * var(--dvh));
+  min-height: 100dvh;
   isolation: isolate;
 }
 
 #main-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  width: 100%;
+}
+
+.page-container {
   display: flex;
   flex: 1;
   flex-direction: column;

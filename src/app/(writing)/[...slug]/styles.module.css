@@ -4,10 +4,6 @@
   width: 100%;
 }
 
-.spacer {
-  min-height: var(--page-navigation-height);
-}
-
 .scroll {
   display: flex;
   flex: 1;
@@ -106,7 +102,7 @@
   width: 100%;
   min-width: 0;
   max-width: 640px;
-  padding-block-start: 128px;
-  padding-block-end: 256px;
+  padding-block-start: 64px;
+  padding-block-end: 192px;
   margin: 0 auto;
 }

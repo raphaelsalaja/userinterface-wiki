@@ -1,11 +1,11 @@
 .toc {
   position: sticky;
-  top: var(--page-navigation-height);
+  top: var(--page-header-height);
   flex-shrink: 0;
   align-self: start;
   width: 200px;
-  max-height: calc(100vh - var(--page-navigation-height));
-  padding-block: 32px;
+  max-height: calc(100vh - var(--page-header-height));
+  padding-block: 64px 32px;
   overflow-y: auto;
   scrollbar-width: none;
 

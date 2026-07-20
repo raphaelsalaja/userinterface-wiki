@@ -1,6 +1,5 @@
 import { Analytics } from "@vercel/analytics/next";
 import { GlobalHotkeys } from "@/components/chrome/global-hotkeys";
-import { Navigation } from "@/components/chrome/navigation";
 import { Providers } from "@/components/chrome/providers";
 import { fonts } from "@/lib/fonts";
 import { getOrderedPages } from "@/lib/sections";
@@ -28,7 +27,6 @@ export default function RootLayout({
           Skip to content
         </a>
         <Providers>
-          <Navigation />
           <main id="__next-main">
             <div id="main-content">{children}</div>
           </main>

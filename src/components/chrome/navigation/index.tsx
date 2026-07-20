@@ -2,15 +2,12 @@
 
 import { NavigationMenu } from "@base-ui/react/navigation-menu";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { ThemeSwitcher } from "@/components/chrome/theme-switcher";
 import { useAskAiStore } from "@/components/features/ask-ai/store";
 import { Shortcut } from "@/components/primitives/shortcut";
 import { MagnifyingGlassIcon } from "@/icons";
 import { sounds } from "@/lib/sounds";
 import styles from "./styles.module.css";
-
-const CHROMELESS_PATHS = new Set(["/live"]);
 
 const LINKS = [
   {
@@ -40,9 +37,7 @@ const LINKS = [
 ];
 
 export function Navigation() {
-  const pathname = usePathname();
   const openAskAi = useAskAiStore((state) => state.open);
-  if (CHROMELESS_PATHS.has(pathname)) return null;
 
   return (
     <NavigationMenu.Root className={styles.root}>

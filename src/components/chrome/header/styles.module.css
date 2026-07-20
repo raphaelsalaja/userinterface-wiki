@@ -1,0 +1,119 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--page-header-height);
+  padding-inline: 24px;
+  background: color-mix(in srgb, var(--gray-2) 85%, transparent);
+  backdrop-filter: blur(12px);
+}
+
+.crumbs {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  min-width: 0;
+}
+
+.brand {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  font-family: var(--font-family-serif);
+  font-size: 16px;
+  font-weight: var(--font-weight-bold);
+  color: var(--gray-12);
+  text-decoration: none;
+  border-radius: 6px;
+
+  &:hover {
+    background: var(--gray-a3);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--gray-12);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 1023px) {
+    display: flex;
+  }
+}
+
+.breadcrumb {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  min-width: 0;
+  font-size: 13px;
+  letter-spacing: var(--font-letter-spacing-13px);
+}
+
+.parent {
+  flex-shrink: 0;
+  color: var(--gray-10);
+}
+
+.separator {
+  flex-shrink: 0;
+  color: var(--gray-8);
+}
+
+.current {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 13px;
+  color: var(--gray-12);
+  white-space: nowrap;
+}
+
+.actions {
+  display: flex;
+  flex-shrink: 0;
+  gap: 4px;
+  align-items: center;
+}
+
+.action {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  height: 28px;
+  padding: 0 10px;
+  font-size: 12px;
+  font-weight: var(--font-weight-medium);
+  color: var(--gray-11);
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid var(--gray-a4);
+  border-radius: 6px;
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease;
+
+  &:hover {
+    color: var(--gray-12);
+    background: var(--gray-a3);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--gray-12);
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .action {
+    transition: none;
+  }
+}
