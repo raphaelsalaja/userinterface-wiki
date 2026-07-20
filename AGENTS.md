@@ -47,19 +47,46 @@ Standards and conventions for the User Interface Wiki, a Next.js documentation s
 | Fumadocs | MDX documentation framework |
 | Zustand | State management |
 | Base UI | Headless component primitives |
+| TanStack Hotkeys | Site-wide keyboard shortcuts |
+| Vercel AI SDK | Ask AI palette and model access |
+| pnpm | Package manager (only lockfile: `pnpm-lock.yaml`) |
 
 ### Key Directories
 
+All application source lives under `src/`; content, scripts, and static
+assets stay at the root.
+
 ```
-/app           → Next.js pages and routes
-/components    → Reusable UI components
-/content       → MDX articles and demos
-/icons         → SVG icon components
-/lib           → Utilities, types, and stores
-/public        → Static assets
-/skills        → AI skill definitions (SKILL.md files)
-/styles        → Global CSS and theme
+/src/app             → Next.js pages, routes, and API handlers
+/src/components      → Reusable UI components (grouped, see below)
+/src/icons           → SVG icon components
+/src/lib             → Utilities, types, and stores
+/src/lib/generated   → AUTO-GENERATED files — never edit by hand
+/src/styles          → Global CSS and theme
+/content             → MDX articles and colocated demos (see content/README.md)
+/scripts             → Code generators (`pnpm generate <name>`)
+/public              → Static assets
+/skills              → Distributable AI skill (SKILL.md, rules)
 ```
+
+**Component groups** — every component lives in one of four groups under
+`src/components/`:
+
+| Group | Purpose | Examples |
+|-------|---------|----------|
+| `chrome/` | Site shell rendered around content | `navigation`, `sidebar`, `toc`, `theme-switcher`, `global-hotkeys` |
+| `mdx/` | Components rendered inside articles | `article`, `figure`, `callout`, `pager` |
+| `primitives/` | Generic reusable building blocks | `button`, `menu`, `popover`, `spinner`, `shortcut` |
+| `features/` | Self-contained product features | `ask-ai`, `narration`, `playground`, `demo`, `home` |
+
+**Generated files** — `src/lib/generated/` (demo registry, content index)
+and the icons barrel are produced by generators in `/scripts`. They carry an
+`AUTO-GENERATED` banner; regenerate with `pnpm generate <name>` instead of
+editing. Biome ignores `src/lib/generated`.
+
+> **Naming note:** this file (root `AGENTS.md`) documents project standards
+> for working on the codebase. `skills/AGENTS.md` is a different document —
+> the compiled UI/UX rules guide distributed as part of the wiki's skill.
 
 ---
 
@@ -98,19 +125,29 @@ Standards and conventions for the User Interface Wiki, a Next.js documentation s
 
 ### Component Structure
 
-Each component lives in its own directory with colocated files:
+Each component lives in its own directory, inside the appropriate group,
+with colocated files:
 
 ```
-components/
-  button/
-    index.tsx          # Component implementation
-    styles.module.css  # Scoped styles
+src/components/
+  primitives/
+    button/
+      index.tsx          # Component implementation
+      styles.module.css  # Scoped styles
+  features/
+    narration/
+      index.ts           # Barrel for multi-file feature
+      player.tsx
+      provider.tsx
+      hooks/
+      styles.module.css
 ```
 
 **Rules:**
+- Place new components in the correct group: `chrome`, `mdx`, `primitives`, or `features`
 - Export components from `index.tsx` using named exports
 - Colocate CSS modules with components
-- Use `index.ts` barrel files only for multi-file exports (e.g., hooks)
+- Use `index.ts` barrel files only for multi-file exports (e.g., hooks, features)
 
 **Incorrect:**
 
@@ -135,8 +172,8 @@ content/
   12-principles-of-animation/
     index.mdx           # Article content
     demos/
-      index.ts          # Demo barrel export
-      squash-stretch/
+      index.ts          # Demo barrel — export order defines demo sequence
+      squash-and-stretch/
         index.tsx
         styles.module.css
 ```
@@ -144,7 +181,12 @@ content/
 **Rules:**
 - Each article is a directory with `index.mdx`
 - Demos are colocated in `demos/` subdirectory
-- Export all demos from `demos/index.ts`
+- Demo directories use descriptive kebab-case names: no numeric prefixes, no `-demo` suffix
+- Export all demos from `demos/index.ts`; the barrel's export order is the demo display order
+- Register new articles in `src/lib/sections.ts` to place them in the sidebar and navigation
+- Run `pnpm generate demos` after adding, renaming, or removing a demo
+
+See [content/README.md](content/README.md) for the full article template.
 
 ---
 
@@ -285,7 +327,7 @@ All component styles use CSS Modules with `.module.css` extension:
 
 ### Theme Variables
 
-Use variables from `/styles/styles.theme.css`:
+Use variables from `src/styles/styles.theme.css`:
 
 | Category | Example Variables |
 |----------|-------------------|
@@ -432,13 +474,17 @@ skills/
 
 To add a new rule, copy `rules/_template.md`, fill in the frontmatter, and add the rule ID to `SKILL.md` and `AGENTS.md`.
 
+> **Naming note:** `skills/AGENTS.md` is the compiled UI/UX rules guide that
+> ships with the skill. It is unrelated to this root `AGENTS.md`, which
+> documents project standards for the codebase itself.
+
 ---
 
 ## 7. TypeScript Standards
 
 ### Type Definitions
 
-Define types in component files or `/lib/types.ts`:
+Define types in component files or `src/lib/types.ts`:
 
 **Component-specific types:**
 
@@ -452,7 +498,7 @@ interface ButtonProps {
 **Shared types:**
 
 ```tsx
-// In /lib/types.ts
+// In src/lib/types.ts
 export interface Author {
   name: string;
   avatar: string;
@@ -461,18 +507,19 @@ export interface Author {
 
 ### Import Conventions
 
-Use path aliases from `tsconfig.json`:
+Use path aliases from `tsconfig.json` — `@/*` maps to `src/*` and
+`@/content/*` maps to `content/*`:
 
 **Incorrect:**
 
 ```tsx
-import { Button } from "../../../components/button";
+import { Button } from "../../../components/primitives/button";
 ```
 
 **Correct:**
 
 ```tsx
-import { Button } from "@/components/button";
+import { Button } from "@/components/primitives/button";
 ```
 
 ### Strict Typing
@@ -675,7 +722,7 @@ Before submitting changes, verify:
 - [ ] Animations respect `prefers-reduced-motion`
 - [ ] Interactive elements are keyboard accessible
 - [ ] `"use client"` is only used when necessary
-- [ ] No linter errors (run `npm run lint`)
+- [ ] No linter errors (run `pnpm lint`)
 
 ---
 

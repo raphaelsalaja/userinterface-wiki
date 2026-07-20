@@ -8,6 +8,10 @@ March 2026
 > This document is mainly for agents and LLMs to follow when reviewing,
 > generating, or refactoring UI code. Humans may also find it useful, but
 > guidance here is optimized for automation and consistency by AI-assisted workflows.
+>
+> This is the compiled UI/UX rules guide distributed with the wiki's skill.
+> It is unrelated to the root `AGENTS.md`, which documents project standards
+> for working on this codebase.
 
 ---
 
