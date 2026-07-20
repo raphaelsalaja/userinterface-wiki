@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/button";
+import { Button } from "@/components/primitives/button";
 import styles from "./styles.module.css";
 
 export function BeforeAndAfterDemo() {

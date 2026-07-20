@@ -8,10 +8,9 @@ import {
 } from "@codesandbox/sandpack-react";
 import { useTheme } from "next-themes";
 import React from "react";
-
-import { Button } from "@/components/button";
+import { Bleed } from "@/components/mdx/bleed";
+import { Button } from "@/components/primitives/button";
 import { ArrowRotateClockwiseIcon } from "@/icons";
-import { Bleed } from "../bleed";
 import { getPrerequisites } from "./index.prerequisites";
 import styles from "./styles.module.css";
 

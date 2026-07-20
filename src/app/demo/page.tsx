@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { DemosPage } from "@/components/demo/list";
+import { DemosPage } from "@/components/features/demo";
 import { getAllDemos } from "@/lib/demos";
 import { METADATA, SITE_MANIFEST } from "@/lib/site";
 

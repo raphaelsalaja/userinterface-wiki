@@ -3,8 +3,8 @@
 export const ActionFeedbackDemoPlayground = {
   files: {
     "/App.tsx": `import { Toast } from "@base-ui/react/toast";
-import { Button } from "@/components/button";
-import { Controls } from "@/components/controls";
+import { Button } from "@/components/primitives/button";
+import { Controls } from "@/components/primitives/controls";
 import { sounds } from "@/lib/sounds";
 import styles from "./styles.module.css";
 

@@ -4,8 +4,8 @@ export const SpringDemoPlayground = {
   files: {
     "/App.tsx": `import { animate, motion, useMotionValue, useVelocity } from "motion/react";
 import { useRef, useState } from "react";
-import { Button } from "@/components/button";
-import { Controls } from "@/components/controls";
+import { Button } from "@/components/primitives/button";
+import { Controls } from "@/components/primitives/controls";
 import styles from "./styles.module.css";
 
 const easeOutQuint = [0.23, 1, 0.32, 1] as const;

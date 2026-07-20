@@ -7,7 +7,7 @@ import {
   CodePreview,
   EssayPreview,
   MotionPreview,
-} from "@/components/previews";
+} from "@/components/features/previews";
 import { sounds } from "@/lib/sounds";
 import type { FormattedPage } from "@/lib/source";
 import styles from "./styles.module.css";

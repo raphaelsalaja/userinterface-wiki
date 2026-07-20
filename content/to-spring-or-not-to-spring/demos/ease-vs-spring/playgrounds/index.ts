@@ -4,8 +4,8 @@ export const EaseVsSpringPlayground = {
   files: {
     "/App.tsx": `import { motion, type Transition } from "motion/react";
 import { useState } from "react";
-import { Button } from "@/components/button";
-import { Controls } from "@/components/controls";
+import { Button } from "@/components/primitives/button";
+import { Controls } from "@/components/primitives/controls";
 import styles from "./styles.module.css";
 
 type Animation = {

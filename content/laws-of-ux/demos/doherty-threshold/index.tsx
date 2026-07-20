@@ -2,8 +2,8 @@
 
 import { AnimatePresence, motion } from "motion/react";
 import { useCallback, useState } from "react";
-import { Button } from "@/components/button";
-import { Spinner } from "@/components/spinner";
+import { Button } from "@/components/primitives/button";
+import { Spinner } from "@/components/primitives/spinner";
 import styles from "./styles.module.css";
 
 interface DelayOption {

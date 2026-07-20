@@ -3,8 +3,8 @@
 import { NavigationMenu } from "@base-ui/react/navigation-menu";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Banner } from "@/components/banner";
-import { ThemeSwitcher } from "@/components/theme-switcher";
+import { Banner } from "@/components/chrome/banner";
+import { ThemeSwitcher } from "@/components/chrome/theme-switcher";
 import { sounds } from "@/lib/sounds";
 import styles from "./styles.module.css";
 
@@ -37,7 +37,7 @@ const LINKS = [
   },
 ];
 
-export default function Navigation() {
+export function Navigation() {
   const pathname = usePathname();
   if (CHROMELESS_PATHS.has(pathname)) return null;
 

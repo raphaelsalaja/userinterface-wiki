@@ -4,7 +4,7 @@ export const ButtonSoundDemoPlayground = {
   files: {
     "/App.tsx": `import { useEffect, useRef, useState } from "react";
 import Snd from "snd-lib";
-import { Button } from "@/components/button";
+import { Button } from "@/components/primitives/button";
 import styles from "./styles.module.css";
 
 export default function App() {

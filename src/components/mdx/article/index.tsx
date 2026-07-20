@@ -3,11 +3,11 @@
 import { clsx } from "clsx";
 import { AnimatePresence, motion } from "motion/react";
 import { createContext, useContext, useMemo } from "react";
-import { Button } from "@/components/button";
-import { Menu } from "@/components/menu";
-import { useNarrationContext } from "@/components/narration/provider";
-import { Spinner } from "@/components/spinner";
-import { TextSelectionPopover } from "@/components/text-selection-popover";
+import { useNarrationContext } from "@/components/features/narration/provider";
+import { TextSelectionPopover } from "@/components/features/text-selection-popover";
+import { Button } from "@/components/primitives/button";
+import { Menu } from "@/components/primitives/menu";
+import { Spinner } from "@/components/primitives/spinner";
 import {
   DotGrid1X3HorizontalIcon,
   PauseIcon,

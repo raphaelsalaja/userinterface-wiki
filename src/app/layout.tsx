@@ -1,5 +1,5 @@
-import Navigation from "@/components/navigation";
-import { Providers } from "@/components/providers";
+import { Navigation } from "@/components/chrome/navigation";
+import { Providers } from "@/components/chrome/providers";
 import { fonts } from "@/lib/fonts";
 import { METADATA, VIEWPORT } from "@/lib/site";
 

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { Button } from "@/components/button";
+import { Button } from "@/components/primitives/button";
 import type { DemoInfo } from "@/lib/demos";
 import { demoRegistry } from "@/lib/generated/demo-registry";
 import styles from "./styles.module.css";

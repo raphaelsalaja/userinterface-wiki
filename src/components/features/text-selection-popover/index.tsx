@@ -11,7 +11,7 @@ import {
   useState,
 } from "react";
 import { createPortal } from "react-dom";
-import { ShareQuoteDialog } from "@/components/share-quote-dialog";
+import { ShareQuoteDialog } from "@/components/features/share-quote-dialog";
 import { SITE_MANIFEST } from "@/lib/site";
 import styles from "./styles.module.css";
 

@@ -4,7 +4,7 @@ import { Calligraph } from "calligraph";
 import { ForesightManager } from "js.foresight";
 import { motion, useMotionValue } from "motion/react";
 import { useEffect, useRef, useState } from "react";
-import { Button } from "@/components/button";
+import { Button } from "@/components/primitives/button";
 import styles from "./styles.module.css";
 
 const FAKE_LATENCY = 800;

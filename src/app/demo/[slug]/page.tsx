@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { DemoPage } from "@/components/demo/page";
+import { DemoPage } from "@/components/features/demo";
 import {
   formatDemoTitle,
   generateDemoParams,

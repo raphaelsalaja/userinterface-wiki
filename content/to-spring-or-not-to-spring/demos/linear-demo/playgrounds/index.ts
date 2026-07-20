@@ -4,8 +4,8 @@ export const LinearDemoPlayground = {
   files: {
     "/App.tsx": `import { animate, motion, useMotionValue, useTransform } from "motion/react";
 import { useEffect, useRef, useState } from "react";
-import { Button } from "@/components/button";
-import { Controls } from "@/components/controls";
+import { Button } from "@/components/primitives/button";
+import { Controls } from "@/components/primitives/controls";
 import { CrossLargeIcon } from "@/icons";
 import styles from "./styles.module.css";
 

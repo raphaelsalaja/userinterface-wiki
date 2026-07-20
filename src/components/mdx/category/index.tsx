@@ -1,7 +1,7 @@
 import type React from "react";
 import { useMemo } from "react";
 import title from "title";
-import { Popover } from "@/components/popover";
+import { Popover } from "@/components/primitives/popover";
 import { getColorHash } from "@/lib/colors";
 import styles from "./styles.module.css";
 

@@ -1,4 +1,4 @@
-import { HomeLayoutClient } from "@/components/home/client";
+import { HomeLayoutClient } from "@/components/features/home/client";
 import { formatPages, source } from "@/lib/source";
 
 const HIDDEN_SLUGS = new Set(["skill"]);

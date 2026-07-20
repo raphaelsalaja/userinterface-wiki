@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { PageTransition } from "@/components/chrome/page-transition";
+import {
+  NarrationPlayer,
+  NarrationProvider,
+} from "@/components/features/narration";
 import {
   ArticleContent,
   ArticleHeader,
   ArticleRoot,
-} from "@/components/article";
-import { NarrationPlayer, NarrationProvider } from "@/components/narration";
-import { PageTransition } from "@/components/page-transition";
+} from "@/components/mdx/article";
 import { toSerializablePageData } from "@/lib/page-data";
 import { SITE_MANIFEST } from "@/lib/site";
 import { formatPageData, getPageImage, source } from "@/lib/source";

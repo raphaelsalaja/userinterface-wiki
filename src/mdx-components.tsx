@@ -1,9 +1,9 @@
 import type { MDXComponents } from "mdx/types";
-import { Bleed } from "./components/bleed";
-import { Callout } from "./components/callout";
-import { Caption, Figure } from "./components/figure";
-import { Playground } from "./components/playground";
-import { Video } from "./components/video";
+import { Playground } from "./components/features/playground";
+import { Bleed } from "./components/mdx/bleed";
+import { Callout } from "./components/mdx/callout";
+import { Caption, Figure } from "./components/mdx/figure";
+import { Video } from "./components/mdx/video";
 
 export function getMDXComponents(components?: MDXComponents): MDXComponents {
   return {

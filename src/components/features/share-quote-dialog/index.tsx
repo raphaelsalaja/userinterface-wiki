@@ -3,6 +3,7 @@
 import { Dialog } from "@base-ui/react/dialog";
 import { AnimatePresence, motion } from "motion/react";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { Button } from "@/components/primitives/button";
 import {
   ArrowDownIcon,
   ChainLink1Icon,
@@ -13,7 +14,6 @@ import {
 } from "@/icons";
 import { SITE_MANIFEST } from "@/lib/site";
 import { sounds } from "@/lib/sounds";
-import { Button } from "../button";
 import styles from "./styles.module.css";
 
 function encodeBase64Url(str: string) {

@@ -5,10 +5,10 @@ import { FloatingPortal as Portal } from "@floating-ui/react";
 import { clsx } from "clsx";
 import { AnimatePresence, motion } from "motion/react";
 import { useCallback } from "react";
-import { Button } from "@/components/button";
-import { Menu } from "@/components/menu";
-import { Orb } from "@/components/orb";
-import { Shortcut } from "@/components/shortcut";
+import { Orb } from "@/components/features/orb";
+import { Button } from "@/components/primitives/button";
+import { Menu } from "@/components/primitives/menu";
+import { Shortcut } from "@/components/primitives/shortcut";
 import {
   ArrowInboxIcon,
   Checkmark2SmallIcon,

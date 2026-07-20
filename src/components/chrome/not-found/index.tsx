@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Button } from "@/components/button";
+import { Button } from "@/components/primitives/button";
 import { GithubIcon } from "@/icons";
 import { SITE_MANIFEST } from "@/lib/site";
 import styles from "./styles.module.css";

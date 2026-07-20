@@ -2,7 +2,7 @@
 
 export const BeforeAndAfterDemoPlayground = {
   files: {
-    "/App.tsx": `import { Button } from "@/components/button";
+    "/App.tsx": `import { Button } from "@/components/primitives/button";
 import styles from "./styles.module.css";
 
 export default function App() {

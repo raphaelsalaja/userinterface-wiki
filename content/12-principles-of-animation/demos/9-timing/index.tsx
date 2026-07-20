@@ -4,8 +4,8 @@ import { Popover } from "@base-ui/react/popover";
 import chroma from "chroma-js";
 import { getNearestPantone } from "pantone-tcx";
 import { useEffect, useState } from "react";
-import { Button } from "@/components/button";
-import { Controls } from "@/components/controls";
+import { Button } from "@/components/primitives/button";
+import { Controls } from "@/components/primitives/controls";
 import styles from "./styles.module.css";
 
 const DEFAULT_HEX = "#5A5B9F";

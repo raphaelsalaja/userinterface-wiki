@@ -2,7 +2,7 @@
 
 import { ScrollArea } from "@base-ui/react/scroll-area";
 import { useState } from "react";
-import { Button } from "@/components/button";
+import { Button } from "@/components/primitives/button";
 import {
   ArrowsRepeatIcon,
   Checkmark1Icon,

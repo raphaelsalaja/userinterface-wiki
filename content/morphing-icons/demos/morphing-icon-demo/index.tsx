@@ -7,7 +7,7 @@ import {
   type IconName,
   iconNames,
   MorphingIcon,
-} from "@/components/morphing-icon";
+} from "@/components/primitives/morphing-icon";
 import styles from "./styles.module.css";
 
 export function MorphingIconDemo() {

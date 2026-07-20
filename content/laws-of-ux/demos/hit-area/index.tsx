@@ -2,8 +2,8 @@
 
 import { Calligraph } from "calligraph";
 import { useState } from "react";
-import { Button } from "@/components/button";
-import { Controls } from "@/components/controls";
+import { Button } from "@/components/primitives/button";
+import { Controls } from "@/components/primitives/controls";
 import { Checkmark1Icon, CrossLargeIcon } from "@/icons";
 import type { IconProps } from "@/icons/types";
 import styles from "./styles.module.css";
