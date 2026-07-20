@@ -100,7 +100,7 @@ function generatePlayground(demoPath: string): string {
   const appCode = transformToPlaygroundCode(rawAppCode);
   const stylesCode = fs.readFileSync(stylesPath, "utf-8");
 
-  const output = `// AUTO-GENERATED — do not edit. Run \`pnpm generate playgrounds\` to regenerate.
+  let output = `// AUTO-GENERATED — do not edit. Run \`pnpm generate playgrounds\` to regenerate.
 
 export const ${exportName} = {
   files: {
@@ -110,8 +110,58 @@ export const ${exportName} = {
 };
 `;
 
+  // Exercise variant: a playgrounds/starter/ folder turns the demo into an
+  // exercise. The starter is the editable scaffold; the solution comes from
+  // playgrounds/solution/ when present (demos that import from @/ need a
+  // self-contained rewrite), otherwise from the demo itself.
+  const starter = readVariant(playgroundsDir, "starter", stylesCode);
+
+  if (starter) {
+    const solution = readVariant(playgroundsDir, "solution", stylesCode);
+    const exerciseName = exportName.replace(/Playground$/, "Exercise");
+
+    const solutionCode = solution
+      ? `{
+    files: {
+      "/App.tsx": \`${escapeTemplateString(solution.app)}\`,
+      "/styles.module.css": \`${escapeTemplateString(solution.styles)}\`,
+    },
+  }`
+      : exportName;
+
+    output += `
+export const ${exerciseName} = {
+  starter: {
+    files: {
+      "/App.tsx": \`${escapeTemplateString(starter.app)}\`,
+      "/styles.module.css": \`${escapeTemplateString(starter.styles)}\`,
+    },
+  },
+  solution: ${solutionCode},
+};
+`;
+  }
+
   fs.writeFileSync(outputPath, output);
   return path.relative(process.cwd(), outputPath);
+}
+
+function readVariant(
+  playgroundsDir: string,
+  variant: "starter" | "solution",
+  fallbackStyles: string,
+): { app: string; styles: string } | null {
+  const indexPath = path.join(playgroundsDir, variant, "index.tsx");
+  if (!fs.existsSync(indexPath)) return null;
+
+  const stylesPath = path.join(playgroundsDir, variant, "styles.module.css");
+
+  return {
+    app: transformToPlaygroundCode(fs.readFileSync(indexPath, "utf-8")),
+    styles: fs.existsSync(stylesPath)
+      ? fs.readFileSync(stylesPath, "utf-8")
+      : fallbackStyles,
+  };
 }
 
 export class PlaygroundsGenerator extends Generator {

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import { PageTransition } from "@/components/chrome/page-transition";
 import { Toc, type TocItem } from "@/components/chrome/toc";
+import { Completion } from "@/components/features/completion";
 import {
   NarrationPlayer,
   NarrationProvider,
@@ -122,6 +123,7 @@ export default async function Page(props: {
               <ArticleContent>
                 <MDX components={getMDXComponents()} />
               </ArticleContent>
+              <Completion slug={params.slug.join("/")} />
               <Pager prev={prev} next={next} />
               <NarrationPlayer />
             </NarrationProvider>

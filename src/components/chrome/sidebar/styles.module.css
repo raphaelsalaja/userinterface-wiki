@@ -31,12 +31,23 @@
 }
 
 .label {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  justify-content: space-between;
   padding: 4px 10px;
   font-size: 12px;
   font-weight: var(--font-weight-medium);
   color: var(--gray-9);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+}
+
+.progress {
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  color: var(--gray-9);
+  letter-spacing: 0;
 }
 
 .list {
@@ -47,7 +58,10 @@
 
 .link {
   position: relative;
-  display: block;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
   padding: 4px 10px;
   font-size: 13px;
   line-height: 20px;
@@ -78,6 +92,15 @@
     color: var(--gray-12);
     background: var(--gray-a3);
   }
+}
+
+.link-title {
+  min-width: 0;
+}
+
+.check {
+  flex-shrink: 0;
+  color: var(--gray-8);
 }
 
 @media (prefers-reduced-motion: reduce) {

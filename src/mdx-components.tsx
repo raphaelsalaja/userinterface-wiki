@@ -1,4 +1,5 @@
 import type { MDXComponents } from "mdx/types";
+import { Exercise } from "./components/features/exercise";
 import { Playground } from "./components/features/playground";
 import { Bleed } from "./components/mdx/bleed";
 import { Callout } from "./components/mdx/callout";
@@ -27,6 +28,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     Figure,
     Caption,
     Callout,
+    Exercise,
     Playground,
     Video,
   };

@@ -136,3 +136,210 @@ export default function App() {
 `,
   },
 };
+
+export const SpringExercise = {
+  starter: {
+    files: {
+      "/App.tsx": `import { animate, motion, useMotionValue } from "motion/react";
+import styles from "./styles.module.css";
+
+const easeOutQuint = [0.23, 1, 0.32, 1] as const;
+
+export default function App() {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const handleDragEnd = () => {
+    /*
+      TODO: The ball snaps back with a fixed-duration ease, so it
+      ignores how fast you were flicking it — release feels dead.
+      Replace the transition with a spring that preserves velocity:
+        - track velocity with \`useVelocity(x)\` from motion/react
+        - use type: "spring", stiffness: 300, damping: 20
+        - pass \`velocity: xVelocity.get()\` so the release carries
+          the energy of the gesture
+    */
+    const transition = { duration: 0.4, ease: easeOutQuint };
+
+    animate(x, 0, transition);
+    animate(y, 0, transition);
+  };
+
+  return (
+    <div className={styles.root}>
+      <div className={styles.container}>
+        <motion.div
+          className={styles.ball}
+          style={{ x, y }}
+          drag
+          dragElastic={0.5}
+          dragMomentum={false}
+          onDragEnd={handleDragEnd}
+          whileDrag={{ scale: 1.1, cursor: "grabbing" }}
+        />
+      </div>
+    </div>
+  );
+}
+`,
+      "/styles.module.css": `.root {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 384px;
+}
+
+.container {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 24px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.track {
+  position: absolute;
+  display: flex;
+  gap: 280px;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.endpoint {
+  width: 12px;
+  height: 12px;
+  background: var(--gray-6);
+  border-radius: 50%;
+}
+
+.ball {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  touch-action: none;
+  cursor: grab;
+  background: var(--gray-1);
+  border-radius: 50%;
+  box-shadow: var(--shadow-2);
+}
+
+.ball:active {
+  cursor: grabbing;
+}
+
+.controls {
+  z-index: 10;
+}
+`,
+    },
+  },
+  solution: {
+    files: {
+      "/App.tsx": `import { animate, motion, useMotionValue, useVelocity } from "motion/react";
+import styles from "./styles.module.css";
+
+export default function App() {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const xVelocity = useVelocity(x);
+
+  const handleDragEnd = () => {
+    /*
+      A spring has no fixed duration — it takes the velocity of the
+      gesture as its starting energy, so a hard flick overshoots and
+      settles while a gentle release eases home.
+    */
+    const transition = {
+      type: "spring" as const,
+      stiffness: 300,
+      damping: 20,
+      velocity: xVelocity.get(),
+    };
+
+    animate(x, 0, transition);
+    animate(y, 0, transition);
+  };
+
+  return (
+    <div className={styles.root}>
+      <div className={styles.container}>
+        <motion.div
+          className={styles.ball}
+          style={{ x, y }}
+          drag
+          dragElastic={0.5}
+          dragMomentum={false}
+          onDragEnd={handleDragEnd}
+          whileDrag={{ scale: 1.1, cursor: "grabbing" }}
+        />
+      </div>
+    </div>
+  );
+}
+`,
+      "/styles.module.css": `.root {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 384px;
+}
+
+.container {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 24px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.track {
+  position: absolute;
+  display: flex;
+  gap: 280px;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.endpoint {
+  width: 12px;
+  height: 12px;
+  background: var(--gray-6);
+  border-radius: 50%;
+}
+
+.ball {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  touch-action: none;
+  cursor: grab;
+  background: var(--gray-1);
+  border-radius: 50%;
+  box-shadow: var(--shadow-2);
+}
+
+.ball:active {
+  cursor: grabbing;
+}
+
+.controls {
+  z-index: 10;
+}
+`,
+    },
+  },
+};

@@ -1,0 +1,28 @@
+.exercise {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-block: 32px;
+}
+
+.prompt {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  margin: 0;
+  font-size: 14px;
+  color: var(--gray-11);
+  letter-spacing: var(--font-letter-spacing-14px);
+}
+
+.badge {
+  flex-shrink: 0;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: var(--font-weight-medium);
+  color: var(--gray-11);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: var(--gray-a3);
+  border-radius: 999px;
+}

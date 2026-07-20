@@ -16,6 +16,10 @@ import styles from "./styles.module.css";
 
 interface PlaygroundProps {
   files: Record<string, string>;
+  /** Header label; defaults to "Code Playground". */
+  title?: string;
+  /** Extra header actions rendered before the refresh button. */
+  actions?: React.ReactNode;
 }
 
 const PANEL_HEIGHT = 384;
@@ -52,7 +56,10 @@ const SANDPACK_DEPENDENCIES = {
   "next-themes": "latest",
 };
 
-function PlaygroundContent() {
+function PlaygroundContent({
+  title = "Code Playground",
+  actions,
+}: Pick<PlaygroundProps, "title" | "actions">) {
   const { sandpack } = useSandpack();
 
   const handleRefresh = () => {
@@ -62,8 +69,9 @@ function PlaygroundContent() {
   return (
     <React.Fragment>
       <div className={styles.header}>
-        <span className={styles.title}>Code Playground</span>
+        <span className={styles.title}>{title}</span>
         <div className={styles.actions}>
+          {actions}
           <Button {...BUTTON_PROPS} onClick={handleRefresh}>
             <ArrowRotateClockwiseIcon size={14} />
           </Button>
@@ -93,7 +101,7 @@ function PlaygroundContent() {
   );
 }
 
-export function Playground({ files }: PlaygroundProps) {
+export function Playground({ files, title, actions }: PlaygroundProps) {
   const { resolvedTheme } = useTheme();
   const prerequisites = getPrerequisites(resolvedTheme);
 
@@ -109,7 +117,7 @@ export function Playground({ files }: PlaygroundProps) {
             visibleFiles: Object.keys(files),
           }}
         >
-          <PlaygroundContent />
+          <PlaygroundContent title={title} actions={actions} />
         </SandpackProvider>
       </div>
     </Bleed>

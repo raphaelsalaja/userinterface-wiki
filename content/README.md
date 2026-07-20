@@ -61,11 +61,40 @@ import { MyDemo } from "./demos";
 
 ## Playgrounds
 
-Editable code examples use Sandpack. Put the source files in
-`demos/<name>/playgrounds/<file>.txt` and run `pnpm generate playgrounds`
-to produce the importable bundle. Playground code must be self-contained —
-no `@/components` imports. See `AGENTS.md` for playground conventions
-(inline `Button`/`Controls`, "Toggle" labels for boolean state).
+Editable code examples use Sandpack. Creating a `demos/<name>/playgrounds/`
+directory opts the demo in: `pnpm generate playgrounds` compiles the demo's
+`index.tsx` and `styles.module.css` into an importable
+`playgrounds/index.ts` bundle (`<Name>Playground`). Playground code runs in
+an isolated sandbox, so it must be self-contained — no `@/components`
+imports. See `AGENTS.md` for playground conventions (inline
+`Button`/`Controls`, "Toggle" labels for boolean state).
+
+## Exercises
+
+An exercise is a playground with a learn-by-recreating twist: an editable
+starter scaffold plus a hidden solution. Add variants inside the demo's
+`playgrounds/` directory:
+
+```
+demos/<name>/playgrounds/
+  starter/index.tsx     # Editable scaffold with a TODO comment
+  solution/index.tsx    # Finished implementation (optional — defaults
+                        # to the demo itself when omitted)
+```
+
+Each variant may include its own `styles.module.css`; otherwise the demo's
+stylesheet is reused. Both files must be self-contained (no `@/` runtime
+imports). The generator emits `<Name>Exercise = { starter, solution }`,
+which spreads into the `<Exercise>` MDX component:
+
+```mdx
+import { SpringExercise } from "./demos/spring/playgrounds";
+
+<Exercise
+  prompt="Convert the release animation to a spring."
+  {...SpringExercise}
+/>
+```
 
 ## Registering the article
 

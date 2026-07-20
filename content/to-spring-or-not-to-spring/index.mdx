@@ -13,6 +13,7 @@ import {
   SpringDemo,
   EasingDemo,
 } from "./demos";
+import { SpringExercise } from "./demos/spring/playgrounds";
 
 Whenever I'm adding motion to something, one question comes up again and again. Should I use an easing curve, or a spring?
 
@@ -64,6 +65,11 @@ The example above is inspired by Apple’s WWDC 2023 session on springs. When yo
 Switching the same interaction to an easing curve breaks that illusion, because the system waits for the input to end before politely running an animation.
 
 If continuity and interruption matter, easing curves tend to fall apart. Springs hold up. The tradeoff is that springs can feel restless or overactive when the system is simply announcing a state change, which is why they are not a universal solution. 
+
+<Exercise
+  prompt="The ball below snaps home with a fixed-duration ease, ignoring how you flicked it. Convert the release to a spring that preserves the gesture's velocity."
+  {...SpringExercise}
+/>
 
 ### Linear
 
