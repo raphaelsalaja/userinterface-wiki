@@ -195,14 +195,12 @@ function Header({ className }: HeaderProps) {
                   <Menu.RichItem
                     title="Copy Page"
                     description="Copy page as Markdown for LLMs"
-                    onClick={() => {
-                      const content = document.querySelector(
-                        "[data-article-content]",
+                    onClick={async () => {
+                      const response = await fetch(
+                        `/${page.slugs?.join("/")}.md`,
                       );
-                      if (content) {
-                        navigator.clipboard.writeText(
-                          content.textContent || "",
-                        );
+                      if (response.ok) {
+                        navigator.clipboard.writeText(await response.text());
                       }
                     }}
                   />
@@ -212,10 +210,7 @@ function Header({ className }: HeaderProps) {
                     description="View this page as plain text"
                     external
                     onClick={() => {
-                      window.open(
-                        `${SITE_MANIFEST.github}/blob/main/content/${page.slugs?.join("/")}/index.mdx`,
-                        "_blank",
-                      );
+                      window.open(`/${page.slugs?.join("/")}.md`, "_blank");
                     }}
                   />
                   <Menu.Separator />

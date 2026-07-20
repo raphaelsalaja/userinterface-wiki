@@ -1,8 +1,8 @@
 "use client";
 
+import { useHotkey } from "@tanstack/react-hotkeys";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 import { Button } from "@/components/primitives/button";
 import type { DemoInfo } from "@/lib/demos";
 import { demoRegistry } from "@/lib/generated/demo-registry";
@@ -24,17 +24,29 @@ export function DemoPage({ demo, adjacent }: DemoPageProps) {
   const router = useRouter();
   const DemoComponent = demoRegistry[demo.key];
 
-  useEffect(() => {
-    function handleKeyDown(e: KeyboardEvent) {
-      if (e.key === "ArrowLeft" && adjacent.prev) {
-        router.push(adjacent.prev.url as "/demo/[slug]");
-      } else if (e.key === "ArrowRight" && adjacent.next) {
-        router.push(adjacent.next.url as "/demo/[slug]");
-      }
-    }
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [adjacent, router]);
+  useHotkey(
+    "ArrowLeft",
+    () => {
+      if (adjacent.prev) router.push(adjacent.prev.url as "/demo/[slug]");
+    },
+    {
+      preventDefault: false,
+      stopPropagation: false,
+      meta: { name: "Previous demo" },
+    },
+  );
+
+  useHotkey(
+    "ArrowRight",
+    () => {
+      if (adjacent.next) router.push(adjacent.next.url as "/demo/[slug]");
+    },
+    {
+      preventDefault: false,
+      stopPropagation: false,
+      meta: { name: "Next demo" },
+    },
+  );
 
   return (
     <div className={styles.root}>

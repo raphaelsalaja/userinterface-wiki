@@ -1,6 +1,6 @@
 "use client";
 
-import { useHotkeys } from "react-hotkeys-hook";
+import { useHotkey } from "@tanstack/react-hotkeys";
 import { useNarrationStore } from "../store";
 
 interface UseKeyboardShortcutsOptions {
@@ -8,6 +8,12 @@ interface UseKeyboardShortcutsOptions {
   seek: (time: number) => void;
   audioRef: React.RefObject<HTMLAudioElement | null>;
 }
+
+const PASSIVE = {
+  preventDefault: false,
+  stopPropagation: false,
+  ignoreInputs: true,
+} as const;
 
 export function useKeyboardShortcuts({
   toggle,
@@ -18,55 +24,58 @@ export function useKeyboardShortcuts({
   const isPlaying = useNarrationStore((state) => state.isPlaying);
 
   // Only prevent default for Space when audio is playing to avoid blocking scroll
-  useHotkeys(
-    "space",
-    (e) => {
+  useHotkey(
+    "Space",
+    (event) => {
       if (isPlaying) {
-        e.preventDefault();
+        event.preventDefault();
       }
       toggle();
     },
-    { enableOnFormTags: false, preventDefault: false },
+    { ...PASSIVE, meta: { name: "Play / pause narration" } },
   );
 
   // Use shift+arrow keys to avoid blocking native scroll behavior
-  useHotkeys(
-    "shift+left",
+  useHotkey(
+    "Shift+ArrowLeft",
     () => {
       const audio = audioRef.current;
       if (audio) seek(audio.currentTime - 5);
     },
-    { enableOnFormTags: false },
+    { ...PASSIVE, meta: { name: "Rewind 5 seconds" } },
   );
 
-  useHotkeys(
-    "shift+right",
+  useHotkey(
+    "Shift+ArrowRight",
     () => {
       const audio = audioRef.current;
       if (audio) seek(audio.currentTime + 5);
     },
-    { enableOnFormTags: false },
+    { ...PASSIVE, meta: { name: "Forward 5 seconds" } },
   );
 
   // j/l for seeking (common video player pattern)
-  useHotkeys(
-    "j",
+  useHotkey(
+    "J",
     () => {
       const audio = audioRef.current;
       if (audio) seek(audio.currentTime - 15);
     },
-    { enableOnFormTags: false },
+    { ...PASSIVE, meta: { name: "Rewind 15 seconds" } },
   );
 
-  useHotkeys(
-    "l",
+  useHotkey(
+    "L",
     () => {
       const audio = audioRef.current;
       if (audio) seek(audio.currentTime + 15);
     },
-    { enableOnFormTags: false },
+    { ...PASSIVE, meta: { name: "Forward 15 seconds" } },
   );
 
   // m for mute
-  useHotkeys("m", () => toggleMute(), { enableOnFormTags: false });
+  useHotkey("M", () => toggleMute(), {
+    ...PASSIVE,
+    meta: { name: "Mute narration" },
+  });
 }

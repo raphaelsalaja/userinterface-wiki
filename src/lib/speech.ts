@@ -423,7 +423,14 @@ async function uploadJson(
   return result.url;
 }
 
-/** Synthesizes speech with character-level timestamps using ElevenLabs REST API. */
+/**
+ * Synthesizes speech with character-level timestamps using ElevenLabs REST API.
+ *
+ * Deliberately NOT migrated to the AI SDK's `generateSpeech`: narration
+ * highlighting depends on the character-level alignment data that only the
+ * ElevenLabs `/with-timestamps` endpoint returns, and the AI SDK speech
+ * surface exposes audio only. Revisit if the SDK adds timestamp support.
+ */
 export async function synthesizeSpeech(text: string): Promise<SpeechResult> {
   const apiKey = process.env.ELEVENLABS_API_KEY;
   if (!apiKey) {

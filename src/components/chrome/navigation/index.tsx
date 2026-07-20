@@ -5,6 +5,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Banner } from "@/components/chrome/banner";
 import { ThemeSwitcher } from "@/components/chrome/theme-switcher";
+import { useAskAiStore } from "@/components/features/ask-ai/store";
+import { Shortcut } from "@/components/primitives/shortcut";
+import { MagnifyingGlassIcon } from "@/icons";
 import { sounds } from "@/lib/sounds";
 import styles from "./styles.module.css";
 
@@ -39,6 +42,7 @@ const LINKS = [
 
 export function Navigation() {
   const pathname = usePathname();
+  const openAskAi = useAskAiStore((state) => state.open);
   if (CHROMELESS_PATHS.has(pathname)) return null;
 
   return (
@@ -67,6 +71,21 @@ export function Navigation() {
               </NavigationMenu.Link>
             </NavigationMenu.Item>
           ))}
+          <li>
+            <Shortcut shortcut={{ label: "Ask AI", hotkey: "Mod+K" }}>
+              <button
+                type="button"
+                className={styles.action}
+                aria-label="Search or ask AI"
+                onClick={() => {
+                  sounds.click();
+                  openAskAi();
+                }}
+              >
+                <MagnifyingGlassIcon size={16} />
+              </button>
+            </Shortcut>
+          </li>
           <li>
             <ThemeSwitcher />
           </li>

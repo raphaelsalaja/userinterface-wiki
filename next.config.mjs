@@ -22,6 +22,15 @@ const config = {
       },
     ],
   },
+  async rewrites() {
+    return [
+      // Agent-readable plain-markdown rendering of each article
+      {
+        source: "/:slug.md",
+        destination: "/api/markdown/:slug",
+      },
+    ];
+  },
   async headers() {
     return [
       {

@@ -1,4 +1,5 @@
 import pc from "picocolors";
+import { ContentIndexGenerator } from "./generators/content-index";
 import { DemosGenerator } from "./generators/demos";
 import { IconsGenerator } from "./generators/icons";
 import { OpenGraphGenerator } from "./generators/opengraph";
@@ -79,6 +80,7 @@ function showHelp(): void {
 }
 
 const generators = {
+  "content-index": ContentIndexGenerator,
   demos: DemosGenerator,
   icons: IconsGenerator,
   opengraph: OpenGraphGenerator,
@@ -111,7 +113,13 @@ async function main() {
   const toRun =
     generatorNames.length > 0
       ? generatorNames
-      : (["demos", "icons", "opengraph", "playgrounds"] as GeneratorName[]);
+      : ([
+          "content-index",
+          "demos",
+          "icons",
+          "opengraph",
+          "playgrounds",
+        ] as GeneratorName[]);
 
   // Validate generator names
   for (const name of toRun) {
