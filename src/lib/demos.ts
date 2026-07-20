@@ -14,6 +14,21 @@ export interface DemoInfo {
   key: string;
 }
 
+/**
+ * Reads the demos barrel (demos/index.ts) and returns folder names in export
+ * order. Demo directories use plain descriptive names, so the barrel — which
+ * mirrors the article's narrative order — is the source of sequence.
+ */
+function getBarrelOrder(demosDir: string): string[] {
+  const barrelPath = path.join(demosDir, "index.ts");
+  if (!fs.existsSync(barrelPath)) return [];
+
+  const content = fs.readFileSync(barrelPath, "utf-8");
+  return [...content.matchAll(/from\s+"\.\/([^"]+)"/g)].map(
+    (match) => match[1],
+  );
+}
+
 export function getAllDemos(): DemoInfo[] {
   const demos: DemoInfo[] = [];
 
@@ -29,7 +44,17 @@ export function getAllDemos(): DemoInfo[] {
     const page = source.getPage([article.name]);
     const articleTitle = page?.data.title ?? formatDemoTitle(article.name);
 
-    const demoFolders = fs.readdirSync(demosDir, { withFileTypes: true });
+    const barrelOrder = getBarrelOrder(demosDir);
+    const demoFolders = fs
+      .readdirSync(demosDir, { withFileTypes: true })
+      .sort((a, b) => {
+        const indexA = barrelOrder.indexOf(a.name);
+        const indexB = barrelOrder.indexOf(b.name);
+        if (indexA === -1 && indexB === -1) return a.name.localeCompare(b.name);
+        if (indexA === -1) return 1;
+        if (indexB === -1) return -1;
+        return indexA - indexB;
+      });
 
     for (const demoFolder of demoFolders) {
       if (!demoFolder.isDirectory()) continue;
@@ -85,8 +110,7 @@ export function generateDemoParams(): { slug: string }[] {
 }
 
 export function formatDemoTitle(slug: string): string {
-  const withoutNumber = slug.replace(/^\d+-/, "");
-  return withoutNumber
+  return slug
     .split("-")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");

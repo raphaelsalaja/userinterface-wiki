@@ -38,14 +38,21 @@ export const SECTION_DEFINITIONS: SectionDefinition[] = [
     label: "Craft",
     description:
       "CSS and typography details that separate considered interfaces from default ones.",
-    slugs: ["taking-advantage-of-pseudo-elements", "your-font-can-do-more"],
+    slugs: [
+      "taking-advantage-of-pseudo-elements",
+      "your-font-can-do-more",
+      "nest-radii",
+      "stack-shadows",
+      "balance-headlines",
+      "alpha-borders",
+    ],
   },
   {
     id: "experience",
     label: "Experience",
     description:
       "The psychology and perception tricks behind interfaces that feel right.",
-    slugs: ["laws-of-ux", "predictive-prefetching"],
+    slugs: ["laws-of-ux", "skip-the-spinner", "predictive-prefetching"],
   },
   {
     id: "resources",

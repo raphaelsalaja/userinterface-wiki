@@ -6,10 +6,10 @@ author: "raphael-salaja"
 icon: "motion"
 ---
 
-import { PresenceStatePlayground } from "./demos/01-presence-state/playgrounds";
-import { ManualExitPlayground } from "./demos/02-manual-exit/playgrounds";
-import { NestedExitsPlayground } from "./demos/03-nested-exits/playgrounds";
-import { ModesDemoPlayground } from "./demos/04-modes-demo/playgrounds";
+import { PresenceStatePlayground } from "./demos/presence-state/playgrounds";
+import { ManualExitPlayground } from "./demos/manual-exit/playgrounds";
+import { NestedExitsPlayground } from "./demos/nested-exits/playgrounds";
+import { ModesPlayground } from "./demos/modes/playgrounds";
 import { Staging } from "../12-principles-of-animation/demos";
 
 When an element leaves the DOM, it's pretty much gone and as a result, there is no way to animate something that no longer exists.
@@ -56,7 +56,7 @@ When true, removing the parent, triggers exit animations on both the parent and 
 
 The `mode` prop controls timing between entering and exiting elements.
 
-<Playground {...ModesDemoPlayground} /> 
+<Playground {...ModesPlayground} />
 
 ## `sync`
 

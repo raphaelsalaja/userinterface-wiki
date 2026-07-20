@@ -8,6 +8,8 @@ import { z } from "zod";
 export const docs = defineDocs({
   dir: "content",
   docs: {
+    // Articles only — README.md documents authoring conventions, not content.
+    files: ["**/*.mdx"],
     schema: frontmatterSchema.extend({
       date: z.iso.date(),
       description: z.string(),

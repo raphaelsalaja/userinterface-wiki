@@ -1,0 +1,36 @@
+---
+title: "Nest Radii"
+description: "When you nest rounded elements, the inner radius must equal the outer radius minus the gap. Same radius on both always looks wrong."
+date: "2026-07-20"
+author: "raphael-salaja"
+icon: "writing"
+---
+
+import { ConcentricRadius } from "./demos";
+
+Put a rounded card inside a rounded card and give both the same border radius. It looks subtly off, and most people can't say why. The corners feel pinched, like the inner card is fighting the outer one.
+
+The reason is geometry. For two curves to look concentric, they need to share a center point. When there's padding between the elements, the inner corner sits closer to that center, so it needs a *smaller* radius. The rule is simple:
+
+```css
+.outer {
+  --padding: 8px;
+  --inner-radius: 8px;
+
+  border-radius: calc(var(--inner-radius) + var(--padding));
+  padding: var(--padding);
+}
+
+.inner {
+  border-radius: var(--inner-radius);
+}
+```
+
+Inner radius equals outer radius minus the gap. Or worked the other way, outer equals inner plus padding. Either direction works, as long as the difference between the two radii is exactly the padding between them.
+
+<Figure>
+  <ConcentricRadius />
+  <Caption>The same nested card with equal radii and with concentric radii. Watch the corners.</Caption>
+</Figure>
+
+Once you see it, you can't unsee it. iOS does this everywhere, app icons inside folders, cards inside sheets. It's one calc away, so wire it up with custom properties once and every nested surface in your interface inherits corners that actually agree with each other.

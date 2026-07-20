@@ -4,56 +4,62 @@ import type { ComponentType } from "react";
 import dynamic from "next/dynamic";
 
 export const demoRegistry: Record<string, ComponentType> = {
-  "12-principles-of-animation/1-squash-and-stretch": dynamic(() =>
-    import("@/content/12-principles-of-animation/demos/1-squash-and-stretch").then((m) => m.SquashStretch),
+  "12-principles-of-animation/anticipation": dynamic(() =>
+    import("@/content/12-principles-of-animation/demos/anticipation").then((m) => m.Anticipation),
   ),
-  "12-principles-of-animation/10-exaggeration": dynamic(() =>
-    import("@/content/12-principles-of-animation/demos/10-exaggeration").then((m) => m.Exaggeration),
+  "12-principles-of-animation/appeal": dynamic(() =>
+    import("@/content/12-principles-of-animation/demos/appeal").then((m) => m.Appeal),
   ),
-  "12-principles-of-animation/11-solid-drawing": dynamic(() =>
-    import("@/content/12-principles-of-animation/demos/11-solid-drawing").then((m) => m.SolidDrawing),
+  "12-principles-of-animation/arcs": dynamic(() =>
+    import("@/content/12-principles-of-animation/demos/arcs").then((m) => m.Arcs),
   ),
-  "12-principles-of-animation/12-appeal": dynamic(() =>
-    import("@/content/12-principles-of-animation/demos/12-appeal").then((m) => m.Appeal),
+  "12-principles-of-animation/exaggeration": dynamic(() =>
+    import("@/content/12-principles-of-animation/demos/exaggeration").then((m) => m.Exaggeration),
   ),
-  "12-principles-of-animation/2-anticipation": dynamic(() =>
-    import("@/content/12-principles-of-animation/demos/2-anticipation").then((m) => m.Anticipation),
+  "12-principles-of-animation/follow-through-and-overlapping-action": dynamic(() =>
+    import("@/content/12-principles-of-animation/demos/follow-through-and-overlapping-action").then((m) => m.FollowThroughAndOverlappingAction),
   ),
-  "12-principles-of-animation/3-staging": dynamic(() =>
-    import("@/content/12-principles-of-animation/demos/3-staging").then((m) => m.Staging),
+  "12-principles-of-animation/secondary-action": dynamic(() =>
+    import("@/content/12-principles-of-animation/demos/secondary-action").then((m) => m.SecondaryAction),
   ),
-  "12-principles-of-animation/4-straight-ahead-action-and-pose-to-pose": dynamic(() =>
-    import("@/content/12-principles-of-animation/demos/4-straight-ahead-action-and-pose-to-pose").then((m) => m.StraightAheadActionAndPoseToPose),
+  "12-principles-of-animation/slow-in-and-slow-out": dynamic(() =>
+    import("@/content/12-principles-of-animation/demos/slow-in-and-slow-out").then((m) => m.SlowInSlowOut),
   ),
-  "12-principles-of-animation/5-follow-through-and-overlapping-action": dynamic(() =>
-    import("@/content/12-principles-of-animation/demos/5-follow-through-and-overlapping-action").then((m) => m.FollowThroughAndOverlappingAction),
+  "12-principles-of-animation/solid-drawing": dynamic(() =>
+    import("@/content/12-principles-of-animation/demos/solid-drawing").then((m) => m.SolidDrawing),
   ),
-  "12-principles-of-animation/6-slow-in-and-slow-out": dynamic(() =>
-    import("@/content/12-principles-of-animation/demos/6-slow-in-and-slow-out").then((m) => m.SlowInSlowOut),
+  "12-principles-of-animation/squash-and-stretch": dynamic(() =>
+    import("@/content/12-principles-of-animation/demos/squash-and-stretch").then((m) => m.SquashStretch),
   ),
-  "12-principles-of-animation/7-arcs": dynamic(() =>
-    import("@/content/12-principles-of-animation/demos/7-arcs").then((m) => m.Arcs),
+  "12-principles-of-animation/staging": dynamic(() =>
+    import("@/content/12-principles-of-animation/demos/staging").then((m) => m.Staging),
   ),
-  "12-principles-of-animation/8-secondary-action": dynamic(() =>
-    import("@/content/12-principles-of-animation/demos/8-secondary-action").then((m) => m.SecondaryAction),
+  "12-principles-of-animation/straight-ahead-action-and-pose-to-pose": dynamic(() =>
+    import("@/content/12-principles-of-animation/demos/straight-ahead-action-and-pose-to-pose").then((m) => m.StraightAheadActionAndPoseToPose),
   ),
-  "12-principles-of-animation/9-timing": dynamic(() =>
-    import("@/content/12-principles-of-animation/demos/9-timing").then((m) => m.Timing),
+  "12-principles-of-animation/timing": dynamic(() =>
+    import("@/content/12-principles-of-animation/demos/timing").then((m) => m.Timing),
   ),
-  "animating-container-bounds/00-comparison": dynamic(() =>
-    import("@/content/animating-container-bounds/demos/00-comparison").then((m) => m.Comparison),
+  "alpha-borders/alpha-border": dynamic(() =>
+    import("@/content/alpha-borders/demos/alpha-border").then((m) => m.AlphaBorder),
   ),
-  "animating-container-bounds/01-animated-width": dynamic(() =>
-    import("@/content/animating-container-bounds/demos/01-animated-width").then((m) => m.AnimatedWidth),
+  "animating-container-bounds/animated-height": dynamic(() =>
+    import("@/content/animating-container-bounds/demos/animated-height").then((m) => m.AnimatedHeight),
   ),
-  "animating-container-bounds/02-animated-height": dynamic(() =>
-    import("@/content/animating-container-bounds/demos/02-animated-height").then((m) => m.AnimatedHeight),
+  "animating-container-bounds/animated-width": dynamic(() =>
+    import("@/content/animating-container-bounds/demos/animated-width").then((m) => m.AnimatedWidth),
   ),
-  "generating-sounds-with-ai/audio-concepts-demo": dynamic(() =>
-    import("@/content/generating-sounds-with-ai/demos/audio-concepts-demo").then((m) => m.AudioConceptsDemo),
+  "animating-container-bounds/comparison": dynamic(() =>
+    import("@/content/animating-container-bounds/demos/comparison").then((m) => m.Comparison),
   ),
-  "generating-sounds-with-ai/sound-lab-demo": dynamic(() =>
-    import("@/content/generating-sounds-with-ai/demos/sound-lab-demo").then((m) => m.SoundLabDemo),
+  "balance-headlines/balanced-heading": dynamic(() =>
+    import("@/content/balance-headlines/demos/balanced-heading").then((m) => m.BalancedHeading),
+  ),
+  "generating-sounds-with-ai/audio-concepts": dynamic(() =>
+    import("@/content/generating-sounds-with-ai/demos/audio-concepts").then((m) => m.AudioConceptsDemo),
+  ),
+  "generating-sounds-with-ai/sound-lab": dynamic(() =>
+    import("@/content/generating-sounds-with-ai/demos/sound-lab").then((m) => m.SoundLabDemo),
   ),
   "laws-of-ux/doherty-threshold": dynamic(() =>
     import("@/content/laws-of-ux/demos/doherty-threshold").then((m) => m.DohertyThreshold),
@@ -73,35 +79,44 @@ export const demoRegistry: Record<string, ComponentType> = {
   "laws-of-ux/postels-law": dynamic(() =>
     import("@/content/laws-of-ux/demos/postels-law").then((m) => m.PostelsLaw),
   ),
-  "mastering-animate-presence/01-presence-state": dynamic(() =>
-    import("@/content/mastering-animate-presence/demos/01-presence-state").then((m) => m.PresenceState),
+  "mastering-animate-presence/manual-exit": dynamic(() =>
+    import("@/content/mastering-animate-presence/demos/manual-exit").then((m) => m.ManualExitDemo),
   ),
-  "mastering-animate-presence/02-manual-exit": dynamic(() =>
-    import("@/content/mastering-animate-presence/demos/02-manual-exit").then((m) => m.ManualExitDemo),
+  "mastering-animate-presence/modes": dynamic(() =>
+    import("@/content/mastering-animate-presence/demos/modes").then((m) => m.ModesDemo),
   ),
-  "mastering-animate-presence/03-nested-exits": dynamic(() =>
-    import("@/content/mastering-animate-presence/demos/03-nested-exits").then((m) => m.NestedExitsDemo),
+  "mastering-animate-presence/nested-exits": dynamic(() =>
+    import("@/content/mastering-animate-presence/demos/nested-exits").then((m) => m.NestedExitsDemo),
   ),
-  "mastering-animate-presence/04-modes-demo": dynamic(() =>
-    import("@/content/mastering-animate-presence/demos/04-modes-demo").then((m) => m.ModesDemo),
+  "mastering-animate-presence/presence-state": dynamic(() =>
+    import("@/content/mastering-animate-presence/demos/presence-state").then((m) => m.PresenceState),
   ),
-  "morphing-icons/morphing-icon-demo": dynamic(() =>
-    import("@/content/morphing-icons/demos/morphing-icon-demo").then((m) => m.MorphingIconDemo),
+  "morphing-icons/morphing-icon": dynamic(() =>
+    import("@/content/morphing-icons/demos/morphing-icon").then((m) => m.MorphingIconDemo),
+  ),
+  "nest-radii/concentric-radius": dynamic(() =>
+    import("@/content/nest-radii/demos/concentric-radius").then((m) => m.ConcentricRadius),
   ),
   "predictive-prefetching/prediction-cards": dynamic(() =>
     import("@/content/predictive-prefetching/demos/prediction-cards").then((m) => m.PredictionComparison),
   ),
-  "sounds-on-the-web/action-feedback-demo": dynamic(() =>
-    import("@/content/sounds-on-the-web/demos/action-feedback-demo").then((m) => m.ActionFeedbackDemo),
+  "skip-the-spinner/optimistic-toggle": dynamic(() =>
+    import("@/content/skip-the-spinner/demos/optimistic-toggle").then((m) => m.OptimisticToggle),
   ),
-  "sounds-on-the-web/button-sound-demo": dynamic(() =>
-    import("@/content/sounds-on-the-web/demos/button-sound-demo").then((m) => m.ButtonSoundDemo),
+  "sounds-on-the-web/action-feedback": dynamic(() =>
+    import("@/content/sounds-on-the-web/demos/action-feedback").then((m) => m.ActionFeedbackDemo),
   ),
-  "taking-advantage-of-pseudo-elements/before-and-after-demo": dynamic(() =>
-    import("@/content/taking-advantage-of-pseudo-elements/demos/before-and-after-demo").then((m) => m.BeforeAndAfterDemo),
+  "sounds-on-the-web/button-sound": dynamic(() =>
+    import("@/content/sounds-on-the-web/demos/button-sound").then((m) => m.ButtonSoundDemo),
   ),
-  "taking-advantage-of-pseudo-elements/view-transition-demo": dynamic(() =>
-    import("@/content/taking-advantage-of-pseudo-elements/demos/view-transition-demo").then((m) => m.ViewTransitionDemo),
+  "stack-shadows/layered-shadows": dynamic(() =>
+    import("@/content/stack-shadows/demos/layered-shadows").then((m) => m.LayeredShadows),
+  ),
+  "taking-advantage-of-pseudo-elements/before-and-after": dynamic(() =>
+    import("@/content/taking-advantage-of-pseudo-elements/demos/before-and-after").then((m) => m.BeforeAndAfterDemo),
+  ),
+  "taking-advantage-of-pseudo-elements/view-transition": dynamic(() =>
+    import("@/content/taking-advantage-of-pseudo-elements/demos/view-transition").then((m) => m.ViewTransitionDemo),
   ),
   "to-spring-or-not-to-spring/decision-flow": dynamic(() =>
     import("@/content/to-spring-or-not-to-spring/demos/decision-flow").then((m) => m.DecisionFlow),
@@ -109,14 +124,14 @@ export const demoRegistry: Record<string, ComponentType> = {
   "to-spring-or-not-to-spring/ease-vs-spring": dynamic(() =>
     import("@/content/to-spring-or-not-to-spring/demos/ease-vs-spring").then((m) => m.EaseVsSpring),
   ),
-  "to-spring-or-not-to-spring/easing-demo": dynamic(() =>
-    import("@/content/to-spring-or-not-to-spring/demos/easing-demo").then((m) => m.EasingDemo),
+  "to-spring-or-not-to-spring/easing": dynamic(() =>
+    import("@/content/to-spring-or-not-to-spring/demos/easing").then((m) => m.EasingDemo),
   ),
-  "to-spring-or-not-to-spring/linear-demo": dynamic(() =>
-    import("@/content/to-spring-or-not-to-spring/demos/linear-demo").then((m) => m.LinearDemo),
+  "to-spring-or-not-to-spring/linear": dynamic(() =>
+    import("@/content/to-spring-or-not-to-spring/demos/linear").then((m) => m.LinearDemo),
   ),
-  "to-spring-or-not-to-spring/spring-demo": dynamic(() =>
-    import("@/content/to-spring-or-not-to-spring/demos/spring-demo").then((m) => m.SpringDemo),
+  "to-spring-or-not-to-spring/spring": dynamic(() =>
+    import("@/content/to-spring-or-not-to-spring/demos/spring").then((m) => m.SpringDemo),
   ),
   "your-font-can-do-more/numeric-display": dynamic(() =>
     import("@/content/your-font-can-do-more/demos/numeric-display").then((m) => m.NumericDisplay),

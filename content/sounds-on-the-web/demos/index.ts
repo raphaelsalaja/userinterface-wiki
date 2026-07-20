@@ -1,2 +1,2 @@
-export * from "./action-feedback-demo/index";
-export * from "./button-sound-demo/index";
+export * from "./action-feedback/index";
+export * from "./button-sound/index";

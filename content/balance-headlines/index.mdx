@@ -1,0 +1,35 @@
+---
+title: "Balance Headlines"
+description: "text-wrap: balance stops headings from stranding one word on the last line. One CSS property, no JavaScript, works today."
+date: "2026-07-20"
+author: "raphael-salaja"
+icon: "writing"
+---
+
+import { BalancedHeading } from "./demos";
+
+You've seen the broken version a thousand times, a heading that runs long, wraps, and leaves a single word stranded on the second line. Typographers call it an orphan, and it makes even careful designs look accidental.
+
+The old fixes were all bad. Manual `<br>` tags break at every viewport width except the one you tested. JavaScript balancers reflow text after paint. Non-breaking spaces between the last two words help sometimes and fail silently other times.
+
+Now it's one property:
+
+```css
+h1, h2, h3 {
+  text-wrap: balance;
+}
+```
+
+The browser redistributes the words so every line comes out roughly equal, at whatever width the heading happens to render.
+
+<Figure>
+  <BalancedHeading />
+  <Caption>The same heading with default wrapping and with balance.</Caption>
+</Figure>
+
+Balance is for headings, browsers only apply it to a handful of lines because the layout cost grows with line count. For body text, use `text-wrap: pretty` instead, which is cheaper and focuses just on preventing orphans. Set both once in your base styles and forget about them.
+
+```css
+h1, h2, h3 { text-wrap: balance; }
+p { text-wrap: pretty; }
+```

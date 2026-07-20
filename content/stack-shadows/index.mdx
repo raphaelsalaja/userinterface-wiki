@@ -1,0 +1,31 @@
+---
+title: "Stack Shadows"
+description: "One box-shadow looks like a sticker. Layering several shadows with increasing blur is how you get depth that reads as light."
+date: "2026-07-20"
+author: "raphael-salaja"
+icon: "writing"
+---
+
+import { LayeredShadows } from "./demos";
+
+Real shadows aren't one thing. Hold your hand over a desk and look closely, there's a tight dark shadow right under it, a softer one spreading further out, and a barely-there ambient wash beyond that. A single `box-shadow` can't reproduce that, which is why lone shadows tend to read as a gray sticker glued behind the element.
+
+The fix is to layer. Each shadow gets more blur and less opacity than the last:
+
+```css
+.card {
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.06),
+    0 4px 8px rgba(0, 0, 0, 0.04),
+    0 12px 24px rgba(0, 0, 0, 0.03);
+}
+```
+
+The tight layer anchors the element to the surface. The middle layer gives it body. The wide layer suggests ambient light filling the room. Individually each one is almost invisible, and that's the point, they only work together.
+
+<Figure>
+  <LayeredShadows />
+  <Caption>The same card with a single shadow and with three stacked layers.</Caption>
+</Figure>
+
+Two more rules keep the illusion intact. Keep every offset pointing the same direction so the whole interface implies one light source, and never use pure black, a deep neutral at low opacity sits into the page instead of on top of it. Define the stacks once as custom properties (`--shadow-1` through `--shadow-3`) and elevation becomes a one-line decision everywhere else.

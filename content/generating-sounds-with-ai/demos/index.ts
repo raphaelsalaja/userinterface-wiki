@@ -1,2 +1,2 @@
-export { AudioConceptsDemo } from "./audio-concepts-demo";
-export { SoundLabDemo } from "./sound-lab-demo";
+export { AudioConceptsDemo } from "./audio-concepts";
+export { SoundLabDemo } from "./sound-lab";

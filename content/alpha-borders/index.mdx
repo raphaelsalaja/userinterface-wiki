@@ -1,0 +1,32 @@
+---
+title: "Alpha Borders"
+description: "Semi-transparent borders adapt to whatever sits behind them. Hardcoded grays only work on the one background you tested."
+date: "2026-07-20"
+author: "raphael-salaja"
+icon: "writing"
+---
+
+import { AlphaBorder } from "./demos";
+
+A border color like `#e5e5e5` is a promise about the background. It says: this element will always sit on white. Put the same card on a tinted panel, a hover state, or dark mode, and the border either vanishes or turns into a harsh outline.
+
+Semi-transparent borders don't make that promise. An alpha color mixes with whatever is behind it, so the border reads as "slightly darker than the surface" everywhere:
+
+```css
+.card {
+  /* fixed: only correct on one background */
+  border: 1px solid #e5e5e5;
+
+  /* adaptive: correct on every background */
+  border: 1px solid var(--gray-a4);
+}
+```
+
+<Figure>
+  <AlphaBorder />
+  <Caption>The same bordered cards on different surfaces, with fixed and alpha border colors.</Caption>
+</Figure>
+
+The same logic applies to dividers, input outlines, and table rules, anything that's supposed to *separate* rather than *decorate*. Radix-style color scales ship alpha variants (`--gray-a1` through `--gray-a12`) exactly for this. Reach for the alpha scale by default and save the solid values for surfaces themselves.
+
+One bonus: alpha borders survive theme switches for free. A border that's "black at 8% opacity" is a sensible border in light mode and, flipped to "white at 8%", in dark mode, no per-theme overrides needed.

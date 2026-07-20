@@ -1,0 +1,36 @@
+---
+title: "Skip the Spinner"
+description: "Under 400ms an interaction feels instant. If you're confident the request will succeed, update the UI first and let the network catch up."
+date: "2026-07-20"
+author: "raphael-salaja"
+icon: "writing"
+---
+
+import { OptimisticToggle } from "./demos";
+
+The Doherty threshold says interactions need to respond within 400 milliseconds to feel instant.[^1] Most mutations, a like, a follow, a settings toggle, take longer than that round-trip. So the honest version of the UI shows a spinner, and the honest version feels broken.
+
+Optimistic UI flips the order. Update the interface immediately, fire the request in the background, and roll back in the rare case it fails:
+
+```tsx
+async function handleLike() {
+  setLiked(true); // respond now
+
+  try {
+    await api.like(post.id); // confirm later
+  } catch {
+    setLiked(false); // roll back on failure
+  }
+}
+```
+
+<Figure>
+  <OptimisticToggle />
+  <Caption>The same action waiting for the server versus responding optimistically.</Caption>
+</Figure>
+
+The waiting version isn't slower on the network, it's identical. It just makes you watch. The optimistic version feels like the button is an extension of your hand, which is the entire point.
+
+The judgment call is confidence. Optimism fits actions that almost always succeed and are cheap to undo, toggles, likes, reorders. It doesn't fit payments or destructive operations, where showing work honestly *is* the right feel. And when you genuinely can't be optimistic, fake the speed another way: skeletons and progress indicators exist because perceived speed matters as much as actual speed.
+
+[^1]: Doherty, W. J., & Kelisky, R. P. (1979). Managing VM/CMS systems for user effectiveness. *IBM Systems Journal*, 18(1), 143-163.

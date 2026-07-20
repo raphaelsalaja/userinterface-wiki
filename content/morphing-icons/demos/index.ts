@@ -1,1 +1,1 @@
-export * from "./morphing-icon-demo";
+export * from "./morphing-icon";
