@@ -1,0 +1,66 @@
+.stage {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+  padding: var(--page-padding-inline);
+  background: var(--gray-1);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+  max-width: var(--page-max-width);
+  text-align: center;
+}
+
+.eyebrow {
+  font-size: 13px;
+  font-weight: var(--font-weight-medium);
+  color: var(--gray-10);
+  text-transform: uppercase;
+  letter-spacing: var(--font-letter-spacing-13px);
+}
+
+.title {
+  margin: 0;
+  font-size: 32px;
+  font-weight: var(--font-weight-medium);
+  color: var(--gray-12);
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  max-width: 480px;
+  margin: 0;
+  font-size: 14px;
+  color: var(--gray-10);
+  letter-spacing: var(--font-letter-spacing-14px);
+}
+
+.surface {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: var(--page-max-width);
+  min-height: 360px;
+  padding: 32px;
+  background: var(--gray-2);
+  border: 1px solid var(--gray-a4);
+  border-radius: 16px;
+}
+
+.surface:empty::before,
+.surface:has(> :only-child:not([data-stage-content]))::before {
+  font-size: 14px;
+  color: var(--gray-8);
+  letter-spacing: var(--font-letter-spacing-14px);
+  content: "Stage";
+}

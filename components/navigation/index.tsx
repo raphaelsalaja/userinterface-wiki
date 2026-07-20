@@ -2,10 +2,13 @@
 
 import { NavigationMenu } from "@base-ui/react/navigation-menu";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Banner } from "@/components/banner";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import { sounds } from "@/lib/sounds";
 import styles from "./styles.module.css";
+
+const CHROMELESS_PATHS = new Set(["/live"]);
 
 const LINKS = [
   {
@@ -35,6 +38,9 @@ const LINKS = [
 ];
 
 export default function Navigation() {
+  const pathname = usePathname();
+  if (CHROMELESS_PATHS.has(pathname)) return null;
+
   return (
     <NavigationMenu.Root className={styles.root}>
       <Banner />
