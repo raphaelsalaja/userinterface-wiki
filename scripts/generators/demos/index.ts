@@ -8,7 +8,7 @@ import {
 } from "../../lib/generator-base";
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
-const OUTPUT_DIR = path.join(process.cwd(), "lib", "generated");
+const OUTPUT_DIR = path.join(process.cwd(), "src", "lib", "generated");
 const OUTPUT_PATH = path.join(OUTPUT_DIR, "demo-registry.ts");
 
 interface DemoEntry {

@@ -15,7 +15,7 @@
       "!**/node_modules/**/*",
       "!**/out",
       "!dist",
-      "!lib/generated"
+      "!src/lib/generated"
     ]
   },
   "formatter": {

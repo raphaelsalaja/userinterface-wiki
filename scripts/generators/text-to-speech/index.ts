@@ -11,7 +11,7 @@ import {
   type ParagraphInfo,
   synthesizeSpeech,
   writeParagraphToCache,
-} from "../../../lib/speech";
+} from "../../../src/lib/speech";
 import {
   DIM,
   type GeneratedFile,

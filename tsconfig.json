@@ -19,13 +19,12 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"],
-      "fumadocs/*": ["./.source/*"],
-      "@markdown/*": ["./markdown/*"]
+      "@/content/*": ["./content/*"],
+      "@/*": ["./src/*"],
+      "fumadocs/*": ["./.source/*"]
     }
   },
   "include": [
-    "svgr.d.ts",
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
