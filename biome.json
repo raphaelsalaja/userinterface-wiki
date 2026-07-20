@@ -50,5 +50,17 @@
         "useSortedProperties": "on"
       }
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["content/*/demos/index.ts"],
+      "assist": {
+        "actions": {
+          "source": {
+            "organizeImports": "off"
+          }
+        }
+      }
+    }
+  ]
 }
