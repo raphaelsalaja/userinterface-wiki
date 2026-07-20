@@ -1,9 +1,5 @@
 import { Header, type HeaderPage } from "@/components/chrome/header";
-import {
-  Sidebar,
-  type SidebarSection,
-  type SidebarTab,
-} from "@/components/chrome/sidebar";
+import { Sidebar, type SidebarGroup } from "@/components/chrome/sidebar";
 import {
   getSections,
   getWalkthroughSections,
@@ -17,10 +13,11 @@ const REFERENCE_LINKS = [
   { title: "Sponsors", url: "/sponsors" },
 ];
 
-function toSidebarSections(sections: Section[]): SidebarSection[] {
+function toSidebarGroups(sections: Section[]): SidebarGroup[] {
   return sections.map((section) => ({
     id: section.id,
     label: section.label,
+    tracked: true,
     items: section.pages.map((page) => ({
       title: page.title,
       url: page.url,
@@ -47,18 +44,18 @@ export default function WritingLayout({
   const sections = getSections();
   const walkthroughSections = getWalkthroughSections();
 
-  const tabs: SidebarTab[] = [
+  const groups: SidebarGroup[] = [
+    ...toSidebarGroups(sections),
+    ...toSidebarGroups(walkthroughSections),
     {
-      id: "learn",
-      label: "Learn",
-      sections: toSidebarSections(sections),
+      id: "reference",
+      label: "Reference",
+      items: REFERENCE_LINKS.map((link) => ({
+        title: link.title,
+        url: link.url,
+      })),
     },
-    {
-      id: "walkthroughs",
-      label: "Walkthroughs",
-      sections: toSidebarSections(walkthroughSections),
-    },
-  ].filter((tab) => tab.sections.length > 0);
+  ].filter((group) => group.items.length > 0);
 
   const headerPages: HeaderPage[] = [
     ...toHeaderPages(sections),
@@ -72,7 +69,7 @@ export default function WritingLayout({
 
   return (
     <div className={styles.shell}>
-      <Sidebar tabs={tabs} links={REFERENCE_LINKS} />
+      <Sidebar groups={groups} />
       <div className={styles.main}>
         <Header pages={headerPages} />
         <div className={styles.container}>{children}</div>

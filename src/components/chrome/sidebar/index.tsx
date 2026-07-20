@@ -2,10 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAskAiStore } from "@/components/features/ask-ai/store";
 import { Shortcut } from "@/components/primitives/shortcut";
-import { CheckCircle2Icon, MagnifyingGlassIcon } from "@/icons";
+import {
+  CheckCircle2Icon,
+  ChevronDownSmallIcon,
+  MagnifyingGlassIcon,
+} from "@/icons";
 import { sounds } from "@/lib/sounds";
 import { useBookmarks } from "@/lib/stores/bookmarks";
 import { useProgress } from "@/lib/stores/progress";
@@ -16,22 +20,16 @@ export interface SidebarItem {
   url: string;
 }
 
-export interface SidebarSection {
+export interface SidebarGroup {
   id: string;
   label: string;
   items: SidebarItem[];
-}
-
-export interface SidebarTab {
-  id: string;
-  label: string;
-  sections: SidebarSection[];
+  /** Tracked groups show per-article completion state. */
+  tracked?: boolean;
 }
 
 interface SidebarProps {
-  tabs: SidebarTab[];
-  /** Static links shown below the tabbed sections, e.g. Glossary, Vault. */
-  links?: SidebarItem[];
+  groups: SidebarGroup[];
 }
 
 const FOOTER_LINKS = [
@@ -53,30 +51,49 @@ function slugFromUrl(url: string): string {
   return url.replace(/^\//, "");
 }
 
-function tabContainsPath(tab: SidebarTab, pathname: string): boolean {
-  return tab.sections.some((section) =>
-    section.items.some((item) => item.url === pathname),
+function groupForPath(groups: SidebarGroup[], pathname: string) {
+  return groups.find((group) =>
+    group.items.some(
+      (item) => item.url === pathname || pathname.startsWith(`${item.url}/`),
+    ),
   );
 }
 
-export function Sidebar({ tabs, links }: SidebarProps) {
+export function Sidebar({ groups }: SidebarProps) {
   const pathname = usePathname();
   const { isCompleted } = useProgress();
   const { bookmarkedSlugs } = useBookmarks();
   const openAskAi = useAskAiStore((state) => state.open);
 
-  const initialTab =
-    tabs.find((tab) => tabContainsPath(tab, pathname))?.id ?? tabs[0]?.id;
-  const [activeTabId, setActiveTabId] = useState(initialTab);
+  const [expanded, setExpanded] = useState<Set<string>>(() => {
+    const active = groupForPath(groups, pathname);
+    return new Set(active ? [active.id] : groups.slice(0, 1).map((g) => g.id));
+  });
 
-  const activeTab =
-    tabs.find((tab) => tab.id === activeTabId) ?? tabs[0] ?? null;
+  // Navigating into a collapsed group (search, links) reveals it.
+  useEffect(() => {
+    const active = groupForPath(groups, pathname);
+    if (!active) return;
+    setExpanded((current) => {
+      if (current.has(active.id)) return current;
+      return new Set(current).add(active.id);
+    });
+  }, [groups, pathname]);
 
-  if (!activeTab) return null;
+  function toggleGroup(id: string) {
+    sounds.click();
+    setExpanded((current) => {
+      const next = new Set(current);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  }
 
-  const allItems = tabs.flatMap((tab) =>
-    tab.sections.flatMap((section) => section.items),
-  );
+  const allItems = groups.flatMap((group) => group.items);
   const bookmarkedItems = allItems.filter((item) =>
     bookmarkedSlugs.has(slugFromUrl(item.url)),
   );
@@ -108,27 +125,6 @@ export function Sidebar({ tabs, links }: SidebarProps) {
         </Shortcut>
       </div>
 
-      {tabs.length > 1 && (
-        <div className={styles.tabs} role="tablist" aria-label="Content type">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              type="button"
-              role="tab"
-              className={styles.tab}
-              aria-selected={tab.id === activeTab.id}
-              data-active={tab.id === activeTab.id || undefined}
-              onClick={() => {
-                sounds.click();
-                setActiveTabId(tab.id);
-              }}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
-      )}
-
       <nav className={styles.nav} aria-label="Articles">
         {bookmarkedItems.length > 0 && (
           <div className={styles.section}>
@@ -149,64 +145,78 @@ export function Sidebar({ tabs, links }: SidebarProps) {
             </ul>
           </div>
         )}
-        {activeTab.sections.map((section) => {
-          const completedCount = section.items.filter((item) =>
-            isCompleted(slugFromUrl(item.url)),
-          ).length;
+
+        {groups.map((group) => {
+          const isExpanded = expanded.has(group.id);
+          const completedCount = group.tracked
+            ? group.items.filter((item) => isCompleted(slugFromUrl(item.url)))
+                .length
+            : 0;
+          const containsActive = group.items.some(
+            (item) =>
+              item.url === pathname || pathname.startsWith(`${item.url}/`),
+          );
 
           return (
-            <div key={section.id} className={styles.section}>
-              <span className={styles.label}>
-                {section.label}
+            <div key={group.id} className={styles.group}>
+              <button
+                type="button"
+                className={styles.trigger}
+                aria-expanded={isExpanded}
+                data-active={(containsActive && !isExpanded) || undefined}
+                onClick={() => toggleGroup(group.id)}
+              >
+                <span className={styles["trigger-label"]}>{group.label}</span>
                 {completedCount > 0 && (
                   <span className={styles.progress}>
-                    {completedCount}/{section.items.length}
+                    {completedCount}/{group.items.length}
                   </span>
                 )}
-              </span>
-              <ul className={styles.list}>
-                {section.items.map((item) => (
-                  <li key={item.url}>
-                    <Link
-                      href={item.url as "/"}
-                      className={styles.link}
-                      data-active={pathname === item.url || undefined}
-                      onClick={sounds.click}
-                    >
-                      <span className={styles["link-title"]}>{item.title}</span>
-                      {isCompleted(slugFromUrl(item.url)) && (
-                        <CheckCircle2Icon
-                          size={13}
-                          className={styles.check}
-                          aria-label="Completed"
-                        />
-                      )}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+                <ChevronDownSmallIcon
+                  size={14}
+                  className={styles.chevron}
+                  data-collapsed={!isExpanded || undefined}
+                  aria-hidden="true"
+                />
+              </button>
+              <div
+                className={styles.body}
+                data-collapsed={!isExpanded || undefined}
+              >
+                <div className={styles.clip}>
+                  <ul className={styles.list} inert={!isExpanded}>
+                    {group.items.map((item) => (
+                      <li key={item.url}>
+                        <Link
+                          href={item.url as "/"}
+                          className={styles.link}
+                          data-active={
+                            item.url === pathname ||
+                            pathname.startsWith(`${item.url}/`) ||
+                            undefined
+                          }
+                          onClick={sounds.click}
+                        >
+                          <span className={styles["link-title"]}>
+                            {item.title}
+                          </span>
+                          {group.tracked &&
+                            isCompleted(slugFromUrl(item.url)) && (
+                              <CheckCircle2Icon
+                                size={13}
+                                className={styles.check}
+                                aria-label="Completed"
+                              />
+                            )}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
             </div>
           );
         })}
-        {links && links.length > 0 && (
-          <div className={styles.section}>
-            <span className={styles.label}>Reference</span>
-            <ul className={styles.list}>
-              {links.map((link) => (
-                <li key={link.url}>
-                  <Link
-                    href={link.url as "/"}
-                    className={styles.link}
-                    data-active={pathname.startsWith(link.url) || undefined}
-                    onClick={sounds.click}
-                  >
-                    <span className={styles["link-title"]}>{link.title}</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
       </nav>
 
       <div className={styles.footer}>
