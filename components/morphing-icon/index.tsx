@@ -280,7 +280,7 @@ function MorphingIcon({
   );
 }
 
-export { MorphingIcon };
 export type { IconName, MorphingIconProps };
+export { MorphingIcon };
 
 export const iconNames = Object.keys(icons) as IconName[];

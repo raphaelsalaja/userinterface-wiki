@@ -297,7 +297,7 @@ function Content({ children, className }: ContentProps) {
 }
 
 export {
-  Root as ArticleRoot,
-  Header as ArticleHeader,
   Content as ArticleContent,
+  Header as ArticleHeader,
+  Root as ArticleRoot,
 };

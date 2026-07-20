@@ -105,4 +105,4 @@ export abstract class Generator {
   }
 }
 
-export { pc, p, DIM, TEXT, RESET, formatSize };
+export { DIM, formatSize, p, pc, RESET, TEXT };

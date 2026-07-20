@@ -11,4 +11,4 @@ export type {
 import { Player } from "./player";
 import { Provider } from "./provider";
 
-export { Provider as NarrationProvider, Player as NarrationPlayer };
+export { Player as NarrationPlayer, Provider as NarrationProvider };
