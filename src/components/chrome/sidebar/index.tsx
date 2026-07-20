@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { CheckCircle2Icon } from "@/icons";
 import { sounds } from "@/lib/sounds";
+import { useBookmarks } from "@/lib/stores/bookmarks";
 import { useProgress } from "@/lib/stores/progress";
 import styles from "./styles.module.css";
 
@@ -44,6 +45,7 @@ function tabContainsPath(tab: SidebarTab, pathname: string): boolean {
 export function Sidebar({ tabs, links }: SidebarProps) {
   const pathname = usePathname();
   const { isCompleted } = useProgress();
+  const { bookmarkedSlugs } = useBookmarks();
 
   const initialTab =
     tabs.find((tab) => tabContainsPath(tab, pathname))?.id ?? tabs[0]?.id;
@@ -53,6 +55,13 @@ export function Sidebar({ tabs, links }: SidebarProps) {
     tabs.find((tab) => tab.id === activeTabId) ?? tabs[0] ?? null;
 
   if (!activeTab) return null;
+
+  const allItems = tabs.flatMap((tab) =>
+    tab.sections.flatMap((section) => section.items),
+  );
+  const bookmarkedItems = allItems.filter((item) =>
+    bookmarkedSlugs.has(slugFromUrl(item.url)),
+  );
 
   return (
     <aside className={styles.sidebar}>
@@ -77,6 +86,25 @@ export function Sidebar({ tabs, links }: SidebarProps) {
         </div>
       )}
       <nav className={styles.nav} aria-label="Articles">
+        {bookmarkedItems.length > 0 && (
+          <div className={styles.section}>
+            <span className={styles.label}>Bookmarks</span>
+            <ul className={styles.list}>
+              {bookmarkedItems.map((item) => (
+                <li key={item.url}>
+                  <Link
+                    href={item.url as "/"}
+                    className={styles.link}
+                    data-active={pathname === item.url || undefined}
+                    onClick={sounds.click}
+                  >
+                    <span className={styles["link-title"]}>{item.title}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
         {activeTab.sections.map((section) => {
           const completedCount = section.items.filter((item) =>
             isCompleted(slugFromUrl(item.url)),

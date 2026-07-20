@@ -3,7 +3,6 @@
 import { NavigationMenu } from "@base-ui/react/navigation-menu";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Banner } from "@/components/chrome/banner";
 import { ThemeSwitcher } from "@/components/chrome/theme-switcher";
 import { useAskAiStore } from "@/components/features/ask-ai/store";
 import { Shortcut } from "@/components/primitives/shortcut";
@@ -47,7 +46,6 @@ export function Navigation() {
 
   return (
     <NavigationMenu.Root className={styles.root}>
-      <Banner />
       <div className={styles.container}>
         <Link
           href="/"

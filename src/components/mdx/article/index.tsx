@@ -9,6 +9,8 @@ import { Button } from "@/components/primitives/button";
 import { Menu } from "@/components/primitives/menu";
 import { Spinner } from "@/components/primitives/spinner";
 import {
+  BookmarkCheckIcon,
+  BookmarkIcon,
   DotGrid1X3HorizontalIcon,
   PauseIcon,
   PlayIcon,
@@ -18,6 +20,7 @@ import type { Author } from "@/lib/authors";
 import { getGradientColors } from "@/lib/colors";
 import type { SerializablePageData } from "@/lib/page-data";
 import { SITE_MANIFEST } from "@/lib/site";
+import { useBookmarks } from "@/lib/stores/bookmarks";
 import styles from "./styles.module.css";
 
 export type { SerializablePageData } from "@/lib/page-data";
@@ -110,6 +113,10 @@ function Header({ className }: HeaderProps) {
   const { page, author, coauthors } = useArticleContext("Header");
   const { status, isPlaying, isPlayerVisible, play, pause, showPlayer } =
     useNarrationContext("Header");
+  const { isBookmarked, toggleBookmark } = useBookmarks();
+
+  const slug = page.slugs?.join("/") ?? "";
+  const bookmarked = isBookmarked(slug);
 
   const hasCoauthors = coauthors.length > 0;
   const isLoading = status === "loading";
@@ -165,6 +172,25 @@ function Header({ className }: HeaderProps) {
               ) : (
                 <motion.div {...ICON_TRANSITION} key="podcast">
                   <VocalMicrophoneIcon size={16} />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </Button>
+
+          <Button
+            {...props.button}
+            onClick={() => toggleBookmark(slug)}
+            aria-label={bookmarked ? "Remove bookmark" : "Bookmark article"}
+            aria-pressed={bookmarked}
+          >
+            <AnimatePresence mode="wait" initial={false}>
+              {bookmarked ? (
+                <motion.div {...ICON_TRANSITION} key="bookmarked">
+                  <BookmarkCheckIcon size={16} />
+                </motion.div>
+              ) : (
+                <motion.div {...ICON_TRANSITION} key="bookmark">
+                  <BookmarkIcon size={16} />
                 </motion.div>
               )}
             </AnimatePresence>
