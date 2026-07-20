@@ -4,8 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { Button } from "@/components/button";
-import { demoRegistry } from "@/lib/demo-registry";
 import type { DemoInfo } from "@/lib/demos";
+import { demoRegistry } from "@/lib/generated/demo-registry";
 import styles from "./styles.module.css";
 
 interface AdjacentDemos {

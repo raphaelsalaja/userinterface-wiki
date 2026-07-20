@@ -1,4 +1,4 @@
-// Auto-generated. Run `pnpm generate demos` to regenerate.
+// AUTO-GENERATED — do not edit. Run `pnpm generate demos` to regenerate.
 
 import type { ComponentType } from "react";
 import dynamic from "next/dynamic";

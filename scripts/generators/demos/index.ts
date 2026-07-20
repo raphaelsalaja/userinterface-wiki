@@ -8,7 +8,8 @@ import {
 } from "../../lib/generator-base";
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
-const OUTPUT_PATH = path.join(process.cwd(), "lib", "demo-registry.ts");
+const OUTPUT_DIR = path.join(process.cwd(), "lib", "generated");
+const OUTPUT_PATH = path.join(OUTPUT_DIR, "demo-registry.ts");
 
 interface DemoEntry {
   key: string;
@@ -79,7 +80,7 @@ function generateRegistryContent(entries: DemoEntry[]): string {
     )
     .join("\n");
 
-  return `// Auto-generated. Run \`pnpm generate demos\` to regenerate.
+  return `// AUTO-GENERATED — do not edit. Run \`pnpm generate demos\` to regenerate.
 
 import type { ComponentType } from "react";
 import dynamic from "next/dynamic";
@@ -118,6 +119,7 @@ export class DemosGenerator extends Generator {
     }
 
     const content = generateRegistryContent(entries);
+    fs.mkdirSync(OUTPUT_DIR, { recursive: true });
     fs.writeFileSync(OUTPUT_PATH, content, "utf-8");
 
     const stats = fs.statSync(OUTPUT_PATH);
