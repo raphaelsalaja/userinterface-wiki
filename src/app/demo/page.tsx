@@ -26,5 +26,9 @@ export const metadata: Metadata = {
 
 export default function Page() {
   const demos = getAllDemos();
-  return <DemosPage demos={demos} />;
+  return (
+    <div className="page-narrow">
+      <DemosPage demos={demos} />
+    </div>
+  );
 }

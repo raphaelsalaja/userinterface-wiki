@@ -25,6 +25,7 @@
     var(--page-padding-inline)
   );
   --page-max-width: 640px;
+  --page-shell-max-width: 1200px;
   --prose-max-width: 640px;
 }
 
@@ -63,12 +64,23 @@ body {
 }
 
 #main-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
   width: 100%;
-  max-width: var(--page-max-width);
+  max-width: var(--page-shell-max-width);
   padding-right: var(--page-padding-right);
   padding-left: var(--page-padding-left);
   margin-right: auto;
   margin-left: auto;
+}
+
+.page-narrow {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: var(--page-max-width);
+  margin-inline: auto;
 }
 
 .skip-to-content {

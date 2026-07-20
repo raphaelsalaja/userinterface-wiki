@@ -1,0 +1,57 @@
+.pager {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 64px;
+}
+
+.link {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 16px;
+  text-decoration: none;
+  background: var(--gray-1);
+  border: 1px solid var(--gray-a4);
+  border-radius: 10px;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+
+  &:hover {
+    background: var(--gray-2);
+    border-color: var(--gray-a6);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--gray-12);
+    outline-offset: 2px;
+  }
+
+  &[data-align="end"] {
+    text-align: right;
+  }
+}
+
+.direction {
+  font-size: 12px;
+  color: var(--gray-10);
+  letter-spacing: var(--font-letter-spacing-13px);
+}
+
+.title {
+  font-size: 14px;
+  font-weight: var(--font-weight-medium);
+  color: var(--gray-12);
+  letter-spacing: var(--font-letter-spacing-14px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .link {
+    transition: none;
+  }
+}

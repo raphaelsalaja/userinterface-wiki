@@ -92,10 +92,19 @@
   border-radius: inherit;
 }
 
+.columns {
+  display: flex;
+  gap: 48px;
+  align-items: flex-start;
+  width: 100%;
+}
+
 .article {
   display: flex;
+  flex: 1;
   flex-direction: column;
   width: 100%;
+  min-width: 0;
   max-width: 640px;
   padding-block-start: 128px;
   padding-block-end: 256px;

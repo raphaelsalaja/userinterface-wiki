@@ -51,5 +51,9 @@ export default async function Page(props: {
 
   const adjacent = getAdjacentDemos(slug);
 
-  return <DemoPage demo={demo} adjacent={adjacent} />;
+  return (
+    <div className="page-narrow">
+      <DemoPage demo={demo} adjacent={adjacent} />
+    </div>
+  );
 }

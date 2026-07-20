@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import type { ReactNode } from "react";
 import { PageTransition } from "@/components/chrome/page-transition";
+import { Toc, type TocItem } from "@/components/chrome/toc";
 import {
   NarrationPlayer,
   NarrationProvider,
@@ -10,11 +12,28 @@ import {
   ArticleHeader,
   ArticleRoot,
 } from "@/components/mdx/article";
+import { Pager } from "@/components/mdx/pager";
 import { toSerializablePageData } from "@/lib/page-data";
+import { getAdjacentPages } from "@/lib/sections";
 import { SITE_MANIFEST } from "@/lib/site";
 import { formatPageData, getPageImage, source } from "@/lib/source";
 import { getMDXComponents } from "@/mdx-components";
 import styles from "./styles.module.css";
+
+function nodeToText(node: ReactNode): string {
+  if (typeof node === "string" || typeof node === "number") {
+    return String(node);
+  }
+  if (Array.isArray(node)) {
+    return node.map(nodeToText).join("");
+  }
+  if (node && typeof node === "object" && "props" in node) {
+    return nodeToText(
+      (node.props as { children?: ReactNode } | undefined)?.children,
+    );
+  }
+  return "";
+}
 
 export async function generateStaticParams() {
   return source.generateParams();
@@ -73,28 +92,42 @@ export default async function Page(props: {
 
   const pageData = toSerializablePageData(page);
 
+  const toc: TocItem[] = (page.data.toc ?? [])
+    .filter((item) => item.depth <= 3 && item.url !== "#footnote-label")
+    .map((item) => ({
+      title: nodeToText(item.title),
+      url: item.url,
+      depth: item.depth,
+    }));
+
+  const { prev, next } = getAdjacentPages(params.slug.join("/"));
+
   return (
     <PageTransition>
       <div className={styles.container}>
         <div className={styles.spacer} />
-        <ArticleRoot
-          data={pageData}
-          author={author}
-          coauthors={coauthors}
-          className={styles.article}
-        >
-          <NarrationProvider
-            slug={pageData.slugs.join("/")}
-            title={pageData.data.title}
-            authorName={author.name}
+        <div className={styles.columns}>
+          <ArticleRoot
+            data={pageData}
+            author={author}
+            coauthors={coauthors}
+            className={styles.article}
           >
-            <ArticleHeader />
-            <ArticleContent>
-              <MDX components={getMDXComponents()} />
-            </ArticleContent>
-            <NarrationPlayer />
-          </NarrationProvider>
-        </ArticleRoot>
+            <NarrationProvider
+              slug={pageData.slugs.join("/")}
+              title={pageData.data.title}
+              authorName={author.name}
+            >
+              <ArticleHeader />
+              <ArticleContent>
+                <MDX components={getMDXComponents()} />
+              </ArticleContent>
+              <Pager prev={prev} next={next} />
+              <NarrationPlayer />
+            </NarrationProvider>
+          </ArticleRoot>
+          <Toc items={toc} />
+        </div>
       </div>
     </PageTransition>
   );
